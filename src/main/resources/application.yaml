@@ -1,0 +1,35 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    show_sql: true
+    url: jdbc:postgresql://localhost:5430/postgres?currentSchema=nechto
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  sql:
+    init:
+      mode: never
+  liquibase:
+    default-schema: nechto
+    clearCheckSums: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  logging:
+    level:
+      org:
+        springframework:
+          security: debug
+telegrambot:
+  webHookPath: https://ea9d-185-77-216-2.ngrok-free.app
+  userName: nechto21_bot
+  botToken: 8086975968:AAEWRBWduBoPDT7TUJpFlO5s_fOVvkvqSvY
+server:
+  port: 8000
+
