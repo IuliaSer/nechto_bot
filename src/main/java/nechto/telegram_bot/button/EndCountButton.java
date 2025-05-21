@@ -19,7 +19,6 @@ import static nechto.utils.CommonConstants.SCORES;
 public class EndCountButton implements Button {
     private final ScoresStateCash scoresStateCash;
     private final ScoresService scoresService;
-    private final ScoresRepository scoresRepository;
     private final InlineKeyboardService inlineKeyboardService;
 
     @Override
@@ -29,8 +28,6 @@ public class EndCountButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        scoresRepository.findAllByGameId(24L).get(0).getStatuses();
-
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
@@ -39,7 +36,6 @@ public class EndCountButton implements Button {
         for (int i = 0; i < flamethrowerAmount; i++) {
             scoresService.addStatus(FLAMETHROWER, userIdToCount, gameId);
         }
-//        scoresService.findByUserIdAndGameId(userIdToCount, gameId).getStatuses();
         return inlineKeyboardService.returnButtonsToEndGameOrCountNext(userId);
     }
 }

@@ -40,28 +40,21 @@ public class Count implements BotStateInterface {
 
     @Override
     public BotApiMethod<?> process(Message message) {
-//        List<Scores> scores = scoresRepository.findAllByGameId(24L);
-//        int size = 0;
-//        if (!scores.isEmpty()) {
-//            size = scores.get(0).getStatuses().size();
-//        }
-//        System.out.println(size);
-
         long userId = message.getFrom().getId();
         String messageText = message.getText();
         roleService.checkIsAdmin(userId);
         long userIdToCount;
         try {
             userIdToCount = userService.findByUsername(messageText).getId();
-            gameService.addUser(24L, userIdToCount); //na vremya testa
-            List<Scores> scores = scoresRepository.findAllByGameId(24L);
+            gameService.addUser(1L, userIdToCount); //na vremya testa
+            List<Scores> scores = scoresRepository.findAllByGameId(1L);
             int size = 0;
             if (!scores.isEmpty()) {
                 size = scores.get(0).getStatuses().size();
             }
             System.out.println("After add user" + size);
-            scoresStateCash.getScoresStateMap().get(SCORES).setGameId(24L);  //na vremya testa
-//                    scoresService.findByUserIdAndGameId(24L, userIdToCount); //proverka to  chto scores есть
+            scoresStateCash.getScoresStateMap().get(SCORES).setGameId(1L);  //na vremya testa
+//                    scoresService.findByUserIdAndGameId(1L, userIdToCount); //proverka to  chto scores есть
         } catch (EntityNotFoundException e) {
             return getSendMessageWithInlineMarkup
                     (userId, format("Пользователь с ником %s не существует или не добавлен в игру", messageText)); //TODO разделить в 2 сообщения
