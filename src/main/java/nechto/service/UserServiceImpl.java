@@ -8,7 +8,6 @@ import nechto.entity.User;
 import nechto.exception.UserAlreadyExistsException;
 import nechto.mappers.UserMapper;
 import nechto.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,7 +15,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static nechto.enums.Authority.ROLE_ADMIN;
-import static nechto.enums.Authority.ROLE_USER;
 
 @Service
 @RequiredArgsConstructor
@@ -24,17 +22,12 @@ import static nechto.enums.Authority.ROLE_USER;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    private final BCryptPasswordEncoder passwordEncoder;
-
     private final UserMapper userMapper;
 
     @Override
     public ResponseUserDto save(RequestUserDto userDto) {
         if (userRepository.findByUsername(userDto.getUsername()) != null) {
             throw new UserAlreadyExistsException("A user with this login already exists");
-        }
-        if (userDto.getPassword() != null) {
-            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
         userDto.setAuthority(ROLE_ADMIN); //change for role user
         return userMapper.convertToResponseUserDto(userRepository.save(userMapper.convertToUser(userDto)));

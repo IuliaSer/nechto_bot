@@ -22,19 +22,4 @@ public class WebhookController {
         return telegramBot.onWebhookUpdateReceived(update);
     }
 
-//        @GetMapping(value = "/qr", produces = MediaType.IMAGE_PNG_VALUE)
-//        public ResponseEntity<byte[]> generateQr(@RequestParam String text) {
-//            try {
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//
-//                BitMatrix matrix = new MultiFormatWriter()
-//                        .encode(text, BarcodeFormat.QR_CODE, 200, 200);
-//
-//                MatrixToImageWriter.writeToStream(matrix, "PNG", stream);
-//                return ResponseEntity.ok(stream.toByteArray());
-//            } catch (Exception e) {
-//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//            }
-//        }
-
 }

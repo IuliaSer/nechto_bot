@@ -7,7 +7,7 @@ import nechto.entity.Scores;
 import nechto.enums.Status;
 import nechto.mappers.ScoresMapper;
 import nechto.repository.ScoresRepository;
-import nechto.status.StatusProcessorImpl;
+import nechto.status.StatusProcessor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,7 +22,7 @@ import static java.lang.String.format;
 public class ScoresServiceImpl implements ScoresService {
     private final ScoresRepository scoresRepository;
     private final ScoresMapper scoresMapper;
-    private final StatusProcessorImpl statusProcessorImpl;
+    private final StatusProcessor statusProcessor;
 
     @Override
     public ResponseScoresDto update(RequestScoresDto scoresDto) {
@@ -51,7 +51,7 @@ public class ScoresServiceImpl implements ScoresService {
     }
 
     @Override
-    public List<ResponseScoresDto> countAndSaveAllScoresInTheGame(Long gameId) {
+    public List<ResponseScoresDto> countAndSaveAll(Long gameId) {
         List<Scores> scoresList = scoresRepository.findAllByGameId(gameId);
 
         for (Scores scores : scoresList) {
@@ -59,7 +59,7 @@ public class ScoresServiceImpl implements ScoresService {
             float results = 0;
 
             for (Status status : statuses) {
-                results += statusProcessorImpl.processStatus(statuses, scoresList, status);
+                results += statusProcessor.processStatus(statuses, scoresList, status);
             }
             scores.setScores(results);
             scoresRepository.save(scores);

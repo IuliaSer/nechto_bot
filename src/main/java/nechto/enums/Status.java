@@ -15,6 +15,7 @@ public enum Status {
         USEFULL,
         VICTIM,
         FLAMETHROWER,
+        ANTI_HUMAN_FLAMETHROWER,
         BURNED,
         PENALTY
 
