@@ -27,7 +27,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine = List.of(buttonWin, buttonLoose, buttonBurned);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
-        return BotUtils.getSendMessageWithInlineMarkup(chatId, "Выберите статус", inlineKeyboardMarkup);
+        return BotUtils.getSendMessageWithInlineMarkup(chatId, "Выберите статус:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -39,11 +39,44 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine = List.of(buttonHuman, buttonContaminated, buttonNechto);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
-        return BotUtils.getSendMessageWithInlineMarkup(chatId, "Выберите статус", inlineKeyboardMarkup);
+        return BotUtils.getSendMessageWithInlineMarkup(chatId, "Выберите статус:", inlineKeyboardMarkup);
+    }
+
+//    @Override
+//    public SendMessage returnButtonsWithAttributes(Long chatId) {
+//        var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON);
+//        var buttonUsefull = createButton("Полезный", USEFULL_BUTTON);
+//        var buttonVictim = createButton("Жертва", VICTIM_BUTTON);
+//        var buttonContinue = createButton("Дальше", CONTINUE_ANTI_HUMAN_FLAMETHROWER_BUTTON);
+//
+//        List<InlineKeyboardButton> rowInLine = List.of(buttonDangerous, buttonUsefull, buttonVictim);
+//        List<InlineKeyboardButton> rowInLine2 = List.of(buttonContinue);
+//
+//        InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
+//
+//        return BotUtils.getSendMessageWithInlineMarkup(chatId, "Выберите все аттрибуты:", inlineKeyboardMarkup);
+//    }
+
+    @Override
+    public SendMessage returnButtonsWithAttributesForHuman(Long chatId) {
+        var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON);
+        var buttonUsefull = createButton("Полезный", USEFULL_BUTTON);
+        var buttonVictim = createButton("Жертва", VICTIM_BUTTON);
+        var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_BUTTON_FOR_HUMAN);
+        var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON);
+        var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON);
+
+        List<InlineKeyboardButton> rowInLine = List.of(buttonDangerous, buttonUsefull, buttonVictim);
+        List<InlineKeyboardButton> rowInLine2 = List.of(buttonFlamethrower, buttonAntiHumanFlamethrower);
+        List<InlineKeyboardButton> rowInLine3 = List.of(buttonEndCount);
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2, rowInLine3);
+
+        return BotUtils.getSendMessageWithInlineMarkup(chatId, "Выберите все аттрибуты:", inlineKeyboardMarkup);
     }
 
     @Override
-    public SendMessage returnButtonsWithAttributes(Long chatId) {
+    public SendMessage returnButtonsWithAttributesForContaminated(Long chatId) {
         var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON);
         var buttonUsefull = createButton("Полезный", USEFULL_BUTTON);
         var buttonVictim = createButton("Жертва", VICTIM_BUTTON);
@@ -55,7 +88,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
-        return BotUtils.getSendMessageWithInlineMarkup(chatId, "Выберите все аттрибуты", inlineKeyboardMarkup);
+        return BotUtils.getSendMessageWithInlineMarkup(chatId, "Выберите все аттрибуты:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -71,11 +104,32 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         return getSendMessageWithInlineMarkup(chatId, "Использовался ли огнемет? ", inlineKeyboardMarkup);
     }
 
+//    @Override
+//    public SendMessage returnButtonsWithAntiHumanFlamethrower(Long chatId) {
+//        var buttonFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON);
+//        var buttonContinue = createButton("Дальше", CONTINUE_ANTI_HUMAN_FLAMETHROWER_BUTTON);
+//        var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON);
+//
+//        List<InlineKeyboardButton> rowInLine = List.of(buttonFlamethrower);
+//        List<InlineKeyboardButton> rowInLine2 = List.of(buttonContinue, buttonEndCount);
+//
+//        InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
+//
+//        return getSendMessageWithInlineMarkup(chatId, "Использовался ли огнемет против человека? ", inlineKeyboardMarkup);
+//    }
+
     @Override
     public SendMessage getMessageWithInlineMurkupPlusMinus(Long chatId, int flamethrowerAmount) {
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinus(flamethrowerAmount);
 
-        return getSendMessageWithInlineMarkup(chatId, "Выберите количество:\n" + flamethrowerAmount + "\u2063", inlineKeyboardMarkup);
+        return getSendMessageWithInlineMarkup(chatId, "Выберите количество:\n", inlineKeyboardMarkup);
+    }
+
+    @Override
+    public SendMessage getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(Long chatId, int flamethrowerAmount) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = getMessageWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(flamethrowerAmount);
+
+        return getSendMessageWithInlineMarkup(chatId, "Выберите количество:\n", inlineKeyboardMarkup);
     }
 
     @Override
@@ -106,7 +160,8 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
-    public InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine, List<InlineKeyboardButton> rowInLine2) {
+    public InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine,
+                                                     List<InlineKeyboardButton> rowInLine2) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         rowsInLine.add(rowInLine);
@@ -116,10 +171,29 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
+    public InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine,
+                                                     List<InlineKeyboardButton> rowInLine2,
+                                                     List<InlineKeyboardButton> rowInLine3) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        rowsInLine.add(rowInLine);
+        rowsInLine.add(rowInLine2);
+        rowsInLine.add(rowInLine3);
+        inlineKeyboardMarkup.setKeyboard(rowsInLine);
+        return inlineKeyboardMarkup;
+    }
+
+    @Override
     public EditMessageText editeMessageForInlineKeyboardPlusMinus(long chatId, int messageId, String text, int flamethrowerAmount) {
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinus(flamethrowerAmount);
         return getEditMessageWithInlineMarkup(chatId, messageId, text, inlineKeyboardMarkup);
     }
+
+//    @Override
+//    public EditMessageText editeMessageForInlineKeyboardPlusMinusWithAntiHumanFlamethrower(long chatId, int messageId, String text, int flamethrowerAmount) {
+//        InlineKeyboardMarkup inlineKeyboardMarkup = getMessageWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(flamethrowerAmount);
+//        return getEditMessageWithInlineMarkup(chatId, messageId, text, inlineKeyboardMarkup);
+//    }
 
     @Override
     public InlineKeyboardMarkup getInlineKeybordWithPlusMinus(int flamethrowerAmount) {
@@ -132,5 +206,32 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonEndCount);
 
         return createInlineKeyboard(rowInLine, rowInLine2);
+    }
+
+    @Override
+    public InlineKeyboardMarkup getMessageWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(int flamethrowerAmount) {
+        return null;
+    }
+
+    @Override
+    public EditMessageText editeMessageForInlineKeyboardPlusMinusWithAntiHumanFlamethrower(long chatId, int messageId, String text, int flamethrowerAmount) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(flamethrowerAmount);
+        return getEditMessageWithInlineMarkup(chatId, messageId, text, inlineKeyboardMarkup);
+    }
+
+
+    @Override
+    public InlineKeyboardMarkup getInlineKeyboardWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(int flamethrowerAmount) {
+        var buttonMinus = createButton("➖", MINUS_BUTTON);
+        var buttonValue = createButton(String.valueOf(flamethrowerAmount), VALUE_BUTTON);
+        var buttonPlus = createButton("➕", PLUS_BUTTON);
+        var buttonFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON);
+        var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON);
+
+        List<InlineKeyboardButton> rowInLine = List.of(buttonMinus, buttonValue, buttonPlus);
+        List<InlineKeyboardButton> rowInLine2 = List.of(buttonFlamethrower);
+        List<InlineKeyboardButton> rowInLine3 = List.of(buttonEndCount);
+
+        return createInlineKeyboard(rowInLine, rowInLine2, rowInLine3);
     }
 }

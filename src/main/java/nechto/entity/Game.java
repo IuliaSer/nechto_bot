@@ -55,13 +55,13 @@ public class Game {
 
     private LocalDateTime date;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "SCORES", joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
-    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
-    private List<Scores> scores;
+//    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY, cascade = {})
+//    private List<Scores> scores;
 
 }

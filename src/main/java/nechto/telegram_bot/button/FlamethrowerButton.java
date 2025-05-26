@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.utils.BotUtils.getSendMessageWithInlineMarkup;
-import static nechto.utils.CommonConstants.COUNT_NEXT_BUTTON;
 import static nechto.utils.CommonConstants.FLAMETHROWER_BUTTON;
 import static nechto.utils.CommonConstants.SCORES;
 
@@ -27,8 +25,9 @@ public class FlamethrowerButton implements Button {
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
+        requestScoresDto.setFlamethrowerPressed(true);
+        requestScoresDto.setAntiHumanFlamethrowerPressed(false);
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
-        
         return inlineKeyboardService.getMessageWithInlineMurkupPlusMinus(userId, flamethrowerAmount);
     }
 }

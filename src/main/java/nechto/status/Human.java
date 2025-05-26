@@ -22,9 +22,10 @@ public class Human implements Status {
             scores += 1;
         }
         for (Scores score : scoresList) {
-            if (score.getStatuses().contains(WON)) {
+            List<nechto.enums.Status> statusList = score.getStatuses();
+            if (statusList.contains(WON)) {
                 amountOfWinners++;
-            } else if (score.getStatuses().contains(CONTAMINATED)) {
+            } else if (statusList.contains(CONTAMINATED)) {
                 amountOfContaminated++;
             }
         }

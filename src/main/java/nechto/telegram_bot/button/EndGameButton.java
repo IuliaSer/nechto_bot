@@ -26,7 +26,7 @@ public class EndGameButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
         long gameId = scoresStateCash.getScoresStateMap().get(SCORES).getGameId();
 
-        scoresService.countAndSaveAllScoresInTheGame(gameId);
+        scoresService.countAndSaveAll(gameId);
         return getSendMessageWithInlineMarkup(userId, "Успешно посчитано");
     }
 }

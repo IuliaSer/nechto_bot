@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.enums.Status.CONTAMINATED;
 import static nechto.enums.Status.HUMAN;
-import static nechto.utils.CommonConstants.END_COUNT_BUTTON;
 import static nechto.utils.CommonConstants.HUMAN_BUTTON;
 import static nechto.utils.CommonConstants.SCORES;
 
@@ -33,7 +31,7 @@ public class HumanButton implements Button {
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
         scoresService.addStatus(HUMAN, userIdToCount, gameId);
-        return inlineKeyboardService.returnButtonsWithAttributes(userId);
+        return inlineKeyboardService.returnButtonsWithAttributesForHuman(userId);
 
     }
 }

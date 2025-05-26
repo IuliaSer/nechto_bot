@@ -11,14 +11,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestScoresDto {
-//    @NotNull(message = "User id should not be null")
     private Long userId;
 
-//    @NotNull(message = "Game id should not be null")
     private Long gameId;
 
-//    @NotNull(message = "Statuses should not be null")
     private List<Status> statuses;
 
     private int flamethrowerAmount;
+
+    private int antiHumanFlamethrowerAmount;
+
+    private boolean isFlamethrowerPressed = false;
+
+    private boolean isAntiHumanFlamethrowerPressed = false;
 }

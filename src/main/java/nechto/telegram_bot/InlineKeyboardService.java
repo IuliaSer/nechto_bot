@@ -12,11 +12,19 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsWithStatuses(Long chatId);
 
-    SendMessage returnButtonsWithAttributes(Long chatId);
+//    SendMessage returnButtonsWithAttributes(Long chatId);
+
+    SendMessage returnButtonsWithAttributesForHuman(Long chatId);
+
+    SendMessage returnButtonsWithAttributesForContaminated(Long chatId);
 
     SendMessage returnButtonsWithFlamethrower(Long chatId);
 
+//    SendMessage returnButtonsWithAntiHumanFlamethrower(Long chatId);
+
     SendMessage getMessageWithInlineMurkupPlusMinus(Long chatId, int flamethrowerAmount);
+
+    SendMessage getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(Long chatId, int flamethrowerAmount);
 
     SendMessage returnButtonsToEndGameOrCountNext(Long chatId);
 
@@ -26,7 +34,18 @@ public interface InlineKeyboardService {
 
     InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine, List<InlineKeyboardButton> rowInLine2);
 
+    InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine, List<InlineKeyboardButton> rowInLine2,
+                                              List<InlineKeyboardButton> rowInLine3);
+
     EditMessageText editeMessageForInlineKeyboardPlusMinus(long chatId, int messageId, String text, int flamethrowerAmount);
 
+//    EditMessageText editeMessageForInlineKeyboardPlusMinusWithAntiHumanFlamethrower(long chatId, int messageId, String text, int flamethrowerAmount);
+
     InlineKeyboardMarkup getInlineKeybordWithPlusMinus(int flamethrowerAmount);
+
+    InlineKeyboardMarkup getMessageWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(int flamethrowerAmount);
+
+    EditMessageText editeMessageForInlineKeyboardPlusMinusWithAntiHumanFlamethrower(long chatId, int messageId, String text, int flamethrowerAmount);
+
+    InlineKeyboardMarkup getInlineKeyboardWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(int flamethrowerAmount);
 }

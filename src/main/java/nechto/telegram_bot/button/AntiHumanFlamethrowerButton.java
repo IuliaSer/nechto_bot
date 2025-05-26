@@ -2,36 +2,33 @@ package nechto.telegram_bot.button;
 
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestScoresDto;
-import nechto.service.ScoresService;
 import nechto.telegram_bot.InlineKeyboardService;
 import nechto.telegram_bot.ScoresStateCash;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.enums.Status.CONTAMINATED;
-import static nechto.utils.CommonConstants.CONTAMINATED_BUTTON;
+import static nechto.utils.CommonConstants.ANTI_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.utils.CommonConstants.SCORES;
 
 @RequiredArgsConstructor
 @Component
-public class ContaminatedButton implements Button {
-    private final ScoresStateCash scoresStateCash;
-    private final ScoresService scoresService;
+public class AntiHumanFlamethrowerButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
-
+    private final ScoresStateCash scoresStateCash;
+    
     @Override
     public String getButtonName() {
-        return CONTAMINATED_BUTTON;
+        return ANTI_HUMAN_FLAMETHROWER_BUTTON;
     }
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
-        long userIdToCount = requestScoresDto.getUserId();
-        long gameId = requestScoresDto.getGameId();
-        scoresService.addStatus(CONTAMINATED, userIdToCount, gameId);
-        return inlineKeyboardService.returnButtonsWithAttributesForContaminated(userId);
-
+        requestScoresDto.setAntiHumanFlamethrowerPressed(true);
+        requestScoresDto.setFlamethrowerPressed(false);
+        int antiHumanFlamethrowerAmount = requestScoresDto.getAntiHumanFlamethrowerAmount();
+        
+        return inlineKeyboardService.getMessageWithInlineMurkupPlusMinus(userId, antiHumanFlamethrowerAmount);
     }
 }

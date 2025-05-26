@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static java.lang.String.format;
-import static nechto.utils.CommonConstants.END_GAME_BUTTON;
 import static nechto.utils.CommonConstants.PLUS_BUTTON;
 import static nechto.utils.CommonConstants.SCORES;
 
@@ -28,10 +27,19 @@ public class PlusButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
         int messageId = callbackQuery.getMessage().getMessageId();
+        int finalFlamethrowerAmount = 0;
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
+        int antiHumanFlamethrowerAmount = requestScoresDto.getAntiHumanFlamethrowerAmount();
 
-        requestScoresDto.setFlamethrowerAmount(++flamethrowerAmount);
-        return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinus(userId, messageId, format("Выберите количество:\n"),
-                flamethrowerAmount);
+        if (requestScoresDto.isFlamethrowerPressed()) {
+            requestScoresDto.setFlamethrowerAmount(++flamethrowerAmount);
+            finalFlamethrowerAmount = flamethrowerAmount;
+        } else if (requestScoresDto.isAntiHumanFlamethrowerPressed()) {
+            requestScoresDto.setAntiHumanFlamethrowerAmount(++antiHumanFlamethrowerAmount);
+            finalFlamethrowerAmount = antiHumanFlamethrowerAmount;
+        }
+
+        return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinus(userId, messageId,
+                format("Выберите количество:\n"), finalFlamethrowerAmount);
     }
 }

@@ -4,20 +4,20 @@ import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestGameDto;
 import nechto.dto.response.ResponseGameDto;
 import nechto.entity.Game;
-import nechto.entity.Scores;
 import nechto.entity.User;
 import nechto.mappers.GameMapper;
 import nechto.repository.GameRepository;
 import nechto.repository.ScoresRepository;
 import nechto.repository.UserRepository;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,7 @@ public class GameServiceImpl implements GameService {
     private final ScoresRepository scoresRepository;
 
     private final GameMapper gameMapper;
+    private final EntityManager entityManager;
 
     @Override
     public ResponseGameDto save(RequestGameDto gameDto) {
@@ -37,7 +38,7 @@ public class GameServiceImpl implements GameService {
 
         for (Long userId: gameDto.getUserIds()) {
             User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not found", userId)));
+                    .orElseThrow(() -> new EntityNotFoundException(format("User with id %s not found", userId)));
             users.add(user);
         }
         Game game = Game.builder()
@@ -51,33 +52,23 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public ResponseGameDto addUser(Long gameId, Long userId) {
-//        List<Scores> scores = scoresRepository.findAllByGameId(24L);
-//        int size = 0;
-//        if (!scores.isEmpty()) {
-//            size = scores.get(0).getStatuses().size();
-//        }
-//        System.out.println(size);
-
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not found", userId)));
+                .orElseThrow(() -> new EntityNotFoundException(format("User with id %s not found", userId)));
         Game game = gameRepository.findById(gameId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Game with id %s not found", gameId)));
+                .orElseThrow(() -> new EntityNotFoundException(format("Game with id %s not found", gameId)));
 
         game.getUsers().add(user);
-        for (Scores s : game.getScores()) {
-            System.out.println("Statuses before save: " + s.getStatuses());
-//            s.getStatuses().size(); // lazy load statuses
-        }
-        Game game1 = gameRepository.save(game);
-        return gameMapper.convertToResponseGameDto(game1);
+        
+        Game gameSaved = gameRepository.save(game);
+        return gameMapper.convertToResponseGameDto(gameSaved);
     }
 
     @Override
     public void deleteUserFromGame(Long gameId, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not found", userId)));
+                .orElseThrow(() -> new EntityNotFoundException(format("User with id %s not found", userId)));
         Game game = gameRepository.findById(gameId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Game with id %s not found", gameId)));
+                .orElseThrow(() -> new EntityNotFoundException(format("Game with id %s not found", gameId)));
         game.getUsers().remove(user);
         gameRepository.save(game);
     }

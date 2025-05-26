@@ -9,6 +9,8 @@ public class CommonConstants {
     public static final String CONTAMINATED_BUTTON = "CONTAMINATED_BUTTON";
     public static final String HUMAN_BUTTON = "HUMAN_BUTTON";
     public static final String FLAMETHROWER_BUTTON = "FLAMETHROWER_BUTTON";
+    public static final String FLAMETHROWER_BUTTON_FOR_HUMAN = "FLAMETHROWER_BUTTON_FOR_HUMAN";
+    public static final String ANTI_HUMAN_FLAMETHROWER_BUTTON = "ANTI_HUMAN_FLAMETHROWER_BUTTON";
     public static final String DANGEROUS_BUTTON = "DANGEROUS_BUTTON";
     public static final String USEFULL_BUTTON = "USEFULL_BUTTON";
     public static final String VICTIM_BUTTON = "VICTIM_BUTTON";
@@ -18,4 +20,5 @@ public class CommonConstants {
     public static final String MINUS_BUTTON = "MINUS_BUTTON";
     public static final String PLUS_BUTTON = "PLUS_BUTTON";
     public static final String VALUE_BUTTON = "VALUE_BUTTON";
+
 }

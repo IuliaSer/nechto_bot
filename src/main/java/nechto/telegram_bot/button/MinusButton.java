@@ -28,9 +28,18 @@ public class MinusButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
         int messageId = callbackQuery.getMessage().getMessageId();
+        int finalFlamethrowerAmount = 0;
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
-        requestScoresDto.setFlamethrowerAmount(--flamethrowerAmount);
-        return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinus(userId, messageId, format("Выберите количество:\n"
-                + flamethrowerAmount + "\u2063"), flamethrowerAmount);
+        int antiHumanFlamethrowerAmount = requestScoresDto.getAntiHumanFlamethrowerAmount();
+
+        if (requestScoresDto.isFlamethrowerPressed()) {
+            requestScoresDto.setFlamethrowerAmount(--flamethrowerAmount);
+            finalFlamethrowerAmount = flamethrowerAmount;
+        } else if (requestScoresDto.isAntiHumanFlamethrowerPressed()) {
+            requestScoresDto.setAntiHumanFlamethrowerAmount(--antiHumanFlamethrowerAmount);
+            finalFlamethrowerAmount = antiHumanFlamethrowerAmount;
+        }
+        return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinus(userId, messageId,
+                format("Выберите количество:\n"), Math.max(finalFlamethrowerAmount, 0));
     }
 }
