@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestUserDto;
 import nechto.enums.BotState;
 import nechto.service.UserService;
+import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static nechto.utils.BotUtils.getSendMessageWithInlineMarkup;
+import static nechto.utils.BotUtils.getSendMessage;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class Registration implements BotStateInterface {
         String[] parts = messageText.trim().split("\\s+");
 
         if (parts.length < 2) {
-            return getSendMessageWithInlineMarkup(userId, "Неверный формат. Введите: имя ник");
+            return BotUtils.getSendMessage(userId, "Неверный формат. Введите: имя ник");
         }
 
         String name = parts[0];
@@ -35,6 +36,6 @@ public class Registration implements BotStateInterface {
         RequestUserDto user = new RequestUserDto(userId, name, nickname, null, null);
         userService.save(user);
 
-        return getSendMessageWithInlineMarkup(userId, "Вы успешно зарегистрированы как " + name + " (" + nickname + ")");
+        return BotUtils.getSendMessage(userId, "Вы успешно зарегистрированы как " + name + " (" + nickname + ")");
     }
 }

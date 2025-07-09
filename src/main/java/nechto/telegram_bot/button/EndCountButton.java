@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestScoresDto;
 import nechto.service.ScoresService;
 import nechto.telegram_bot.InlineKeyboardService;
-import nechto.telegram_bot.ScoresStateCash;
+import nechto.telegram_bot.cache.ScoresStateCash;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import static nechto.enums.Button.END_COUNT_BUTTON;
 import static nechto.enums.Status.ANTI_HUMAN_FLAMETHROWER;
 import static nechto.enums.Status.FLAMETHROWER;
-import static nechto.utils.CommonConstants.END_COUNT_BUTTON;
 import static nechto.utils.CommonConstants.SCORES;
 
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class EndCountButton implements Button {
 
     @Override
     public String getButtonName() {
-        return END_COUNT_BUTTON;
+        return END_COUNT_BUTTON.name();
     }
 
     @Override
@@ -43,8 +43,6 @@ public class EndCountButton implements Button {
         }
         requestScoresDto.setFlamethrowerAmount(0);
         requestScoresDto.setAntiHumanFlamethrowerAmount(0);
-        requestScoresDto.setFlamethrowerPressed(false);
-        requestScoresDto.setAntiHumanFlamethrowerPressed(false);
         return inlineKeyboardService.returnButtonsToEndGameOrCountNext(userId);
     }
 }

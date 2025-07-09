@@ -13,7 +13,6 @@ public class MessageHandler {
     private final BotStateProcessor botStateProcessor;
 
     public BotApiMethod<?> handle(Message message, BotState botState) {
-        long userId = message.getFrom().getId();
         return botStateProcessor.process(botState, message);
     }
 

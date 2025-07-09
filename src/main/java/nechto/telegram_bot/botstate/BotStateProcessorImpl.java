@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class BotStateProcessorImpl implements BotStateProcessor {
@@ -17,7 +17,7 @@ public class BotStateProcessorImpl implements BotStateProcessor {
 
     public BotStateProcessorImpl(List<BotStateInterface> botStateInterfaces) {
         this.botStateInterfaces = botStateInterfaces;
-        this.botStatesMap = new HashMap<>();
+        this.botStatesMap = new ConcurrentHashMap<>();
 
         for (BotStateInterface botStateInterface : botStateInterfaces) {
             botStatesMap.put(botStateInterface.getBotState(), botStateInterface);

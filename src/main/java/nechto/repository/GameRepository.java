@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface GameRepository extends JpaRepository<Game, Long> {
 
-    @EntityGraph(value = "game_entity_graph")
+//    @EntityGraph(value = "game_entity_graph")
     List<Game> findAll();
 
-    @EntityGraph(attributePaths = {"users"})
+//    @EntityGraph(attributePaths = {"users"})
     Optional<Game> findById(@Param("gameId") Long gameId);
 }

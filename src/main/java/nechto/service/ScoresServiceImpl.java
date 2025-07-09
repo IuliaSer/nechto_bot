@@ -43,6 +43,11 @@ public class ScoresServiceImpl implements ScoresService {
     }
 
     @Override
+    public List<Scores> findAllByGameId(long gameId) {
+        return scoresRepository.findAllByGameId(gameId);
+    }
+
+    @Override
     public void addStatus(Status status, Long userId, Long gameId) {
         Scores scores = this.findByUserIdAndGameId(userId, gameId);
         List<Status> statuses = scores.getStatuses();

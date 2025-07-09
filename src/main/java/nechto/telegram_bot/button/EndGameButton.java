@@ -2,13 +2,14 @@ package nechto.telegram_bot.button;
 
 import lombok.RequiredArgsConstructor;
 import nechto.service.ScoresService;
-import nechto.telegram_bot.ScoresStateCash;
+import nechto.telegram_bot.cache.ScoresStateCash;
+import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.utils.BotUtils.getSendMessageWithInlineMarkup;
-import static nechto.utils.CommonConstants.END_GAME_BUTTON;
+import static nechto.enums.Button.END_GAME_BUTTON;
+import static nechto.utils.BotUtils.getSendMessage;
 import static nechto.utils.CommonConstants.SCORES;
 
 @RequiredArgsConstructor
@@ -16,10 +17,11 @@ import static nechto.utils.CommonConstants.SCORES;
 public class EndGameButton implements Button {
     private final ScoresService scoresService;
     private final ScoresStateCash scoresStateCash;
+    private final ButtonService buttonService;
 
     @Override
     public String getButtonName() {
-        return END_GAME_BUTTON;
+        return END_GAME_BUTTON.name();
     }
 
     @Override
@@ -27,6 +29,7 @@ public class EndGameButton implements Button {
         long gameId = scoresStateCash.getScoresStateMap().get(SCORES).getGameId();
 
         scoresService.countAndSaveAll(gameId);
-        return getSendMessageWithInlineMarkup(userId, "Успешно посчитано");
+        buttonService.activateAllButtons();
+        return BotUtils.getSendMessage(userId, "Успешно посчитано");
     }
 }

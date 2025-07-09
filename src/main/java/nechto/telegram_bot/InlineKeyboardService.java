@@ -12,17 +12,15 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsWithStatuses(Long chatId);
 
-//    SendMessage returnButtonsWithAttributes(Long chatId);
-
     SendMessage returnButtonsWithAttributesForHuman(Long chatId);
 
     SendMessage returnButtonsWithAttributesForContaminated(Long chatId);
 
     SendMessage returnButtonsWithFlamethrower(Long chatId);
 
-//    SendMessage returnButtonsWithAntiHumanFlamethrower(Long chatId);
-
     SendMessage getMessageWithInlineMurkupPlusMinus(Long chatId, int flamethrowerAmount);
+
+    SendMessage getMessageWithInlineMurkupPlusMinusAntiHuman(Long chatId, int flamethrowerAmount);
 
     SendMessage getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(Long chatId, int flamethrowerAmount);
 
@@ -39,13 +37,14 @@ public interface InlineKeyboardService {
 
     EditMessageText editeMessageForInlineKeyboardPlusMinus(long chatId, int messageId, String text, int flamethrowerAmount);
 
-//    EditMessageText editeMessageForInlineKeyboardPlusMinusWithAntiHumanFlamethrower(long chatId, int messageId, String text, int flamethrowerAmount);
+
+    EditMessageText editeMessageForInlineKeyboardPlusMinusForAntiHumanFlamethrower(long chatId, int messageId, String text, int flamethrowerAmount);
+
+    EditMessageText editeMessageForInlineKeyboardPlusMinusForAntiHuman(long chatId, int messageId, String text, int flamethrowerAmount);
 
     InlineKeyboardMarkup getInlineKeybordWithPlusMinus(int flamethrowerAmount);
 
-    InlineKeyboardMarkup getMessageWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(int flamethrowerAmount);
+    InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHumanFlamethrower(int flamethrowerAmount);
 
-    EditMessageText editeMessageForInlineKeyboardPlusMinusWithAntiHumanFlamethrower(long chatId, int messageId, String text, int flamethrowerAmount);
-
-    InlineKeyboardMarkup getInlineKeyboardWithInlineMurkupPlusMinusWithFlamethrowerAntiHuman(int flamethrowerAmount);
+    InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHuman(int flamethrowerAmount);
 }

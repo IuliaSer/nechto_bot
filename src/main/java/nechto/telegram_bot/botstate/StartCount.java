@@ -3,13 +3,14 @@ package nechto.telegram_bot.botstate;
 import lombok.RequiredArgsConstructor;
 import nechto.enums.BotState;
 import nechto.service.RoleService;
-import nechto.telegram_bot.BotStateCash;
+import nechto.telegram_bot.cache.BotStateCash;
+import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import static nechto.enums.BotState.COUNT;
-import static nechto.utils.BotUtils.getSendMessageWithInlineMarkup;
+import static nechto.utils.BotUtils.getSendMessage;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +28,6 @@ public class StartCount implements BotStateInterface {
         long userId = message.getFrom().getId();
         roleService.checkIsAdmin(userId);
         botStateCash.saveBotState(userId, COUNT);
-        return getSendMessageWithInlineMarkup(userId, "Введите ник игрока, которого надо посчитать");
+        return BotUtils.getSendMessage(userId, "Введите ник игрока, которого надо посчитать");
     }
 }

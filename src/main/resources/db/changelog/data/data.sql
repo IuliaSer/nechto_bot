@@ -34,3 +34,5 @@ values (1399592410, 'Боб', 'wilfredo', null, 'ROLE_USER');
 
 INSERT INTO USERS(id, name, username, password, authority)
 values (1399592411, 'Саша', 'bookehyb', null, 'ROLE_USER');
+
+DELETE FROM scores;

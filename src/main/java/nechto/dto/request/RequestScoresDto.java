@@ -21,7 +21,4 @@ public class RequestScoresDto {
 
     private int antiHumanFlamethrowerAmount;
 
-    private boolean isFlamethrowerPressed = false;
-
-    private boolean isAntiHumanFlamethrowerPressed = false;
 }

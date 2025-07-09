@@ -8,6 +8,9 @@ public enum BotState {
     START_REGISTRATION,
     REGISTRATION,
     START,
+    SHOW_RESULTS,
+    START_CHANGE_GAME,
+    CHANGE_GAME,
     MAKE_ADMIN_START,
     MAKE_ADMIN;
 }

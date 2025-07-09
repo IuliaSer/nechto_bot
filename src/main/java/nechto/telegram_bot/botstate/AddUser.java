@@ -3,12 +3,13 @@ package nechto.telegram_bot.botstate;
 import lombok.RequiredArgsConstructor;
 import nechto.enums.BotState;
 import nechto.service.GameService;
-import nechto.telegram_bot.ScoresStateCash;
+import nechto.telegram_bot.cache.ScoresStateCash;
+import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static nechto.utils.BotUtils.getSendMessageWithInlineMarkup;
+import static nechto.utils.BotUtils.getSendMessage;
 import static nechto.utils.CommonConstants.SCORES;
 
 @Component
@@ -28,6 +29,6 @@ public class AddUser implements BotStateInterface {
         long gameId = Long.parseLong(message.getText().replace("/start add_user_to_game_", ""));
         scoresStateCash.getScoresStateMap().get(SCORES).setGameId(gameId);
         gameService.addUser(gameId, userId);
-        return getSendMessageWithInlineMarkup(userId, "Вы успешно присоединились к игре!");
+        return BotUtils.getSendMessage(userId, "Вы успешно присоединились к игре!");
     }
 }

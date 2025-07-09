@@ -10,6 +10,8 @@ import java.util.List;
 public interface ScoresService {
     Scores findByUserIdAndGameId(long userId, long gameId);
 
+    List<Scores> findAllByGameId(long gameId);
+
     void addStatus(Status status, Long userId, Long gameId);
 
     List<ResponseScoresDto> countAndSaveAll(Long gameId);

@@ -1,16 +1,16 @@
-package nechto.telegram_bot.button;
+package nechto.telegram_bot.button.count;
 
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestScoresDto;
 import nechto.telegram_bot.InlineKeyboardService;
-import nechto.telegram_bot.ScoresStateCash;
+import nechto.telegram_bot.button.Button;
+import nechto.telegram_bot.cache.ScoresStateCash;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static java.lang.String.format;
-import static nechto.utils.CommonConstants.END_GAME_BUTTON;
-import static nechto.utils.CommonConstants.MINUS_BUTTON;
+import static nechto.enums.Button.MINUS_BUTTON;
 import static nechto.utils.CommonConstants.SCORES;
 
 @RequiredArgsConstructor
@@ -21,25 +21,17 @@ public class MinusButton implements Button {
 
     @Override
     public String getButtonName() {
-        return MINUS_BUTTON;
+        return MINUS_BUTTON.name();
     }
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
         int messageId = callbackQuery.getMessage().getMessageId();
-        int finalFlamethrowerAmount = 0;
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
-        int antiHumanFlamethrowerAmount = requestScoresDto.getAntiHumanFlamethrowerAmount();
+        requestScoresDto.setFlamethrowerAmount(--flamethrowerAmount);
 
-        if (requestScoresDto.isFlamethrowerPressed()) {
-            requestScoresDto.setFlamethrowerAmount(--flamethrowerAmount);
-            finalFlamethrowerAmount = flamethrowerAmount;
-        } else if (requestScoresDto.isAntiHumanFlamethrowerPressed()) {
-            requestScoresDto.setAntiHumanFlamethrowerAmount(--antiHumanFlamethrowerAmount);
-            finalFlamethrowerAmount = antiHumanFlamethrowerAmount;
-        }
-        return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinus(userId, messageId,
-                format("Выберите количество:\n"), Math.max(finalFlamethrowerAmount, 0));
+        return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinusForAntiHumanFlamethrower(userId, messageId,
+                format("Выберите количество:\n"), Math.max(flamethrowerAmount, 0));
     }
 }

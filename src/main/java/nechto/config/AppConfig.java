@@ -35,7 +35,9 @@ public class AppConfig {
         List<BotCommand> commands = List.of(
                 new BotCommand("/register", "зарегистрироваться"),
                 new BotCommand("/create_game", "создать игру"),
-                new BotCommand("/start_count", "посчитать очки конкретного игрока")
+                new BotCommand("/start_count", "посчитать очки конкретного игрока"),
+                new BotCommand("/show_results", "показать результаты"),
+                new BotCommand("/change_game", "изменить игру")
         );
 
         bot.execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));

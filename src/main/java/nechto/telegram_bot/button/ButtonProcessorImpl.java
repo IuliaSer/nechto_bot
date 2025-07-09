@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ public class ButtonProcessorImpl implements ButtonProcessor {
 
     public ButtonProcessorImpl(List<Button> buttonActions) {
         this.buttonActions = buttonActions;
-        this.buttonActionMap = new HashMap<>();
+        this.buttonActionMap = new ConcurrentHashMap<>();
 
         for (Button button : buttonActions) {
             buttonActionMap.put(button.getButtonName(), button);

@@ -2,11 +2,12 @@ package nechto.telegram_bot;
 
 import lombok.RequiredArgsConstructor;
 import nechto.telegram_bot.button.ButtonProcessor;
+import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.utils.BotUtils.getSendMessageWithInlineMarkup;
+import static nechto.utils.BotUtils.getSendMessage;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class CallbackQueryHandler {
         try {
             return buttonProcessor.processButton(callbackQuery, buttonName, userId);
         } catch (Exception e) {
-            return getSendMessageWithInlineMarkup(userId, "Кнопка не найдена.");
+            return BotUtils.getSendMessage(userId, "Кнопка не найдена.");
         }
     }
 }

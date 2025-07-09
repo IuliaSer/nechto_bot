@@ -9,26 +9,26 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static nechto.enums.BotState.MAKE_ADMIN;
-import static nechto.enums.BotState.MAKE_ADMIN_START;
-import static nechto.utils.BotUtils.getSendMessage;
+import static nechto.enums.BotState.CHANGE_GAME;
+import static nechto.enums.BotState.START_CHANGE_GAME;
 
-@Component
 @RequiredArgsConstructor
-public class MakeAdminStart implements BotStateInterface {
-    private final BotStateCash botStateCash;
+@Component
+public class StartChangeGame implements BotStateInterface {
     private final RoleService roleService;
+    private final BotStateCash botStateCash;
 
     @Override
     public BotState getBotState() {
-        return MAKE_ADMIN_START;
+        return START_CHANGE_GAME;
     }
 
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        roleService.checkIsOwner(userId);
-        botStateCash.saveBotState(userId, MAKE_ADMIN);
-        return BotUtils.getSendMessage(userId, "Введите ник игрока, которого надо сделать админом:");
+        roleService.checkIsAdmin(userId);
+        botStateCash.saveBotState(userId, CHANGE_GAME);
+        return BotUtils.getSendMessage(userId, "Введите ник игрока, которого надо посчитать");
     }
+
 }

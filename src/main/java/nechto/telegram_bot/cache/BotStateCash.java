@@ -1,18 +1,18 @@
-package nechto.telegram_bot;
+package nechto.telegram_bot.cache;
 
 import lombok.Getter;
 import lombok.Setter;
 import nechto.enums.BotState;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
 @Component
 @Getter
 @Setter
 public class BotStateCash {
-    private final Map<Long, BotState> botStateMap = new HashMap<>();
+    private final Map<Long, BotState> botStateMap = new ConcurrentHashMap<>();
 
     public void saveBotState(long userId, BotState botState) {
         botStateMap.put(userId, botState);
