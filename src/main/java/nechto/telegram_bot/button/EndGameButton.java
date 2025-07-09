@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.Button.END_GAME_BUTTON;
-import static nechto.utils.BotUtils.getSendMessage;
 import static nechto.utils.CommonConstants.SCORES;
 
 @RequiredArgsConstructor
@@ -20,8 +19,8 @@ public class EndGameButton implements Button {
     private final ButtonService buttonService;
 
     @Override
-    public String getButtonName() {
-        return END_GAME_BUTTON.name();
+    public nechto.enums.Button getButton() {
+        return END_GAME_BUTTON;
     }
 
     @Override

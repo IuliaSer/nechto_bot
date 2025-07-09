@@ -22,6 +22,7 @@ public class StatusProcessorImpl implements StatusProcessor {
     @Override
     public float processStatus(List<nechto.enums.Status> statuses, List<Scores> scoresList, nechto.enums.Status status) {
         var statusInterface = map.get(status);
+
         if (statusInterface == null) {
             throw new StatusNotFoundException("No status implementation for given status registered");
         }

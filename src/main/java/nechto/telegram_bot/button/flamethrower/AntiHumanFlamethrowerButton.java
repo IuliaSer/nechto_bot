@@ -18,18 +18,14 @@ import static nechto.utils.CommonConstants.SCORES;
 public class AntiHumanFlamethrowerButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCash scoresStateCash;
-    private final ButtonService buttonService;
 
     @Override
-    public String getButtonName() {
-        return ANTI_HUMAN_FLAMETHROWER_BUTTON.name();
+    public nechto.enums.Button getButton() {
+        return ANTI_HUMAN_FLAMETHROWER_BUTTON;
     }
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-//        if(!buttonService.isActive(getButtonName())) {
-//            return null;
-//        }
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
         int antiHumanFlamethrowerAmount = requestScoresDto.getAntiHumanFlamethrowerAmount();
         

@@ -22,15 +22,15 @@ public class FlamethrowerButtonForHuman implements Button {
     private final ButtonsCash buttonsCash;
 
     @Override
-    public String getButtonName() {
-        return FLAMETHROWER_BUTTON_FOR_HUMAN.name();
+    public nechto.enums.Button getButton() {
+        return FLAMETHROWER_BUTTON_FOR_HUMAN;
     }
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
-        buttonsCash.getButtonMap().get(ANTI_HUMAN_FLAMETHROWER_BUTTON.name()).setActive(false);
+        buttonsCash.getButtonMap().get(ANTI_HUMAN_FLAMETHROWER_BUTTON).setActive(false);
 
         return inlineKeyboardService
                 .getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(userId, flamethrowerAmount);

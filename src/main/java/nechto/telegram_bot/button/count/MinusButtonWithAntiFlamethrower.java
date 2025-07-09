@@ -20,8 +20,8 @@ public class MinusButtonWithAntiFlamethrower implements Button {
     private final ScoresStateCash scoresStateCash;
 
     @Override
-    public String getButtonName() {
-        return MINUS_ANTI_FLAMETHROWER_BUTTON.name();
+    public nechto.enums.Button getButton() {
+        return MINUS_ANTI_FLAMETHROWER_BUTTON;
     }
 
     @Override

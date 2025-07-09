@@ -19,8 +19,8 @@ public class FlamethrowerButton implements Button {
     private final ScoresStateCash scoresStateCash;
     
     @Override
-    public String getButtonName() {
-        return FLAMETHROWER_BUTTON.name();
+    public nechto.enums.Button getButton() {
+        return FLAMETHROWER_BUTTON;
     }
 
     @Override

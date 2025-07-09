@@ -19,7 +19,7 @@ public class ButtonProcessorImpl implements ButtonProcessor {
         this.buttonActionMap = new ConcurrentHashMap<>();
 
         for (Button button : buttonActions) {
-            buttonActionMap.put(button.getButtonName(), button);
+            buttonActionMap.put(button.getButton().name(), button);
         }
     }
 

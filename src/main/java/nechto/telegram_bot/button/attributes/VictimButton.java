@@ -1,5 +1,6 @@
 package nechto.telegram_bot.button.attributes;
 
+import nechto.enums.Button;
 import nechto.enums.Status;
 import nechto.service.ScoresService;
 import nechto.telegram_bot.button.ButtonService;
@@ -16,8 +17,8 @@ public class VictimButton extends AttributeButton {
     }
 
     @Override
-    public String getButtonName() {
-        return VICTIM_BUTTON.name();
+    public Button getButton() {
+        return VICTIM_BUTTON;
     }
 
     @Override

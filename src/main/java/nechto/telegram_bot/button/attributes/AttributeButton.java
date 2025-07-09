@@ -21,11 +21,11 @@ public abstract class AttributeButton implements Button {
     private final ButtonService buttonService;
 
     @Override
-    public abstract String getButtonName();
+    public abstract nechto.enums.Button getButton();
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButtonName(), getButtonName())) {
+        if(!buttonService.isActive(getButton().name(), getButton().name())) {
             return null;
         }
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);

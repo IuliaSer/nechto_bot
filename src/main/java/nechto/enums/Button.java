@@ -1,5 +1,8 @@
 package nechto.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Button {
 
     WIN_BUTTON("WIN_BUTTON"),

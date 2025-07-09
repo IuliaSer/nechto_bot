@@ -1,5 +1,6 @@
 package nechto.telegram_bot.button.attributes;
 
+import nechto.enums.Button;
 import nechto.enums.Status;
 import nechto.service.ScoresService;
 import nechto.telegram_bot.button.ButtonService;
@@ -16,8 +17,8 @@ public class UsefullButton extends AttributeButton {
     }
 
     @Override
-    public String getButtonName() {
-        return USEFULL_BUTTON.name();
+    public Button getButton() {
+        return USEFULL_BUTTON;
     }
 
     @Override

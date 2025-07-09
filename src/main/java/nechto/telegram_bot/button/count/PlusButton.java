@@ -20,8 +20,8 @@ public class PlusButton implements Button {
     private final ScoresStateCash scoresStateCash;
 
     @Override
-    public String getButtonName() {
-        return PLUS_BUTTON.name();
+    public nechto.enums.Button getButton() {
+        return PLUS_BUTTON;
     }
 
     @Override

@@ -22,8 +22,8 @@ public class EndCountButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
 
     @Override
-    public String getButtonName() {
-        return END_COUNT_BUTTON.name();
+    public nechto.enums.Button getButton() {
+        return END_COUNT_BUTTON;
     }
 
     @Override
