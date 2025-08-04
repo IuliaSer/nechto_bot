@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import static nechto.enums.BotState.MAKE_ADMIN;
 import static nechto.enums.BotState.MAKE_ADMIN_START;
-import static nechto.utils.BotUtils.getSendMessage;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class MakeAdminStart implements BotStateInterface {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        roleService.checkIsOwner(userId);
+        roleService.isOwner(userId);
         botStateCash.saveBotState(userId, MAKE_ADMIN);
         return BotUtils.getSendMessage(userId, "Введите ник игрока, которого надо сделать админом:");
     }

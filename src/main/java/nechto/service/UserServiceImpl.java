@@ -1,17 +1,17 @@
 package nechto.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.FullUserDto;
 import nechto.dto.request.RequestUserDto;
 import nechto.dto.response.ResponseUserDto;
 import nechto.entity.User;
+import nechto.exception.EntityNotFoundException;
 import nechto.exception.UserAlreadyExistsException;
 import nechto.mappers.UserMapper;
 import nechto.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static nechto.enums.Authority.ROLE_ADMIN;

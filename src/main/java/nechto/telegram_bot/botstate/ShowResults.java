@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.String.format;
-import static nechto.enums.BotState.CHANGE_GAME;
 import static nechto.enums.BotState.SHOW_RESULTS;
 import static nechto.enums.Status.CONTAMINATED;
 import static nechto.enums.Status.DANGEROUS;
@@ -46,7 +45,7 @@ public class ShowResults implements BotStateInterface {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        roleService.checkIsAdmin(userId);
+        roleService.isAdmin(userId);
         RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
         List<Scores> scores = scoresService.findAllByGameId(59L); //test
         List<ScoresDto> scoresDtos = new ArrayList<>();
@@ -101,7 +100,7 @@ public class ShowResults implements BotStateInterface {
         sb.append("`")
                 .append(format("%-" + 9 + "s", "Ник"))
                 .append(format("%-" + 5 + "s", "Роль"))
-                .append(format("%-" + 5 + "s", "Ог-ы"))
+                .append(format("%-" + 5 + "s", "\uD83D\uDD25"))
                 .append(format("%-" + 7 + "s", "о/п/ж"))
                 .append(format("Очки"))
                 .append("`\n");

@@ -1,8 +1,10 @@
 package nechto.telegram_bot.botstate;
 
 import lombok.RequiredArgsConstructor;
+import nechto.entity.Scores;
 import nechto.enums.BotState;
 import nechto.service.RoleService;
+import nechto.service.ScoresService;
 import nechto.service.UserService;
 import nechto.telegram_bot.InlineKeyboardService;
 import nechto.telegram_bot.cache.ScoresStateCash;
@@ -20,6 +22,7 @@ public class ChangeGame implements BotStateInterface {
     private final UserService userService;
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCash scoresStateCash;
+    private final ScoresService scoresService;
 
     @Override
     public BotState getBotState() {
@@ -30,10 +33,13 @@ public class ChangeGame implements BotStateInterface {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         long userIdToCount = userService.findByUsername(message.getText()).getId();
-        roleService.checkIsAdmin(userId);
+        roleService.isAdmin(userId);
+        Scores scores = scoresService.findByUserIdAndGameId(userIdToCount, 59L);
+        scoresService.deleteAllStatuses(scores);
+//        scoresService.deleteById(scores.getId());
         scoresStateCash.getScoresStateMap().get(SCORES).setGameId(59L);  //na vremya testa
         scoresStateCash.getScoresStateMap().get(SCORES).setUserId(userIdToCount);
-        return inlineKeyboardService.returnButtonsWithStatusesLooseWin(userId);
+        return inlineKeyboardService.returnButtonsWithStatuses(userId);
     }
 
 }

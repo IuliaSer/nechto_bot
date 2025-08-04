@@ -1,17 +1,17 @@
 package nechto.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestScoresDto;
 import nechto.dto.response.ResponseScoresDto;
 import nechto.entity.Scores;
 import nechto.enums.Status;
+import nechto.exception.EntityNotFoundException;
 import nechto.mappers.ScoresMapper;
 import nechto.repository.ScoresRepository;
 import nechto.status.StatusProcessor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -70,5 +70,17 @@ public class ScoresServiceImpl implements ScoresService {
             scoresRepository.save(scores);
         }
         return scoresMapper.convertToListResponseScoresDto(scoresList);
+    }
+
+    @Override
+    public void deleteAllStatuses(Scores scores) {
+        List<Status> statuses = scores.getStatuses();
+        statuses.removeAll(statuses);
+        scoresRepository.save(scores);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        scoresRepository.deleteById(id);
     }
 }

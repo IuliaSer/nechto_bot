@@ -25,7 +25,7 @@ public class CountNextButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        roleService.checkIsAdmin(userId);
+        roleService.isAdmin(userId);
         botStateCash.saveBotState(userId, COUNT);
         buttonService.activateAllButtons();
         return BotUtils.getSendMessage(userId, "Введите ник игрока, которого надо посчитать: ");

@@ -1,19 +1,19 @@
 package nechto.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestGameDto;
 import nechto.dto.response.ResponseGameDto;
 import nechto.entity.Game;
 import nechto.entity.Scores;
 import nechto.entity.User;
+import nechto.exception.EntityNotFoundException;
 import nechto.mappers.GameMapper;
 import nechto.repository.GameRepository;
 import nechto.repository.ScoresRepository;
 import nechto.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 

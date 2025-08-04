@@ -1,5 +1,6 @@
 package nechto.telegram_bot.botstate;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import nechto.enums.BotState;
 import nechto.service.GameService;
@@ -11,8 +12,6 @@ import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
-
-import javax.persistence.EntityNotFoundException;
 
 import static java.lang.String.format;
 import static nechto.enums.BotState.COUNT;
@@ -36,7 +35,7 @@ public class Count implements BotStateInterface {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         String messageText = message.getText();
-        roleService.checkIsAdmin(userId);
+        roleService.isAdmin(userId);
         long userIdToCount;
         try {
             userIdToCount = userService.findByUsername(messageText).getId();
@@ -47,6 +46,6 @@ public class Count implements BotStateInterface {
         }
         scoresStateCash.getScoresStateMap().get(SCORES).setGameId(59L);  //na vremya testa
         scoresStateCash.getScoresStateMap().get(SCORES).setUserId(userIdToCount);
-        return inlineKeyboardService.returnButtonsWithStatusesLooseWin(userId);
+        return inlineKeyboardService.returnButtonsWithStatuses(userId);
     }
 }

@@ -5,6 +5,7 @@ import nechto.dto.request.RequestGameDto;
 import nechto.dto.response.ResponseGameDto;
 import nechto.enums.BotState;
 import nechto.service.GameService;
+import nechto.service.QrCodeGenerator;
 import nechto.service.RoleService;
 import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ import static nechto.utils.BotUtils.getSendMessage;
 public class CreateGame implements BotStateInterface {
     private final RoleService roleService;
     private final GameService gameService;
-
+    private final QrCodeGenerator qrCodeGenerator;
     @Override
     public BotState getBotState() {
         return CREATE_GAME;
@@ -34,12 +35,12 @@ public class CreateGame implements BotStateInterface {
         long userId = message.getFrom().getId();
         long chatId = message.getChatId();
 
-        roleService.checkIsAdmin(userId);
+        roleService.isAdmin(userId);
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>());
         ResponseGameDto responseGameDto = gameService.save(requestGameDto);
-
-        return BotUtils.getSendMessage(chatId, //chatId ne verno
-                format("Перейдите по ссылке, добавьтесь в игру https://t.me/nechto21_bot?start=add_user_to_game_%s",
+        qrCodeGenerator.generateQrCode(String.valueOf(responseGameDto.getId()), String.valueOf(chatId));
+        return BotUtils.getSendMessage(chatId,
+                format("Перейдите по ссылке, добавьтесь в игру %s",
                         responseGameDto.getId().toString()));
     }
 }

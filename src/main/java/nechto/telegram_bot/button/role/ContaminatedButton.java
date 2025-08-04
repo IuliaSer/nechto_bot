@@ -1,4 +1,4 @@
-package nechto.telegram_bot.button.status;
+package nechto.telegram_bot.button.role;
 
 import nechto.enums.Button;
 import nechto.service.ScoresService;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import static nechto.enums.Button.CONTAMINATED_BUTTON;
 
 @Component
-public class ContaminatedButton extends StatusButton {
+public class ContaminatedButton extends RoleButton {
 
     public ContaminatedButton(ScoresStateCash scoresStateCash, ScoresService scoresService,
                               InlineKeyboardService inlineKeyboardService, ButtonService buttonService, ButtonStatusCash buttonStatusCash) {

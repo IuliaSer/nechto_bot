@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import nechto.service.RoleService;
+import nechto.enums.Authority;
+import nechto.service.MenuService;
+import nechto.service.UserService;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -26,43 +28,30 @@ public class TelegramBot extends SpringWebhookBot {
     String botToken;
 
     private TelegramFacade telegramFacade;
-    private final RoleService roleService;
+    private final UserService userService;
+    private final MenuService menuService;
 
-    public TelegramBot(TelegramFacade telegramFacade, DefaultBotOptions options, SetWebhook setWebhook, RoleService roleService) {
+    public TelegramBot(TelegramFacade telegramFacade, DefaultBotOptions options, SetWebhook setWebhook, UserService userService, MenuService menuService) {
         super(options, setWebhook);
         this.telegramFacade = telegramFacade;
-        this.roleService = roleService;
+        this.userService = userService;
+        this.menuService = menuService;
     }
 
-    public TelegramBot(SetWebhook setWebhook, TelegramFacade telegramFacade, RoleService roleService) {
+    public TelegramBot(SetWebhook setWebhook, TelegramFacade telegramFacade, UserService userService, MenuService menuService) {
         super(setWebhook);
         this.telegramFacade = telegramFacade;
-        this.roleService = roleService;
+        this.userService = userService;
+        this.menuService = menuService;
     }
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-//        long userId = update.getMessage().getFrom().getId();
-//
-//        List<BotCommand> adminCommands = List.of(
-//                new BotCommand("/create_game", "создать игру"),
-//                new BotCommand("/start_count", "посчитать очки конкретного игрока")
-//        );
-//        List<BotCommand> userCommands = List.of(new BotCommand("/register", "зарегистрироваться"));
-//        if (roleService.checkIsAdmin(userId) || roleService.checkIsOwner(userId)) {
-//            try {
-//                setCommands(adminCommands);
-//            } catch (TelegramApiException e) {
-//                throw new RuntimeException(e);
-//            }
-//        } else {
-//            try {
-//                setCommands(userCommands);
-//            } catch (TelegramApiException e) {
-//                throw new RuntimeException(e);
-//            }
-//
-//        }
+        long userId = update.getMessage().getFrom().getId();
+        Authority authority = userService.findById(userId).getAuthority();
+
+        menuService.refreshCommands(userId, authority);
+
         return telegramFacade.handleUpdate(update);
     }
 

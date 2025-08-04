@@ -26,7 +26,7 @@ public class StartChangeGame implements BotStateInterface {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        roleService.checkIsAdmin(userId);
+        roleService.isAdmin(userId);
         botStateCash.saveBotState(userId, CHANGE_GAME);
         return BotUtils.getSendMessage(userId, "Введите ник игрока, которого надо посчитать");
     }

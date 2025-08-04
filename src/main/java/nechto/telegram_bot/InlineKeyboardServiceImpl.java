@@ -43,7 +43,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     private final ButtonService buttonService;
 
     @Override
-    public SendMessage returnButtonsWithStatusesLooseWin(Long chatId) {
+    public SendMessage returnButtonsWithStatuses(Long chatId) {
         var buttonWin = createButton("Выиграл(а)", WIN_BUTTON.name());
         var buttonLoose = createButton("Проиграл(а)", LOOSE_BUTTON.name());
         var buttonBurned = createButton("Сожгли", BURNED_BUTTON.name());
@@ -57,7 +57,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
-    public SendMessage returnButtonsWithStatuses(Long chatId) {
+    public SendMessage returnButtonsWithRoles(Long chatId) {
         var buttonHuman = createButton("Человек", HUMAN_BUTTON.name());
         var buttonContaminated = createButton("Зараженный", CONTAMINATED_BUTTON.name());
         var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
@@ -67,7 +67,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine = List.of(buttonHuman, buttonContaminated, buttonNechto);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
-        return BotUtils.getSendMessage(chatId, "Выберите статус:", inlineKeyboardMarkup);
+        return BotUtils.getSendMessage(chatId, "Выберите роль:", inlineKeyboardMarkup);
     }
 
     @Override

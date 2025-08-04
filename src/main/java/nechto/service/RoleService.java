@@ -1,7 +1,9 @@
 package nechto.service;
 
 public interface RoleService {
-    boolean checkIsAdmin(long userId);
+    boolean isAdmin(long userId);
 
-    boolean checkIsOwner(long userId);
+    boolean isOwner(long userId);
+
+    boolean isUser(long userId);
 }

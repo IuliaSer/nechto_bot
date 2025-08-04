@@ -8,9 +8,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.List;
 
 public interface InlineKeyboardService {
-    SendMessage returnButtonsWithStatusesLooseWin(Long chatId);
-
     SendMessage returnButtonsWithStatuses(Long chatId);
+
+    SendMessage returnButtonsWithRoles(Long chatId);
 
     SendMessage returnButtonsWithAttributesForHuman(Long chatId);
 

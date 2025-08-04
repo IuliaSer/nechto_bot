@@ -16,6 +16,19 @@ spring:
     default-schema: nechto
     clearCheckSums: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
+  cloud:
+    openfeign:
+#      httpclient:
+#        hc5:
+#          enabled=false
+      multipart:
+        enabled=true
+      okhttp:
+        enabled: true
+      client:
+        config:
+          telegram: # name = "telegram" в @FeignClient
+            loggerLevel: FULL
 
   main:
     allow-bean-definition-overriding: true
@@ -27,9 +40,19 @@ spring:
         springframework:
           security: debug
 telegrambot:
-  webHookPath: https://afb3-169-150-209-167.ngrok-free.app
+  webHookPath: https://df53e5ff34d4.ngrok-free.app
   userName: nechto21_bot
   botToken: 8086975968:AAEWRBWduBoPDT7TUJpFlO5s_fOVvkvqSvY
 server:
   port: 8000
 
+logging:
+  level:
+    nechto.telegram_bot.TelegramFeignClient: DEBUG
+    feign: DEBUG
+
+feign:
+  client:
+    config:
+      telegram:
+        loggerLevel: FULL

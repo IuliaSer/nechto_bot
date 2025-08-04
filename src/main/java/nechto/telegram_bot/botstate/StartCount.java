@@ -26,7 +26,7 @@ public class StartCount implements BotStateInterface {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        roleService.checkIsAdmin(userId);
+        roleService.isAdmin(userId);
         botStateCash.saveBotState(userId, COUNT);
         return BotUtils.getSendMessage(userId, "Введите ник игрока, которого надо посчитать");
     }

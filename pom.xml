@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.4</version>
+		<version>3.5.4</version>
 		<relativePath/>
 	</parent>
 
@@ -25,7 +25,7 @@
 		</checkstyle.config.url>
 		<liquibase.version>4.29.1</liquibase.version>
 		<jackson.version>2.17.1</jackson.version>
-
+		<spring-cloud.version>2025.0.0</spring-cloud.version>
 	</properties>
 
 	<dependencies>
@@ -185,7 +185,37 @@
 			<artifactId>telegrambots-spring-boot-starter</artifactId>
 			<version>5.2.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-okhttp</artifactId>
+		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>io.github.openfeign.form</groupId>-->
+<!--			<artifactId>feign-form-spring</artifactId>-->
+<!--			<version>3.8.0</version>-->
+<!--		</dependency>-->
 	</dependencies>
+
+	<!-- 1. Подтягиваем правильный BOM Spring Cloud -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+<!--				<version>2021.0.9</version>        &lt;!&ndash; последняя общедоступная для 2.7.x &ndash;&gt;-->
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>

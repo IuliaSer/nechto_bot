@@ -1,0 +1,52 @@
+package nechto.service;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import nechto.enums.Authority;
+import nechto.telegram_bot.TelegramFeignClient;
+import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChat;
+
+import java.util.List;
+import java.util.Map;
+
+import static nechto.enums.Authority.*;
+
+@Getter
+@Service
+@RequiredArgsConstructor
+public class MenuServiceImpl implements MenuService {
+
+  private static final Map<Authority, List<BotCommand>> menu = Map.of(
+      ROLE_ADMIN, List.of(
+                  new BotCommand("/create_game", "создать игру"),
+                  new BotCommand("/start_count", "посчитать очки конкретного игрока"),
+                  new BotCommand("/show_results", "показать результаты"),
+                  new BotCommand("/change_game", "изменить игру")),
+      ROLE_USER,  List.of(
+                  new BotCommand("/register", "зарегистрироваться"),
+                  new BotCommand("/show_results", "показать результаты")),
+      ROLE_OWNER, List.of(
+              new BotCommand("/create_game", "создать игру"),
+              new BotCommand("/start_count", "посчитать очки конкретного игрока"),
+              new BotCommand("/show_results", "показать результаты"),
+              new BotCommand("/change_game", "изменить игру"),
+              new BotCommand("/make_admin", "сделать пользователя админом"))
+  );
+
+  private final TelegramFeignClient telegram;
+
+  /**
+   * Обновляем menu‑команды в Telegram, когда у пользователя меняется роль
+   */
+  @Override
+  public void refreshCommands(long userId, Authority authority) {
+      telegram.setMyCommands(SetMyCommands.builder()
+          .commands(menu.get(authority))
+          .scope(new BotCommandScopeChat(String.valueOf(userId)))
+          .build());
+  }
+
+}

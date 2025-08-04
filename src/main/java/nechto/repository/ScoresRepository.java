@@ -11,4 +11,6 @@ public interface ScoresRepository extends JpaRepository<Scores, Long> {
     List<Scores> findAllByGameId(Long gameId);
 
     Optional<Scores> findByUserIdAndGameId(Long userId, Long gameId);
+
+    void deleteAllStatusesById(Long id);
 }

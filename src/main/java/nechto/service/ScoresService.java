@@ -18,4 +18,7 @@ public interface ScoresService {
 
     ResponseScoresDto update(RequestScoresDto scores);
 
+    void deleteAllStatuses(Scores scores);
+
+    void deleteById(long id);
 }
