@@ -11,6 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Getter
 @Setter
-public class ButtonsCash {
+public class ButtonsCache {
     private final Map<String, ButtonInfo> buttonMap = new ConcurrentHashMap<>();
 }

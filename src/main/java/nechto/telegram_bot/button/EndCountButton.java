@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestScoresDto;
 import nechto.service.ScoresService;
 import nechto.telegram_bot.InlineKeyboardService;
-import nechto.telegram_bot.cache.ScoresStateCash;
+import nechto.telegram_bot.cache.ScoresStateCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -12,12 +12,11 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import static nechto.enums.Button.END_COUNT_BUTTON;
 import static nechto.enums.Status.ANTI_HUMAN_FLAMETHROWER;
 import static nechto.enums.Status.FLAMETHROWER;
-import static nechto.utils.CommonConstants.SCORES;
 
 @RequiredArgsConstructor
 @Component
 public class EndCountButton implements Button {
-    private final ScoresStateCash scoresStateCash;
+    private final ScoresStateCache scoresStateCache;
     private final ScoresService scoresService;
     private final InlineKeyboardService inlineKeyboardService;
 
@@ -28,7 +27,7 @@ public class EndCountButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
+        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();

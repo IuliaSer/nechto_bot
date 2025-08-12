@@ -18,16 +18,16 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
   cloud:
     openfeign:
-#      httpclient:
-#        hc5:
-#          enabled=false
+      httpclient:
+        hc5:
+          enabled: false
       multipart:
-        enabled=true
+        enabled: true
       okhttp:
         enabled: true
       client:
         config:
-          telegram: # name = "telegram" в @FeignClient
+          telegram:
             loggerLevel: FULL
 
   main:
@@ -48,11 +48,7 @@ server:
 
 logging:
   level:
+    feign-dump: TRACE
     nechto.telegram_bot.TelegramFeignClient: DEBUG
     feign: DEBUG
 
-feign:
-  client:
-    config:
-      telegram:
-        loggerLevel: FULL

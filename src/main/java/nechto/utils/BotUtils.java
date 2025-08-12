@@ -17,7 +17,7 @@ public class BotUtils {
         SendMessage message = new SendMessage();
         message.setText(text);
         message.setChatId(String.valueOf(chatId));
-        message.setParseMode("Markdown");
+        message.setParseMode("MarkdownV2");
         return message;
     }
 

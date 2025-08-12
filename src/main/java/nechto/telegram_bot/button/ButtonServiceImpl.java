@@ -1,18 +1,18 @@
 package nechto.telegram_bot.button;
 
 import lombok.RequiredArgsConstructor;
-import nechto.telegram_bot.cache.ButtonsCash;
+import nechto.telegram_bot.cache.ButtonsCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 @RequiredArgsConstructor
 @Component
 public class ButtonServiceImpl implements ButtonService {
-    private final ButtonsCash buttonsCash;
+    private final ButtonsCache buttonsCache;
 
     @Override
     public boolean isActive(String buttonName, String... names) {
-        var buttonInfo = buttonsCash.getButtonMap().get(buttonName);
+        var buttonInfo = buttonsCache.getButtonMap().get(buttonName);
 
         if (buttonInfo != null && !buttonInfo.isActive()) {
             buttonInfo.getButton().setCallbackData("noop");
@@ -20,7 +20,7 @@ public class ButtonServiceImpl implements ButtonService {
         }
 
         for (String buttonToInactivate: names) {
-            buttonsCash.getButtonMap().get(buttonToInactivate).setActive(false);
+            buttonsCache.getButtonMap().get(buttonToInactivate).setActive(false);
         }
         return true;
     }
@@ -28,12 +28,12 @@ public class ButtonServiceImpl implements ButtonService {
     @Override
     public void putButtonsToButtonCache(InlineKeyboardButton... inlineKeyboardButtons) {
         for (InlineKeyboardButton button: inlineKeyboardButtons) {
-            buttonsCash.getButtonMap().put(button.getCallbackData(), new ButtonInfo(true, button));
+            buttonsCache.getButtonMap().put(button.getCallbackData(), new ButtonInfo(true, button));
         }
     }
 
     @Override
     public void activateAllButtons() {
-        buttonsCash.getButtonMap().values().forEach(buttonInfo -> buttonInfo.setActive(true));
+        buttonsCache.getButtonMap().values().forEach(buttonInfo -> buttonInfo.setActive(true));
     }
 }

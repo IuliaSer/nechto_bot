@@ -18,8 +18,8 @@ CREATE TABLE if not exists USERS (
 
 CREATE TABLE if not exists SCORES (
                         id BIGSERIAL NOT NULL,
-                        user_id int,
-                        game_id int,
+                        user_id BIGSERIAL,
+                        game_id BIGSERIAL,
                         scores numeric default 0,
                         PRIMARY KEY (id),
                         UNIQUE(user_id, game_id),
@@ -28,7 +28,7 @@ CREATE TABLE if not exists SCORES (
 );
 
 create table if not exists SCORES_STATUS (
-                                  scores_id int not null,
+                                  scores_id BIGSERIAL not null,
                                   status_id varchar(255) not null,
                                   FOREIGN KEY (scores_id) REFERENCES SCORES(id) ON DELETE CASCADE
 );

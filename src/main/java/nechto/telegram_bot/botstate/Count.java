@@ -7,7 +7,7 @@ import nechto.service.GameService;
 import nechto.service.RoleService;
 import nechto.service.UserService;
 import nechto.telegram_bot.InlineKeyboardService;
-import nechto.telegram_bot.cache.ScoresStateCash;
+import nechto.telegram_bot.cache.ScoresStateCache;
 import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -23,7 +23,7 @@ public class Count implements BotStateInterface {
     private final RoleService roleService;
     private final GameService gameService;
     private final UserService userService;
-    private final ScoresStateCash scoresStateCash;
+    private final ScoresStateCache scoresStateCache;
     private final InlineKeyboardService inlineKeyboardService;
 
     @Override
@@ -39,13 +39,13 @@ public class Count implements BotStateInterface {
         long userIdToCount;
         try {
             userIdToCount = userService.findByUsername(messageText).getId();
-            gameService.addUser(59L, userIdToCount); //na vremya testa
+            gameService.addUser(2L, userIdToCount); //na vremya testa
         } catch (EntityNotFoundException e) {
             return BotUtils.getSendMessage
                     (userId, format("Пользователь с ником %s не существует или не добавлен в игру", messageText)); //TODO разделить в 2 сообщения
         }
-        scoresStateCash.getScoresStateMap().get(SCORES).setGameId(59L);  //na vremya testa
-        scoresStateCash.getScoresStateMap().get(SCORES).setUserId(userIdToCount);
+        scoresStateCache.getScoresStateMap().get(userId).setGameId(2L);  //na vremya testa
+        scoresStateCache.getScoresStateMap().get(userId).setUserId(userIdToCount);
         return inlineKeyboardService.returnButtonsWithStatuses(userId);
     }
 }

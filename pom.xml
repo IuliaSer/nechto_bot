@@ -196,21 +196,19 @@
 			<artifactId>feign-okhttp</artifactId>
 		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>io.github.openfeign.form</groupId>-->
-<!--			<artifactId>feign-form-spring</artifactId>-->
-<!--			<version>3.8.0</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-form-spring</artifactId>
+			<version>13.6</version>          <!-- та же, что и feign-core -->
+		</dependency>
 	</dependencies>
 
-	<!-- 1. Подтягиваем правильный BOM Spring Cloud -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
-<!--				<version>2021.0.9</version>        &lt;!&ndash; последняя общедоступная для 2.7.x &ndash;&gt;-->
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

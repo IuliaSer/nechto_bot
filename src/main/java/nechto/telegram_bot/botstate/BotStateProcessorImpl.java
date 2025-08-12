@@ -1,10 +1,12 @@
 package nechto.telegram_bot.botstate;
 
+import com.google.zxing.WriterException;
 import nechto.enums.BotState;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,7 +27,7 @@ public class BotStateProcessorImpl implements BotStateProcessor {
     }
 
     @Override
-    public BotApiMethod<?> process(BotState botState, Message message) {
+    public BotApiMethod<?> process(BotState botState, Message message) throws IOException, WriterException {
         return botStatesMap.get(botState).process(message);
     }
 }

@@ -25,16 +25,12 @@ public class ScoresDto {
             return false;
         }
         ScoresDto that = (ScoresDto) o;
-        return username.equals(that.username); // и другие поля при необходимости
+        return username.equals(that.username);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(username);
-    }
-
-    public String getFlamethrowerScoresWithPrecision() {
-        return String.format("%.2f", flamethrowerScores);
     }
 
 }

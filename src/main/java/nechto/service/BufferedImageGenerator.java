@@ -12,9 +12,9 @@ import java.awt.image.BufferedImage;
 import java.util.Hashtable;
 
 @Component
-public class QrCodeImageGenerator {
+public class BufferedImageGenerator {
 
-    public BufferedImage generateQRCodeImage(String text, int width, int height) throws WriterException {
+    public BufferedImage generateBufferedImage(String text, int width, int height) throws WriterException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
         Hashtable<EncodeHintType, Object> hints = new Hashtable<>();

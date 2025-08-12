@@ -11,7 +11,7 @@ import java.util.Map;
 @Component
 @Getter
 @Setter
-public class BotStateCash {
+public class BotStateCache {
     private final Map<Long, BotState> botStateMap = new ConcurrentHashMap<>();
 
     public void saveBotState(long userId, BotState botState) {
