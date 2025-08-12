@@ -8,7 +8,7 @@ import nechto.enums.BotState;
 import nechto.enums.Status;
 import nechto.service.RoleService;
 import nechto.service.ScoresService;
-import nechto.telegram_bot.cache.ScoresStateCash;
+import nechto.telegram_bot.cache.ScoresStateCache;
 import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -21,21 +21,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.String.format;
 import static nechto.enums.BotState.SHOW_RESULTS;
-import static nechto.enums.Status.CONTAMINATED;
-import static nechto.enums.Status.DANGEROUS;
-import static nechto.enums.Status.FLAMETHROWER;
-import static nechto.enums.Status.HUMAN;
-import static nechto.enums.Status.NECHTO;
-import static nechto.enums.Status.USEFULL;
-import static nechto.enums.Status.VICTIM;
-import static nechto.utils.CommonConstants.SCORES;
+import static nechto.enums.Status.*;
+import static nechto.utils.CommonUtils.convertFloatToStringWithTwoDotsPrecision;
 
 @RequiredArgsConstructor
 @Component
 public class ShowResults implements BotStateInterface {
     private final RoleService roleService;
     private final ScoresService scoresService;
-    private final ScoresStateCash scoresStateCash;
+    private final ScoresStateCache scoresStateCache;
+    private static final int STATUS_LENGTH = 5;
+    private static final int FLAMETHROWER_LENGTH = 5;
+    private static final int OPJ_LENGTH = 7;
 
     @Override
     public BotState getBotState() {
@@ -46,8 +43,8 @@ public class ShowResults implements BotStateInterface {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         roleService.isAdmin(userId);
-        RequestScoresDto requestScoresDto = scoresStateCash.getScoresStateMap().get(SCORES);
-        List<Scores> scores = scoresService.findAllByGameId(59L); //test
+        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
+        List<Scores> scores = scoresService.findAllByGameId(2L); //test
         List<ScoresDto> scoresDtos = new ArrayList<>();
         float flamethrowerScores = 0;
         Map<ScoresDto, Boolean> opjMap = new ConcurrentHashMap<>();
@@ -90,50 +87,50 @@ public class ShowResults implements BotStateInterface {
     }
 
     public String formatScoreTable(List<ScoresDto> scoresDtos, Map<ScoresDto, Boolean> opjMap) {
-        // Найдём максимальную длину имени для выравнивания
         int maxNameLength = scoresDtos.stream()
                 .mapToInt(s -> s.getUsername().length())
                 .max()
                 .orElse(4);
-
+        maxNameLength++;
         StringBuilder sb = new StringBuilder();
-        sb.append("`")
-                .append(format("%-" + 9 + "s", "Ник"))
-                .append(format("%-" + 5 + "s", "Роль"))
-                .append(format("%-" + 5 + "s", "\uD83D\uDD25"))
-                .append(format("%-" + 7 + "s", "о/п/ж"))
-                .append(format("Очки"))
-                .append("`\n");
+
+        createRow(maxNameLength, sb, "Ник", "Роль", "\uD83D\uDD25", "о/п/ж",
+                "Очки");
 
         for (ScoresDto s : scoresDtos) {
             String opjScores = "";
             if (!s.getOpjStatusScores().isEmpty()) {
                 opjScores = s.getOpjStatusScores().get(0);
             }
-            sb.append("`")
-                    .append(format("%-" + 9 + "s", s.getUsername()))
-                    .append(format("%-" + 5 + "s", s.getStatus()))
-                    .append(format("%-" + 5 + "s", s.getFlamethrowerScoresWithPrecision()))
-                    .append(format("%-" + 7 + "s", opjScores))
-                    .append(format("%.2f", s.getScores()))
-                    .append("`\n");
+            String flamethrowerScores = convertFloatToStringWithTwoDotsPrecision(s.getFlamethrowerScores());
+            String scores = convertFloatToStringWithTwoDotsPrecision(s.getScores());
 
-            if (opjMap.get(s)) {
-                System.out.println("is opj");
+            createRow(maxNameLength, sb, s.getUsername(), s.getStatus(), flamethrowerScores, opjScores, scores);
+
+            if (isOpj(opjMap, s)) {
 
                 for (int i = 1; i < s.getOpjStatusScores().size(); i++) {
                     opjScores = s.getOpjStatusScores().get(i);
-                    sb.append("`")
-                        .append(format("%-" + maxNameLength + 1 + "s", ""))
-                        .append(format("%-" + 5 + "s", ""))
-                        .append(format("%-" + 5 + "s", ""))
-                        .append(format("%-" + 7 + "s", opjScores))
-                        .append(format("%s", ""))
-                        .append("`\n");
+                    createRow(maxNameLength, sb, "", "", "", opjScores, "");
                 }
             }
         }
 
         return sb.toString();
+    }
+
+    private void createRow(int maxNameLength, StringBuilder sb, String username, String status,
+                                    String flamethrower, String opjScores, String scores) {
+        sb.append("`")
+                .append(format("%-" + maxNameLength + "s", username))
+                .append(format("%-" + STATUS_LENGTH + "s", status))
+                .append(format("%-" + FLAMETHROWER_LENGTH + "s", flamethrower))
+                .append(format("%-" + OPJ_LENGTH + "s", opjScores))
+                .append(format("%s", scores))
+                .append("`\n");
+    }
+
+    private boolean isOpj(Map<ScoresDto, Boolean> opjMap, ScoresDto scoresDto) {
+        return opjMap.get(scoresDto);
     }
 }

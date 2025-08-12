@@ -3,7 +3,7 @@ package nechto.telegram_bot.botstate;
 import lombok.RequiredArgsConstructor;
 import nechto.enums.BotState;
 import nechto.service.RoleService;
-import nechto.telegram_bot.cache.BotStateCash;
+import nechto.telegram_bot.cache.BotStateCache;
 import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -16,7 +16,7 @@ import static nechto.enums.BotState.START_CHANGE_GAME;
 @Component
 public class StartChangeGame implements BotStateInterface {
     private final RoleService roleService;
-    private final BotStateCash botStateCash;
+    private final BotStateCache botStateCache;
 
     @Override
     public BotState getBotState() {
@@ -27,7 +27,7 @@ public class StartChangeGame implements BotStateInterface {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         roleService.isAdmin(userId);
-        botStateCash.saveBotState(userId, CHANGE_GAME);
+        botStateCache.saveBotState(userId, CHANGE_GAME);
         return BotUtils.getSendMessage(userId, "Введите ник игрока, которого надо посчитать");
     }
 

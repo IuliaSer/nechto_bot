@@ -26,13 +26,21 @@ public interface TelegramFeignClient {
     ApiResponse setMyCommands(@RequestBody SetMyCommands req);
 
     @PostMapping(
-            value    = "/bot{token}/sendPhoto",
+            value    = "/bot8086975968:AAEWRBWduBoPDT7TUJpFlO5s_fOVvkvqSvY/sendPhoto",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     ApiResponse sendPhoto(
-            @PathVariable("token")     String token,
-            @RequestPart("chat_id")    String chatId,
+//            @PathVariable("token") String token,
+            @RequestPart("chat_id") String chatId,
             @RequestPart("photo") Resource photo,
             @RequestPart(value = "caption",    required = false) String caption,
             @RequestPart(value = "parse_mode", required = false) String parseMode);
+
+
+//    @Headers("Content-Type: image/png")
+//    @PostMapping(
+//            value    = "/bot8086975968:AAEWRBWduBoPDT7TUJpFlO5s_fOVvkvqSvY/sendPhoto",
+//            consumes = "image/png"
+//    )
+//    ApiResponse sendPhoto(@RequestBody byte[] qrCodeImage);
 }

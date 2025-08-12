@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static nechto.enums.Authority.ROLE_ADMIN;
+import static nechto.enums.Authority.ROLE_USER;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +70,14 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not found", userId)));
         user.setAuthority(ROLE_ADMIN);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void makeUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not found", userId)));
+        user.setAuthority(ROLE_USER);
         userRepository.save(user);
     }
 

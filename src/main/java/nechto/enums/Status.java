@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum Status {
-        NECHTO("нечто"),
+        NECHTO("н"),
         CONTAMINATED("з"),
         HUMAN("ч"),
         WON("выиграл(а)"),

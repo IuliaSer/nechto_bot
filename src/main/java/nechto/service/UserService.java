@@ -19,6 +19,8 @@ public interface UserService {
 
     void makeAdmin(Long userId);
 
+    void makeUser(Long userId);
+
     ResponseUserDto updateUser(FullUserDto user);
 
     ResponseUserDto findById(Long id);

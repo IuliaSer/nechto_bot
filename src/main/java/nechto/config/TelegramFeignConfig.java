@@ -50,4 +50,15 @@ public class TelegramFeignConfig {
             );
         };
     }
+
+    /** Логгер, печатающий каждую строку тела построчно */
+    @Bean
+    public feign.Logger feignLogger() {          // подключится ко ВСЕМ клиентам
+        return new feign.Logger.JavaLogger("feign-dump") {
+            @Override
+            protected void log(String configKey, String format, Object... args) {
+                System.out.printf(format + "%n", args); // можно писать в файл
+            }
+        };
+    }
 }
