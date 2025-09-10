@@ -15,9 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.Map;
 
-import static nechto.enums.Button.CONTAMINATED_BUTTON;
-import static nechto.enums.Button.HUMAN_BUTTON;
-import static nechto.enums.Button.NECHTO_BUTTON;
+import static nechto.enums.Button.*;
 
 @RequiredArgsConstructor
 @Component
@@ -33,14 +31,16 @@ public abstract class RoleButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().getName(), NECHTO_BUTTON.name(), HUMAN_BUTTON.name(), CONTAMINATED_BUTTON.name())) {
+        if(!buttonService.isActive(getButton().getName())) {
             return null;
         }
+        buttonService.deactivateButtons(NECHTO_BUTTON.name(), HUMAN_BUTTON.name(), CONTAMINATED_BUTTON.name());
+
         Map<nechto.enums.Button, Status> buttonStatusMap = buttonStatusCache.getButtonStatusMap();
         RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
         scoresService.addStatus(buttonStatusMap.get(getButton()), userIdToCount, gameId);
-        return inlineKeyboardService.returnButtonsWithAttributesForHuman(userId);
+        return inlineKeyboardService.returnButtonsForHuman(userId);
     }
 }

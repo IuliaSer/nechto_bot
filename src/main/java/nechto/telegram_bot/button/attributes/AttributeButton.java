@@ -23,9 +23,11 @@ public abstract class AttributeButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name(), getButton().name())) {
+        if(!buttonService.isActive(getButton().name())) {
             return null;
         }
+        buttonService.deactivateButtons(getButton().name());
+
         RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();

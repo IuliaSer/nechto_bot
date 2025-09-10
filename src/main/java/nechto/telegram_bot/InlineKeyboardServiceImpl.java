@@ -14,6 +14,7 @@ import java.util.List;
 
 import static nechto.enums.Button.ANTI_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.BURNED_BUTTON;
+import static nechto.enums.Button.CHANGE_GAME_BUTTON;
 import static nechto.enums.Button.CONTAMINATED_BUTTON;
 import static nechto.enums.Button.COUNT_NEXT_BUTTON;
 import static nechto.enums.Button.DANGEROUS_BUTTON;
@@ -71,7 +72,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
-    public SendMessage returnButtonsWithAttributesForHuman(Long chatId) {
+    public SendMessage returnButtonsForHuman(Long chatId) {
         var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON.name());
         var buttonUsefull = createButton("Полезный", USEFULL_BUTTON.name());
         var buttonVictim = createButton("Жертва", VICTIM_BUTTON.name());
@@ -91,7 +92,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
-    public SendMessage returnButtonsWithAttributesForContaminated(Long chatId) {
+    public SendMessage returnButtonsForContaminated(Long chatId) {
         var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON.name());
         var buttonUsefull = createButton("Полезный", USEFULL_BUTTON.name());
         var buttonVictim = createButton("Жертва", VICTIM_BUTTON.name());
@@ -105,11 +106,11 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
-        return BotUtils.getSendMessage(chatId, "Выберите все аттрибуты:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выберите все аттрибуты:", inlineKeyboardMarkup);
     }
 
     @Override
-    public SendMessage returnButtonsWithFlamethrower(Long chatId) {
+    public SendMessage returnButtonsForNechto(Long chatId) {
         var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
@@ -150,7 +151,18 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine = List.of(buttonCountNext, buttonEndGame);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
-        return BotUtils.getSendMessage(chatId, "Что дальше?", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Что дальше?", inlineKeyboardMarkup);
+    }
+
+    @Override
+    public SendMessage returnButtonsForChangingGame(Long chatId) {
+        var buttonCountNext = createButton("Внести измеения для следующего игрока", CHANGE_GAME_BUTTON.name());
+        var buttonEndGame = createButton("Подтвердить изменения", END_GAME_BUTTON.name());
+
+        List<InlineKeyboardButton> rowInLine = List.of(buttonCountNext, buttonEndGame);
+        InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
+
+        return getSendMessage(chatId, "Что дальше?", inlineKeyboardMarkup);
     }
 
     @Override

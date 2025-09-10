@@ -56,6 +56,14 @@ public class ScoresServiceImpl implements ScoresService {
     }
 
     @Override
+    public void deleteStatus(Status status, Long userId, Long gameId) {
+        Scores scores = this.findByUserIdAndGameId(userId, gameId);
+        List<Status> statuses = scores.getStatuses();
+        statuses.remove(status);
+        scoresRepository.save(scores);
+    }
+
+    @Override
     public List<ResponseScoresDto> countAndSaveAll(Long gameId) {
         List<Scores> scoresList = scoresRepository.findAllByGameId(gameId);
 

@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.dto.ScoresDto;
 import nechto.dto.request.RequestScoresDto;
 import nechto.entity.Scores;
-import nechto.enums.BotState;
 import nechto.enums.Status;
-import nechto.service.RoleService;
 import nechto.service.ScoresService;
 import nechto.telegram_bot.cache.ScoresStateCache;
 import nechto.utils.BotUtils;
@@ -21,13 +19,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.lang.String.format;
 import static nechto.enums.BotState.SHOW_RESULTS;
-import static nechto.enums.Status.*;
+import static nechto.enums.Status.CONTAMINATED;
+import static nechto.enums.Status.DANGEROUS;
+import static nechto.enums.Status.FLAMETHROWER;
+import static nechto.enums.Status.HUMAN;
+import static nechto.enums.Status.NECHTO;
+import static nechto.enums.Status.USEFULL;
+import static nechto.enums.Status.VICTIM;
 import static nechto.utils.CommonUtils.convertFloatToStringWithTwoDotsPrecision;
 
 @RequiredArgsConstructor
 @Component
-public class ShowResults implements BotStateInterface {
-    private final RoleService roleService;
+public class ShowResults implements BotState {
     private final ScoresService scoresService;
     private final ScoresStateCache scoresStateCache;
     private static final int STATUS_LENGTH = 5;
@@ -35,16 +38,15 @@ public class ShowResults implements BotStateInterface {
     private static final int OPJ_LENGTH = 7;
 
     @Override
-    public BotState getBotState() {
+    public nechto.enums.BotState getBotState() {
         return SHOW_RESULTS;
     }
 
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        roleService.isAdmin(userId);
         RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
-        List<Scores> scores = scoresService.findAllByGameId(2L); //test
+        List<Scores> scores = scoresService.findAllByGameId(requestScoresDto.getGameId());  //na vremya testa
         List<ScoresDto> scoresDtos = new ArrayList<>();
         float flamethrowerScores = 0;
         Map<ScoresDto, Boolean> opjMap = new ConcurrentHashMap<>();
@@ -108,14 +110,12 @@ public class ShowResults implements BotStateInterface {
             createRow(maxNameLength, sb, s.getUsername(), s.getStatus(), flamethrowerScores, opjScores, scores);
 
             if (isOpj(opjMap, s)) {
-
                 for (int i = 1; i < s.getOpjStatusScores().size(); i++) {
                     opjScores = s.getOpjStatusScores().get(i);
                     createRow(maxNameLength, sb, "", "", "", opjScores, "");
                 }
             }
         }
-
         return sb.toString();
     }
 
@@ -129,7 +129,6 @@ public class ShowResults implements BotStateInterface {
                 .append(format("%s", scores))
                 .append("`\n");
     }
-
     private boolean isOpj(Map<ScoresDto, Boolean> opjMap, ScoresDto scoresDto) {
         return opjMap.get(scoresDto);
     }

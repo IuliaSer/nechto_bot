@@ -11,18 +11,21 @@ public class ButtonServiceImpl implements ButtonService {
     private final ButtonsCache buttonsCache;
 
     @Override
-    public boolean isActive(String buttonName, String... names) {
+    public boolean isActive(String buttonName) {
         var buttonInfo = buttonsCache.getButtonMap().get(buttonName);
 
         if (buttonInfo != null && !buttonInfo.isActive()) {
             buttonInfo.getButton().setCallbackData("noop");
             return false;
         }
+        return true;
+    }
 
+    @Override
+    public void deactivateButtons(String... names) {
         for (String buttonToInactivate: names) {
             buttonsCache.getButtonMap().get(buttonToInactivate).setActive(false);
         }
-        return true;
     }
 
     @Override
@@ -35,5 +38,10 @@ public class ButtonServiceImpl implements ButtonService {
     @Override
     public void activateAllButtons() {
         buttonsCache.getButtonMap().values().forEach(buttonInfo -> buttonInfo.setActive(true));
+    }
+
+    @Override
+    public void deactivateAllButtons() {
+        buttonsCache.getButtonMap().values().forEach(buttonInfo -> buttonInfo.setActive(false));
     }
 }

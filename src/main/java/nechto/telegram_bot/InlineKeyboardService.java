@@ -12,11 +12,11 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsWithRoles(Long chatId);
 
-    SendMessage returnButtonsWithAttributesForHuman(Long chatId);
+    SendMessage returnButtonsForHuman(Long chatId);
 
-    SendMessage returnButtonsWithAttributesForContaminated(Long chatId);
+    SendMessage returnButtonsForContaminated(Long chatId);
 
-    SendMessage returnButtonsWithFlamethrower(Long chatId);
+    SendMessage returnButtonsForNechto(Long chatId);
 
     SendMessage getMessageWithInlineMurkupPlusMinus(Long chatId, int flamethrowerAmount);
 
@@ -25,6 +25,8 @@ public interface InlineKeyboardService {
     SendMessage getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(Long chatId, int flamethrowerAmount);
 
     SendMessage returnButtonsToEndGameOrCountNext(Long chatId);
+
+    SendMessage returnButtonsForChangingGame(Long chatId);
 
     InlineKeyboardButton createButton(String name, String callBackDataName);
 

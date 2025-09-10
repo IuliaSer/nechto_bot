@@ -14,6 +14,8 @@ public interface ScoresService {
 
     void addStatus(Status status, Long userId, Long gameId);
 
+    void deleteStatus(Status status, Long userId, Long gameId);
+
     List<ResponseScoresDto> countAndSaveAll(Long gameId);
 
     ResponseScoresDto update(RequestScoresDto scores);

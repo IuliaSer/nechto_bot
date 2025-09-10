@@ -15,9 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.Map;
 
-import static nechto.enums.Button.BURNED_BUTTON;
-import static nechto.enums.Button.LOOSE_BUTTON;
-import static nechto.enums.Button.WIN_BUTTON;
+import static nechto.enums.Button.*;
 
 @RequiredArgsConstructor
 @Component
@@ -32,9 +30,10 @@ public abstract class StatusButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name(), LOOSE_BUTTON.name(), WIN_BUTTON.name(), BURNED_BUTTON.name())) {
+        if(!buttonService.isActive(getButton().name())) {
             return null;
         }
+        buttonService.deactivateButtons(LOOSE_BUTTON.name(), WIN_BUTTON.name(), BURNED_BUTTON.name());
         Map<nechto.enums.Button, Status> buttonStatusMap = buttonStatusCache.getButtonStatusMap();
 
         RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);

@@ -1,10 +1,14 @@
 package nechto.utils;
 
-import static java.lang.String.format;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class CommonUtils {
 
     public static String convertFloatToStringWithTwoDotsPrecision(float num) {
-        return format("%.2f", num);
+        DecimalFormatSymbols sym = DecimalFormatSymbols.getInstance(Locale.US);
+        DecimalFormat df = new DecimalFormat("0.##", sym);
+        return df.format(num);
     }
 }

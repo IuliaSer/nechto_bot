@@ -8,5 +8,5 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.io.IOException;
 
 public interface BotStateProcessor {
-    BotApiMethod<?> process(BotState botState, Message message) throws IOException, WriterException;
+    BotApiMethod<?> process(BotState botState, Message message);
 }

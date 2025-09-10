@@ -1,7 +1,6 @@
 package nechto.telegram_bot.botstate;
 
 import com.google.zxing.WriterException;
-import nechto.enums.BotState;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -13,21 +12,26 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class BotStateProcessorImpl implements BotStateProcessor {
-    private final List<BotStateInterface> botStateInterfaces;
+    private final List<BotState> botStates;
 
-    private final Map<BotState, BotStateInterface> botStatesMap;
+    private final Map<nechto.enums.BotState, BotState> botStatesMap;
 
-    public BotStateProcessorImpl(List<BotStateInterface> botStateInterfaces) {
-        this.botStateInterfaces = botStateInterfaces;
+    public BotStateProcessorImpl(List<BotState> botStates) {
+        this.botStates = botStates;
         this.botStatesMap = new ConcurrentHashMap<>();
 
-        for (BotStateInterface botStateInterface : botStateInterfaces) {
-            botStatesMap.put(botStateInterface.getBotState(), botStateInterface);
+        for (BotState botState : botStates) {
+            botStatesMap.put(botState.getBotState(), botState);
         }
     }
 
     @Override
-    public BotApiMethod<?> process(BotState botState, Message message) throws IOException, WriterException {
-        return botStatesMap.get(botState).process(message);
+    public BotApiMethod<?> process(nechto.enums.BotState botState, Message message) {
+        var state = botStatesMap.get(botState);
+        if (state != null) {
+            return state.process(message);
+        } else {
+            throw new RuntimeException("No corresponding bot state found");
+        }
     }
 }

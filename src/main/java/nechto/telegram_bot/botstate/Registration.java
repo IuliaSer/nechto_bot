@@ -2,9 +2,8 @@ package nechto.telegram_bot.botstate;
 
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestUserDto;
-import nechto.enums.BotState;
+import nechto.exception.UserAlreadyExistsException;
 import nechto.service.UserService;
-import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -13,12 +12,12 @@ import static nechto.utils.BotUtils.getSendMessage;
 
 @Component
 @RequiredArgsConstructor
-public class Registration implements BotStateInterface {
+public class Registration implements BotState {
     private final UserService userService;
 
     @Override
-    public BotState getBotState() {
-        return BotState.REGISTRATION;
+    public nechto.enums.BotState getBotState() {
+        return nechto.enums.BotState.REGISTRATION;
     }
 
     @Override
@@ -28,14 +27,18 @@ public class Registration implements BotStateInterface {
         String[] parts = messageText.trim().split("\\s+");
 
         if (parts.length < 2) {
-            return BotUtils.getSendMessage(userId, "Неверный формат. Введите: имя ник");
+            return getSendMessage(userId, "Неверный формат. Введите: имя ник");
         }
 
         String name = parts[0];
         String nickname = parts[1];
         RequestUserDto user = new RequestUserDto(userId, name, nickname, null, null);
-        userService.save(user);
+        try {
+            userService.save(user);
+        } catch (UserAlreadyExistsException e) {
+            return getSendMessage(userId, "Пользователь с таким ником уже существует");
+        }
 
-        return BotUtils.getSendMessage(userId, "Вы успешно зарегистрированы как " + name + " (" + nickname + ")");
+        return getSendMessage(userId, "Вы успешно зарегистрированы как " + name + " (" + nickname + ")");
     }
 }
