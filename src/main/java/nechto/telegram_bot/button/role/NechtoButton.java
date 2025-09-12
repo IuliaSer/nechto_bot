@@ -22,7 +22,6 @@ public class NechtoButton extends RoleButton {
         this.inlineKeyboardService = inlineKeyboardService;
     }
 
-
     @Override
     public Button getButton() {
         return NECHTO_BUTTON;

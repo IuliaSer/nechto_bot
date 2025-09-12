@@ -1,6 +1,5 @@
 package nechto.telegram_bot;
 
-import com.google.zxing.WriterException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,8 +13,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
-
-import java.io.IOException;
 
 @Getter
 @Setter
@@ -38,7 +35,8 @@ public class TelegramBot extends SpringWebhookBot {
         this.qrCodeGenerator = qrCodeGenerator;
     }
 
-    public TelegramBot(SetWebhook setWebhook, TelegramFacade telegramFacade, UserService userService, MenuService menuService, QrCodeGenerator qrCodeGenerator) {
+    public TelegramBot(SetWebhook setWebhook, TelegramFacade telegramFacade, UserService userService,
+                       MenuService menuService, QrCodeGenerator qrCodeGenerator) {
         super(setWebhook);
         this.telegramFacade = telegramFacade;
         this.userService = userService;
@@ -57,13 +55,7 @@ public class TelegramBot extends SpringWebhookBot {
         Authority authority = userService.findById(userId).getAuthority();
 
         menuService.refreshCommands(userId, authority);
-        try {
-            return telegramFacade.handleUpdate(update, userId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (WriterException e) {
-            throw new RuntimeException(e);
-        }
+        return telegramFacade.handleUpdate(update, userId);
     }
 
 }

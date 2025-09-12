@@ -24,7 +24,7 @@ public class StartChangeGame implements BotState {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         botStateCache.saveBotState(userId, CHANGE_GAME);
-        return getSendMessage(userId, "Введите ник игрока, которого надо посчитать");
+        return getSendMessage(userId, "Введите ник игрока, для которого надо изменить очки");
     }
 
 }

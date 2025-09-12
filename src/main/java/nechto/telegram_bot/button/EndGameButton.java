@@ -3,12 +3,12 @@ package nechto.telegram_bot.button;
 import lombok.RequiredArgsConstructor;
 import nechto.service.ScoresService;
 import nechto.telegram_bot.cache.ScoresStateCache;
-import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.Button.END_GAME_BUTTON;
+import static nechto.utils.BotUtils.getSendMessage;
 
 @RequiredArgsConstructor
 @Component
@@ -28,6 +28,6 @@ public class EndGameButton implements Button {
 
         scoresService.countAndSaveAll(gameId);
         buttonService.activateAllButtons();
-        return BotUtils.getSendMessage(userId, "Успешно посчитано");
+        return getSendMessage(userId, "Успешно посчитано");
     }
 }

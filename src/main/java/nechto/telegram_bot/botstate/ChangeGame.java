@@ -2,7 +2,7 @@ package nechto.telegram_bot.botstate;
 
 import lombok.RequiredArgsConstructor;
 import nechto.entity.Scores;
-import nechto.service.RoleService;
+import nechto.exception.EntityNotFoundException;
 import nechto.service.ScoresService;
 import nechto.service.UserService;
 import nechto.telegram_bot.InlineKeyboardService;
@@ -12,11 +12,11 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import static nechto.enums.BotState.CHANGE_GAME;
+import static nechto.utils.BotUtils.getSendMessage;
 
 @RequiredArgsConstructor
 @Component
 public class ChangeGame implements BotState {
-    private final RoleService roleService;
     private final UserService userService;
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCache scoresStateCache;
@@ -30,13 +30,18 @@ public class ChangeGame implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        long userIdToCount = userService.findByUsername(message.getText()).getId();
-
-        Scores scores = scoresService.findByUserIdAndGameId(userIdToCount, 70L);
+        Scores scores;
+        long userIdToCount;
+        try {
+            userIdToCount = userService.findByUsername(message.getText()).getId();
+            scores = scoresService.findByUserIdAndGameId(userIdToCount, 73L);
+        } catch (EntityNotFoundException e) {
+            return getSendMessage(userId, "User or game you want to change not found");
+        }
 
         scoresService.deleteAllStatuses(scores);
 //        long gameId = scoresStateCache.getScoresStateMap().get(userId).getGameId();
-        scoresStateCache.getScoresStateMap().get(userId).setGameId(70L);  //na vremya testa
+        scoresStateCache.getScoresStateMap().get(userId).setGameId(73L);  //na vremya testa
         scoresStateCache.getScoresStateMap().get(userId).setUserId(userIdToCount);
         return inlineKeyboardService.returnButtonsWithStatuses(userId);
     }
