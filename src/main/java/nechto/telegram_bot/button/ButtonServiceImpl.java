@@ -12,7 +12,7 @@ public class ButtonServiceImpl implements ButtonService {
 
     @Override
     public boolean isActive(String buttonName) {
-        var buttonInfo = buttonsCache.getButtonMap().get(buttonName);
+        var buttonInfo = buttonsCache.get(buttonName);
 
         if (buttonInfo != null && !buttonInfo.isActive()) {
             buttonInfo.getButton().setCallbackData("noop");
@@ -24,24 +24,24 @@ public class ButtonServiceImpl implements ButtonService {
     @Override
     public void deactivateButtons(String... names) {
         for (String buttonToInactivate: names) {
-            buttonsCache.getButtonMap().get(buttonToInactivate).setActive(false);
+            buttonsCache.get(buttonToInactivate).setActive(false);
         }
     }
 
     @Override
     public void putButtonsToButtonCache(InlineKeyboardButton... inlineKeyboardButtons) {
         for (InlineKeyboardButton button: inlineKeyboardButtons) {
-            buttonsCache.getButtonMap().put(button.getCallbackData(), new ButtonInfo(true, button));
+            buttonsCache.put(button.getCallbackData(), new ButtonInfo(true, button));
         }
     }
 
     @Override
     public void activateAllButtons() {
-        buttonsCache.getButtonMap().values().forEach(buttonInfo -> buttonInfo.setActive(true));
+        buttonsCache.getValues().forEach(buttonInfo -> buttonInfo.setActive(true));
     }
 
     @Override
     public void deactivateAllButtons() {
-        buttonsCache.getButtonMap().values().forEach(buttonInfo -> buttonInfo.setActive(false));
+        buttonsCache.getValues().forEach(buttonInfo -> buttonInfo.setActive(false));
     }
 }

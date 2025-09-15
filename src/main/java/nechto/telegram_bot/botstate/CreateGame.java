@@ -37,7 +37,7 @@ public class CreateGame implements BotState {
 
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>());
         ResponseGameDto responseGameDto = gameService.save(requestGameDto);
-        scoresStateCache.getScoresStateMap().get(userId).setGameId(responseGameDto.getId());  //na vremya testa
+        scoresStateCache.get(userId).setGameId(responseGameDto.getId());  //na vremya testa
 
         qrCodeGenerator.generateQrCode(String.valueOf(responseGameDto.getId()), String.valueOf(chatId));
         return getSendMessage(chatId, format("Перейдите по ссылке, добавьтесь в игру %s",

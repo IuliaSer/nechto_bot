@@ -34,12 +34,11 @@ public abstract class StatusButton implements Button {
             return null;
         }
         buttonService.deactivateButtons(LOOSE_BUTTON.name(), WIN_BUTTON.name(), BURNED_BUTTON.name());
-        Map<nechto.enums.Button, Status> buttonStatusMap = buttonStatusCache.getButtonStatusMap();
 
-        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
+        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
-        scoresService.addStatus(buttonStatusMap.get(getButton()), userIdToCount, gameId);
+        scoresService.addStatus(buttonStatusCache.getStatus(getButton()), userIdToCount, gameId);
         return inlineKeyboardService.returnButtonsWithRoles(userId);
     }
 }

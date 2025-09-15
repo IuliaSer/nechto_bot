@@ -24,7 +24,7 @@ public class AntiHumanFlamethrowerButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
+        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
         int antiHumanFlamethrowerAmount = requestScoresDto.getAntiHumanFlamethrowerAmount();
         
         return inlineKeyboardService.getMessageWithInlineMurkupPlusMinusAntiHuman(userId, antiHumanFlamethrowerAmount);

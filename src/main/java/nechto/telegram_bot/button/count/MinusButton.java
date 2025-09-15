@@ -25,7 +25,7 @@ public class MinusButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
-        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
+        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
         int messageId = callbackQuery.getMessage().getMessageId();
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
         requestScoresDto.setFlamethrowerAmount(--flamethrowerAmount);

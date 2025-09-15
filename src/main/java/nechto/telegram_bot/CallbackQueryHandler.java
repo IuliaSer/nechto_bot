@@ -2,7 +2,6 @@ package nechto.telegram_bot;
 
 import lombok.RequiredArgsConstructor;
 import nechto.telegram_bot.button.ButtonProcessor;
-import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;

@@ -32,7 +32,7 @@ public class EndCountButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
+        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
@@ -52,7 +52,7 @@ public class EndCountButton implements Button {
         }
         requestScoresDto.setFlamethrowerAmount(0);
         requestScoresDto.setAntiHumanFlamethrowerAmount(0);
-        if (botStateCache.getBotStateMap().get(userId).equals(BotState.CHANGE_GAME)) {
+        if (botStateCache.get(userId).equals(BotState.CHANGE_GAME)) {
             return inlineKeyboardService.returnButtonsForChangingGame(userId);
         }
         return inlineKeyboardService.returnButtonsToEndGameOrCountNext(userId);

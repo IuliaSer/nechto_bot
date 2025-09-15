@@ -28,7 +28,7 @@ public abstract class AttributeButton implements Button {
         }
         buttonService.deactivateButtons(getButton().name());
 
-        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
+        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
         scoresService.addStatus(getStatus(), userIdToCount, gameId);

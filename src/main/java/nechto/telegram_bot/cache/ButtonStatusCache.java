@@ -1,7 +1,5 @@
 package nechto.telegram_bot.cache;
 
-import lombok.Getter;
-import lombok.Setter;
 import nechto.enums.Button;
 import nechto.enums.Status;
 import org.springframework.stereotype.Component;
@@ -10,8 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-@Getter
-@Setter
 public class ButtonStatusCache {
     private final Map<Button, Status> buttonStatusMap = new ConcurrentHashMap<>();
 
@@ -28,5 +24,9 @@ public class ButtonStatusCache {
         buttonStatusMap.put(Button.VICTIM_BUTTON, Status.VICTIM);
         buttonStatusMap.put(Button.FLAMETHROWER_BUTTON, Status.FLAMETHROWER);
         buttonStatusMap.put(Button.ANTI_HUMAN_FLAMETHROWER_BUTTON, Status.ANTI_HUMAN_FLAMETHROWER);
+    }
+
+    public Status getStatus(Button button) {
+        return buttonStatusMap.get(button);
     }
 }

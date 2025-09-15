@@ -45,8 +45,8 @@ public class ShowResults implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
-        List<Scores> scores = scoresService.findAllByGameId(requestScoresDto.getGameId());  //na vremya testa
+        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
+        List<Scores> scores = scoresService.findAllByGameId(74L);  //na vremya testa
         List<ScoresDto> scoresDtos = new ArrayList<>();
         float flamethrowerScores = 0;
         Map<ScoresDto, Boolean> opjMap = new ConcurrentHashMap<>();

@@ -40,9 +40,9 @@ public class ChangeGame implements BotState {
         }
 
         scoresService.deleteAllStatuses(scores);
-//        long gameId = scoresStateCache.getScoresStateMap().get(userId).getGameId();
-        scoresStateCache.getScoresStateMap().get(userId).setGameId(73L);  //na vremya testa
-        scoresStateCache.getScoresStateMap().get(userId).setUserId(userIdToCount);
+//        long gameId = scoresStateCache.get(userId).getGameId();
+        scoresStateCache.get(userId).setGameId(73L);  //na vremya testa
+        scoresStateCache.get(userId).setUserId(userIdToCount);
         return inlineKeyboardService.returnButtonsWithStatuses(userId);
     }
 

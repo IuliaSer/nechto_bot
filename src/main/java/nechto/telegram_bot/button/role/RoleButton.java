@@ -36,11 +36,10 @@ public abstract class RoleButton implements Button {
         }
         buttonService.deactivateButtons(NECHTO_BUTTON.name(), HUMAN_BUTTON.name(), CONTAMINATED_BUTTON.name());
 
-        Map<nechto.enums.Button, Status> buttonStatusMap = buttonStatusCache.getButtonStatusMap();
-        RequestScoresDto requestScoresDto = scoresStateCache.getScoresStateMap().get(userId);
+        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
-        scoresService.addStatus(buttonStatusMap.get(getButton()), userIdToCount, gameId);
+        scoresService.addStatus(buttonStatusCache.getStatus(getButton()), userIdToCount, gameId);
         return inlineKeyboardService.returnButtonsForHuman(userId);
     }
 }

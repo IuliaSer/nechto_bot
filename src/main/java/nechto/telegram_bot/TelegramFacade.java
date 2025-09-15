@@ -28,9 +28,8 @@ public class TelegramFacade {
     private final BotStateCache botStateCache;
 
     public BotApiMethod<?> handleUpdate(Update update, long userId) {
-        if (!scoresStateCache.getScoresStateMap().containsKey(userId)) {
-            scoresStateCache.putToScoresStateCache(userId);
-        }
+        scoresStateCache.put(userId);
+
         if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             return callbackQueryHandler.processCallbackQuery(callbackQuery);
@@ -58,8 +57,8 @@ public class TelegramFacade {
                         return cmd.state();
                     })
                     .orElseGet(() -> {
-                        BotState cached = botStateCache.getBotStateMap().get(userId);
-                        return cached != null ? cached : BotState.START;
+                        BotState cached = botStateCache.get(userId);
+                        return cached != null ? cached : BotState.START; //why start?
                     });
         } catch (RoleException e) {
             return getSendMessage(userId, "Доступ запрещен для роли " + authority.getName());

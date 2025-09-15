@@ -24,7 +24,7 @@ public class EndGameButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        long gameId = scoresStateCache.getScoresStateMap().get(userId).getGameId();
+        long gameId = scoresStateCache.get(userId).getGameId();
 
         scoresService.countAndSaveAll(gameId);
         buttonService.activateAllButtons();

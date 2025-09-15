@@ -40,7 +40,7 @@ spring:
         springframework:
           security: debug
 telegrambot:
-  webHookPath: https://4e610ef3e718.ngrok-free.app
+  webHookPath: https://9c75786e9920.ngrok-free.app
   userName: nechto21_bot
   botToken: 8086975968:AAEWRBWduBoPDT7TUJpFlO5s_fOVvkvqSvY
 server:

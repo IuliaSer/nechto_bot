@@ -25,7 +25,7 @@ public class AddUser implements BotState {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         long gameId = Long.parseLong(message.getText().replace("/start add_user_to_game_", ""));
-        scoresStateCache.getScoresStateMap().get(userId).setGameId(gameId);
+        scoresStateCache.get(userId).setGameId(gameId);
         try {
             gameService.addUser(gameId, userId);
         } catch (EntityNotFoundException e) {

@@ -37,13 +37,13 @@ public class Count implements BotState {
 
         try {
             userIdToCount = userService.findByUsername(messageText).getId();
-            gameService.addUser(scoresStateCache.getScoresStateMap().get(userId).getGameId(), userIdToCount);  //na vremya testa, userIdToCount); //na vremya testa
+            gameService.addUser(scoresStateCache.get(userId).getGameId(), userIdToCount);  //na vremya testa, userIdToCount); //na vremya testa
         } catch (EntityNotFoundException e) {
             return getSendMessage
                     (userId, format("Пользователь с ником %s не существует или не добавлен в игру", messageText)); //TODO разделить в 2 сообщения
         }
-//        scoresStateCache.getScoresStateMap().get(userId).setGameId( scoresStateCache.getScoresStateMap().get(userId).getGameId();  //na vremya testa);  //na vremya testa
-        scoresStateCache.getScoresStateMap().get(userId).setUserId(userIdToCount);
+//        scoresStateCache.get(userId).setGameId( scoresStateCache.get(userId).getGameId();  //na vremya testa);  //na vremya testa
+        scoresStateCache.get(userId).setUserId(userIdToCount);
         return inlineKeyboardService.returnButtonsWithStatuses(userId);
     }
 }
