@@ -1,5 +1,7 @@
 databaseChangeLog:
-        - includeAll:
-                path: db/changelog/init/
-        - includeAll:
-                path: db/changelog/data/
+  - include:
+      file: init/0001-schema.sql
+      relativeToChangelogFile: true
+  - include:
+      file: data/data.sql
+      relativeToChangelogFile: true

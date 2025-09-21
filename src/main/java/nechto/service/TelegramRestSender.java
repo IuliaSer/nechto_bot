@@ -19,12 +19,10 @@ public class TelegramRestSender {
     }
 
     public void sendPhoto(long chatId, byte[] pngBytes, String caption, String filename) {
-        // Тело multipart
         var form = new org.springframework.util.LinkedMultiValueMap<String, Object>();
         form.add("chat_id", String.valueOf(chatId));
         if (caption != null && !caption.isBlank()) form.add("caption", caption);
 
-        // ВАЖНО: задать имя файла
         var filePart = new org.springframework.core.io.ByteArrayResource(pngBytes) {
             @Override public String getFilename() {
                 return (filename == null || filename.isBlank()) ? "qr.png" : filename;
@@ -41,11 +39,12 @@ public class TelegramRestSender {
         try {
             var resp = restTemplate.postForEntity(baseUrl() + "/sendPhoto", requestEntity, String.class);
             if (!resp.getStatusCode().is2xxSuccessful()) {
-                throw new IllegalStateException("Telegram sendPhoto failed: " + resp.getStatusCode() + " " + resp.getBody());
+                throw new IllegalStateException("Telegram sendPhoto failed: " + resp.getStatusCode() + " "
+                        + resp.getBody());
             }
         } catch (org.springframework.web.client.HttpStatusCodeException e) {
-            // увидеть тело ошибки от Telegram
-            throw new IllegalStateException("Telegram sendPhoto error: " + e.getStatusCode() + " " + e.getResponseBodyAsString(), e);
+            throw new IllegalStateException("Telegram sendPhoto error: " + e.getStatusCode() + " " +
+                    e.getResponseBodyAsString(), e);
         }
     }
 

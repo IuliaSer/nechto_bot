@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: "postgres:14-bullseye"
+    container_name: postgres
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d  # <-- добавили
+  app:
+    container_name: nechto_bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres?currentSchema=nechto
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres
+  ngrok:
+    image: ngrok/ngrok:alpine
+    container_name: ngrok
+    depends_on:
+      - app
+    command: ["http", "--authtoken", "32pWMcUO49b8MZZFKhbrVvWZdWQ_5oioQzuRFvCoUHfLxGz32", "app:8080"]
+volumes:
+  data: {}

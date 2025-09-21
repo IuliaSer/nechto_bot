@@ -1,4 +1,4 @@
--- create schema nechto;
+create schema if not exists nechto;
 
 CREATE TABLE if not exists GAMES (
                         id BIGSERIAL NOT NULL,
