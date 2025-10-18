@@ -3,11 +3,15 @@ package nechto.telegram_bot.botstate;
 import lombok.RequiredArgsConstructor;
 import nechto.dto.ScoresDto;
 import nechto.dto.request.RequestScoresDto;
+import nechto.dto.response.ResponseUserDto;
 import nechto.entity.Scores;
+import nechto.enums.Authority;
 import nechto.enums.Status;
+import nechto.exception.EntityNotFoundException;
+import nechto.service.GameService;
 import nechto.service.ScoresService;
+import nechto.service.UserService;
 import nechto.telegram_bot.cache.ScoresStateCache;
-import nechto.utils.BotUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -26,13 +30,17 @@ import static nechto.enums.Status.HUMAN;
 import static nechto.enums.Status.NECHTO;
 import static nechto.enums.Status.USEFULL;
 import static nechto.enums.Status.VICTIM;
+import static nechto.utils.BotUtils.getSendMessage;
+import static nechto.utils.BotUtils.getSendMessageWithMarkDown;
 import static nechto.utils.CommonUtils.convertFloatToStringWithTwoDotsPrecision;
 
 @RequiredArgsConstructor
 @Component
 public class ShowResults implements BotState {
     private final ScoresService scoresService;
+    private final GameService gameService;
     private final ScoresStateCache scoresStateCache;
+    private final UserService userService;
     private static final int STATUS_LENGTH = 5;
     private static final int FLAMETHROWER_LENGTH = 5;
     private static final int OPJ_LENGTH = 7;
@@ -45,47 +53,63 @@ public class ShowResults implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
-        List<Scores> scores = scoresService.findAllByGameId(74L);  //na vremya testa
         List<ScoresDto> scoresDtos = new ArrayList<>();
-        float flamethrowerScores = 0;
         Map<ScoresDto, Boolean> opjMap = new ConcurrentHashMap<>();
 
-        for (Scores score: scores) {
-            List<String> opjStatusesList = new ArrayList<>();
-            ScoresDto scoresDto = new ScoresDto();
-            scoresDto.setUsername(score.getUser().getUsername());
-            scoresDto.setScores(score.getScores());
-            opjMap.put(scoresDto, false);
-            for (Status status: score.getStatuses()) {
-                if (NECHTO.equals(status) || CONTAMINATED.equals(status) || HUMAN.equals(status)) {
-                    scoresDto.setStatus(status.getName());
-                }
-                if (FLAMETHROWER.equals(status)) {
-                    flamethrowerScores += 0.3f;
-                }
-                if  (DANGEROUS.equals(status)) {
-                    opjStatusesList.add("0.2(о)");
-                }
-                if (USEFULL.equals(status)) {
-                    opjStatusesList.add("0.2(п)");
-                }
-                if (VICTIM.equals(status)) {
-                    opjStatusesList.add("0.5(ж)");
-                }
-            }
-            if (opjStatusesList.size() > 1) {
-                System.out.println(scoresDto.getUsername());
-                opjMap.replace(scoresDto, true);
-            }
-            scoresDto.setOpjStatusScores(opjStatusesList);
-            scoresDto.setFlamethrowerScores(flamethrowerScores);
-            scoresDtos.add(scoresDto);
+        try {
+            long gameId;
+            List<Scores> scores;
+            float flamethrowerScores = 0;
 
-            flamethrowerScores = 0;
+            ResponseUserDto responseUserDto = userService.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException("User is not registered"));
+            RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
+
+            if (requestScoresDto != null && !responseUserDto.getAuthority().equals(Authority.ROLE_USER)) {
+                gameId = requestScoresDto.getGameId();
+            } else {
+                gameId = gameService.findLastGameByUserId(userId)
+                        .orElseThrow(() -> new EntityNotFoundException("No game for this user")).getId();
+            }
+            scores = scoresService.findAllByGameId(gameId);  //na vremya testa
+
+            for (Scores score : scores) {
+                List<String> opjStatusesList = new ArrayList<>();
+                ScoresDto scoresDto = new ScoresDto();
+                scoresDto.setUsername(score.getUser().getUsername());
+                scoresDto.setScores(score.getScores());
+                opjMap.put(scoresDto, false);
+                for (Status status : score.getStatuses()) {
+                    if (NECHTO.equals(status) || CONTAMINATED.equals(status) || HUMAN.equals(status)) {
+                        scoresDto.setStatus(status.getName());
+                    }
+                    if (FLAMETHROWER.equals(status)) {
+                        flamethrowerScores += 0.3f;
+                    }
+                    if (DANGEROUS.equals(status)) {
+                        opjStatusesList.add("0.2(о)");
+                    }
+                    if (USEFULL.equals(status)) {
+                        opjStatusesList.add("0.2(п)");
+                    }
+                    if (VICTIM.equals(status)) {
+                        opjStatusesList.add("0.5(ж)");
+                    }
+                }
+                if (opjStatusesList.size() > 1) {
+                    opjMap.replace(scoresDto, true);
+                }
+                scoresDto.setOpjStatusScores(opjStatusesList);
+                scoresDto.setFlamethrowerScores(flamethrowerScores);
+                scoresDtos.add(scoresDto);
+
+                flamethrowerScores = 0;
+            }
+        } catch (EntityNotFoundException e) {
+            return getSendMessage(userId, e.getMessage());
         }
 
-        return BotUtils.getSendMessageWithMarkDown(userId, formatScoreTable(scoresDtos, opjMap));
+        return getSendMessageWithMarkDown(userId, formatScoreTable(scoresDtos, opjMap));
     }
 
     public String formatScoreTable(List<ScoresDto> scoresDtos, Map<ScoresDto, Boolean> opjMap) {
@@ -129,6 +153,7 @@ public class ShowResults implements BotState {
                 .append(format("%s", scores))
                 .append("`\n");
     }
+
     private boolean isOpj(Map<ScoresDto, Boolean> opjMap, ScoresDto scoresDto) {
         return opjMap.get(scoresDto);
     }
