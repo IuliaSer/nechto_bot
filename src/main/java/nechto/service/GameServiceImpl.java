@@ -7,15 +7,16 @@ import nechto.dto.response.ResponseGameDto;
 import nechto.entity.Game;
 import nechto.entity.Scores;
 import nechto.entity.User;
+import nechto.exception.EntityAlreadyExistsException;
 import nechto.exception.EntityNotFoundException;
 import nechto.mappers.GameMapper;
 import nechto.repository.GameRepository;
-import nechto.repository.ScoresRepository;
 import nechto.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -26,8 +27,6 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
 
     private final UserRepository userRepository;
-
-    private final ScoresRepository scoresRepository;
 
     private final GameMapper gameMapper;
 
@@ -60,7 +59,12 @@ public class GameServiceImpl implements GameService {
         game.getScores().add(new Scores()
                 .setGame(game)
                 .setUser(user));
-        Game gameSaved = gameRepository.save(game);
+        Game gameSaved;
+        try {
+            gameSaved = gameRepository.save(game);
+        } catch (Exception e) {
+            throw new EntityAlreadyExistsException("Пользователь уже добавлен в игру");
+        }
         return gameMapper.convertToResponseGameDto(gameSaved);
     }
 
@@ -88,5 +92,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public void delete(Long gameId) {
         gameRepository.deleteById(gameId);
+    }
+
+    @Override
+    public Optional<Game> findLastGameByUserId(Long userId) {
+        return gameRepository.findTopByScores_User_IdOrderByIdDesc(userId);
     }
 }

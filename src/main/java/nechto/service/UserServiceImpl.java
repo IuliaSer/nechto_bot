@@ -7,12 +7,13 @@ import nechto.dto.request.RequestUserDto;
 import nechto.dto.response.ResponseUserDto;
 import nechto.entity.User;
 import nechto.exception.EntityNotFoundException;
-import nechto.exception.UserAlreadyExistsException;
+import nechto.exception.EntityAlreadyExistsException;
 import nechto.mappers.UserMapper;
 import nechto.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static nechto.enums.Authority.ROLE_ADMIN;
 import static nechto.enums.Authority.ROLE_USER;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseUserDto save(RequestUserDto userDto) {
         if (userRepository.findByUsername(userDto.getUsername()) != null) {
-            throw new UserAlreadyExistsException("A user with this login already exists");
+            throw new EntityAlreadyExistsException("A user with this login already exists");
         }
         userDto.setAuthority(ROLE_ADMIN); //change for role user
         return userMapper.convertToResponseUserDto(userRepository.save(userMapper.convertToUser(userDto)));
@@ -38,16 +39,15 @@ public class UserServiceImpl implements UserService {
     public ResponseUserDto findByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new EntityNotFoundException(String.format("User with username %s not found", username));
+            throw new EntityNotFoundException(String.format("Пользователь с ником %s не существует", username));
         }
         return userMapper.convertToResponseUserDto(user);
     }
 
     @Override
-    public ResponseUserDto findById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not found", id)));
-        return userMapper.convertToResponseUserDto(user);
+    public Optional<ResponseUserDto> findById(Long id) {
+        return userRepository.findById(id)
+                .map(userMapper::convertToResponseUserDto);
     }
 
     @Override

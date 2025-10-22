@@ -1,12 +1,14 @@
 package nechto.telegram_bot.botstate;
 
 import lombok.RequiredArgsConstructor;
-import nechto.exception.EntityNotFoundException;
 import nechto.service.GameService;
 import nechto.telegram_bot.cache.ScoresStateCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static nechto.utils.BotUtils.getSendMessage;
 
@@ -23,14 +25,21 @@ public class AddUser implements BotState {
 
     @Override
     public BotApiMethod<?> process(Message message) {
+
         long userId = message.getFrom().getId();
-        long gameId = Long.parseLong(message.getText().replace("/start add_user_to_game_", ""));
-        scoresStateCache.get(userId).setGameId(gameId);
-        try {
-            gameService.addUser(gameId, userId);
-        } catch (EntityNotFoundException e) {
-            return getSendMessage(userId, "Игра или пользователь не найдены!");
+        String messageText = message.getText();
+        Pattern pattern = Pattern.compile("(?<=id=)\\d+");
+        Matcher matcher = pattern.matcher(messageText);
+        long gameId = 0;
+        long adminId = 0;
+        if (matcher.find()) {
+            gameId = Long.parseLong(matcher.group());
         }
+        if (matcher.find()) {
+            adminId = Long.parseLong(matcher.group());
+        }
+        scoresStateCache.get(adminId).setGameId(gameId);
+        gameService.addUser(gameId, userId);
         return getSendMessage(userId, "Вы успешно присоединились к игре!");
     }
 }

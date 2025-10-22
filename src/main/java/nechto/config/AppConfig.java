@@ -6,6 +6,7 @@ import nechto.service.QrCodeGenerator;
 import nechto.service.UserService;
 import nechto.telegram_bot.TelegramBot;
 import nechto.telegram_bot.TelegramFacade;
+import nechto.telegram_bot.cache.UserInfoCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
@@ -17,6 +18,7 @@ public class AppConfig {
     private final UserService userService;
     private final MenuService menuService;
     private final QrCodeGenerator qrCodeGenerator;
+    private final UserInfoCache userInfoCache;
 
     @Bean
     public SetWebhook setWebhookInstance() {
@@ -25,7 +27,7 @@ public class AppConfig {
 
     @Bean
     public TelegramBot springWebhookBot(SetWebhook setWebhook, TelegramFacade telegramFacade) {
-        TelegramBot bot = new TelegramBot(setWebhook, telegramFacade, userService, menuService, qrCodeGenerator);
+        TelegramBot bot = new TelegramBot(setWebhook, telegramFacade, userService, menuService, qrCodeGenerator, userInfoCache);
         bot.setBotToken(botConfig.getBotToken());
         bot.setBotUsername(botConfig.getUserName());
         bot.setBotPath(botConfig.getWebHookPath());

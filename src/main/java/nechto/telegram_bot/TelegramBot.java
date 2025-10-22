@@ -18,6 +18,9 @@ import org.telegram.telegrambots.starter.SpringWebhookBot;
 
 import java.util.Optional;
 
+import static nechto.utils.BotUtils.extractUserId;
+import static nechto.utils.BotUtils.getSendMessage;
+
 @Getter
 @Setter
 @Slf4j
@@ -45,24 +48,25 @@ public class TelegramBot extends SpringWebhookBot {
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        Long userId;
-        Authority authority;
-        if (update.hasMessage()) {
-            userId = update.getMessage().getFrom().getId();
-        } else if (update.hasCallbackQuery() && update.getCallbackQuery().getFrom() != null) {
-            userId = update.getCallbackQuery().getFrom().getId();
-        } else {
-            log.debug("Unsupported update type: {}", update);
-            return null;
-        }
-        userInfoCache.put(userId);
-        Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
-        authority = responseUserDto.isEmpty() ? Authority.ROLE_USER : responseUserDto.get().getAuthority();
+        Long userId = null;
+        try {
+            userId = extractUserId(update); //oshibku obrabotat
+            userInfoCache.put(userId);
+            Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
+            Authority authority = responseUserDto.isEmpty() ?
+                    Authority.ROLE_USER :
+                    responseUserDto.get().getAuthority();
 
-        if (userInfoCache.get(userId).get() == 0) {
-            menuService.refreshCommands(userId, authority);
+            if (commandsAreNotSetYet(userId)) {
+                menuService.refreshCommands(userId, authority);
+            }
+            return telegramFacade.handleUpdate(update);
+        } catch (Exception e) {
+            return getSendMessage(userId, e.getMessage());
         }
-        return telegramFacade.handleUpdate(update);
     }
 
+    private boolean commandsAreNotSetYet(Long userId) {
+        return userInfoCache.get(userId).get() == 0;
+    }
 }

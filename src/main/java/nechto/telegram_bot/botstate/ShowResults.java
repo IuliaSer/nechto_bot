@@ -30,7 +30,6 @@ import static nechto.enums.Status.HUMAN;
 import static nechto.enums.Status.NECHTO;
 import static nechto.enums.Status.USEFULL;
 import static nechto.enums.Status.VICTIM;
-import static nechto.utils.BotUtils.getSendMessage;
 import static nechto.utils.BotUtils.getSendMessageWithMarkDown;
 import static nechto.utils.CommonUtils.convertFloatToStringWithTwoDotsPrecision;
 
@@ -56,59 +55,54 @@ public class ShowResults implements BotState {
         List<ScoresDto> scoresDtos = new ArrayList<>();
         Map<ScoresDto, Boolean> opjMap = new ConcurrentHashMap<>();
 
-        try {
-            long gameId;
-            List<Scores> scores;
-            float flamethrowerScores = 0;
+        long gameId;
+        List<Scores> scores;
+        float flamethrowerScores = 0;
 
-            ResponseUserDto responseUserDto = userService.findById(userId)
-                    .orElseThrow(() -> new EntityNotFoundException("User is not registered"));
-            RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
+        ResponseUserDto responseUserDto = userService.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User is not registered"));
+        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
 
-            if (requestScoresDto != null && !responseUserDto.getAuthority().equals(Authority.ROLE_USER)) {
-                gameId = requestScoresDto.getGameId();
-            } else {
-                gameId = gameService.findLastGameByUserId(userId)
-                        .orElseThrow(() -> new EntityNotFoundException("No game for this user")).getId();
-            }
-            scores = scoresService.findAllByGameId(gameId);  //na vremya testa
-
-            for (Scores score : scores) {
-                List<String> opjStatusesList = new ArrayList<>();
-                ScoresDto scoresDto = new ScoresDto();
-                scoresDto.setUsername(score.getUser().getUsername());
-                scoresDto.setScores(score.getScores());
-                opjMap.put(scoresDto, false);
-                for (Status status : score.getStatuses()) {
-                    if (NECHTO.equals(status) || CONTAMINATED.equals(status) || HUMAN.equals(status)) {
-                        scoresDto.setStatus(status.getName());
-                    }
-                    if (FLAMETHROWER.equals(status)) {
-                        flamethrowerScores += 0.3f;
-                    }
-                    if (DANGEROUS.equals(status)) {
-                        opjStatusesList.add("0.2(о)");
-                    }
-                    if (USEFULL.equals(status)) {
-                        opjStatusesList.add("0.2(п)");
-                    }
-                    if (VICTIM.equals(status)) {
-                        opjStatusesList.add("0.5(ж)");
-                    }
-                }
-                if (opjStatusesList.size() > 1) {
-                    opjMap.replace(scoresDto, true);
-                }
-                scoresDto.setOpjStatusScores(opjStatusesList);
-                scoresDto.setFlamethrowerScores(flamethrowerScores);
-                scoresDtos.add(scoresDto);
-
-                flamethrowerScores = 0;
-            }
-        } catch (EntityNotFoundException e) {
-            return getSendMessage(userId, e.getMessage());
+        if (requestScoresDto != null && !responseUserDto.getAuthority().equals(Authority.ROLE_USER)) {
+            gameId = requestScoresDto.getGameId();
+        } else {
+            gameId = gameService.findLastGameByUserId(userId)
+                    .orElseThrow(() -> new EntityNotFoundException("No game for this user")).getId();
         }
+        scores = scoresService.findAllByGameId(gameId);  //na vremya testa
 
+        for (Scores score : scores) {
+            List<String> opjStatusesList = new ArrayList<>();
+            ScoresDto scoresDto = new ScoresDto();
+            scoresDto.setUsername(score.getUser().getUsername());
+            scoresDto.setScores(score.getScores());
+            opjMap.put(scoresDto, false);
+            for (Status status : score.getStatuses()) {
+                if (NECHTO.equals(status) || CONTAMINATED.equals(status) || HUMAN.equals(status)) {
+                    scoresDto.setStatus(status.getName());
+                }
+                if (FLAMETHROWER.equals(status)) {
+                    flamethrowerScores += 0.3f;
+                }
+                if (DANGEROUS.equals(status)) {
+                    opjStatusesList.add("0.2(о)");
+                }
+                if (USEFULL.equals(status)) {
+                    opjStatusesList.add("0.2(п)");
+                }
+                if (VICTIM.equals(status)) {
+                    opjStatusesList.add("0.5(ж)");
+                }
+            }
+            if (opjStatusesList.size() > 1) {
+                opjMap.replace(scoresDto, true);
+            }
+            scoresDto.setOpjStatusScores(opjStatusesList);
+            scoresDto.setFlamethrowerScores(flamethrowerScores);
+            scoresDtos.add(scoresDto);
+
+            flamethrowerScores = 0;
+        }
         return getSendMessageWithMarkDown(userId, formatScoreTable(scoresDtos, opjMap));
     }
 

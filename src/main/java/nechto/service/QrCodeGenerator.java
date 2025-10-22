@@ -21,7 +21,8 @@ public class QrCodeGenerator {
         BufferedImage qrImage;
         try {
             qrImage = bufferedImageGenerator.generateBufferedImage(
-                    format("https://t.me/nechto21_bot?start=add_user_to_game_%s", gameId), 250, 250);
+                    format("https://t.me/nechto21_bot?start=add_user_to_game_id=%s_and_admin_id=%s", gameId, chatId),
+                    250, 250);
         } catch (WriterException e) {
             throw new RuntimeException(e);
         }

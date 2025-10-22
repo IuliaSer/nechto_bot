@@ -2,7 +2,7 @@ package nechto.telegram_bot.botstate;
 
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestUserDto;
-import nechto.exception.UserAlreadyExistsException;
+import nechto.exception.EntityAlreadyExistsException;
 import nechto.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -35,7 +35,7 @@ public class Registration implements BotState {
         RequestUserDto user = new RequestUserDto(userId, name, nickname, null, null);
         try {
             userService.save(user);
-        } catch (UserAlreadyExistsException e) {
+        } catch (EntityAlreadyExistsException e) {
             return getSendMessage(userId, "Пользователь с таким ником уже существует");
         }
 

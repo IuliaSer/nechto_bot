@@ -5,6 +5,7 @@ import nechto.dto.request.RequestUserDto;
 import nechto.dto.response.ResponseUserDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     ResponseUserDto save(RequestUserDto userDto);
@@ -23,5 +24,5 @@ public interface UserService {
 
     ResponseUserDto updateUser(FullUserDto user);
 
-    ResponseUserDto findById(Long id);
+    Optional<ResponseUserDto> findById(Long id);
 }

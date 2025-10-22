@@ -1,6 +1,5 @@
 package nechto.telegram_bot.botstate;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import nechto.dto.response.ResponseUserDto;
 import nechto.enums.Authority;
@@ -29,14 +28,10 @@ public class MakeAdmin implements BotState {
     public BotApiMethod<?> process(Message message) {
         final Long chatId = message.getChatId();
         String messageText = message.getText();
-        try {
-            ResponseUserDto responseUserDto = userService.findByUsername(messageText);
-            long userIdToMakeAdmin = responseUserDto.getId();
-            userService.makeAdmin(userIdToMakeAdmin);
-            menuService.refreshCommands(userIdToMakeAdmin, Authority.ROLE_ADMIN);
-        } catch (EntityNotFoundException e) {
-            return getSendMessage(chatId, format("Пользователь с ником %s не существует", messageText));
-        }
+        ResponseUserDto responseUserDto = userService.findByUsername(messageText);
+        long userIdToMakeAdmin = responseUserDto.getId();
+        userService.makeAdmin(userIdToMakeAdmin);
+        menuService.refreshCommands(userIdToMakeAdmin, Authority.ROLE_ADMIN);
         return getSendMessage(chatId, format("Пользователь %s теперь является админом", messageText));
     }
 }

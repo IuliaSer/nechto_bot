@@ -5,7 +5,6 @@ import nechto.dto.request.RequestGameDto;
 import nechto.dto.response.ResponseGameDto;
 import nechto.service.GameService;
 import nechto.service.QrCodeGenerator;
-import nechto.service.RoleService;
 import nechto.telegram_bot.cache.ScoresStateCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -14,7 +13,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import static java.lang.String.format;
 import static nechto.enums.BotState.CREATE_GAME;
 import static nechto.utils.BotUtils.getSendMessage;
 
@@ -33,14 +31,14 @@ public class CreateGame implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        long chatId = message.getChatId();
-
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>());
         ResponseGameDto responseGameDto = gameService.save(requestGameDto);
-        scoresStateCache.get(userId).setGameId(responseGameDto.getId());  //na vremya testa
+        Long gameId = responseGameDto.getId();
 
-        qrCodeGenerator.generateQrCode(String.valueOf(responseGameDto.getId()), String.valueOf(chatId));
-        return getSendMessage(chatId, format("Перейдите по ссылке, добавьтесь в игру %s",
-                responseGameDto.getId().toString()));
+        qrCodeGenerator.generateQrCode(String.valueOf(gameId), String.valueOf(userId));
+
+        scoresStateCache.put(userId);
+        scoresStateCache.get(userId).setGameId(gameId);  //na vremya testa
+        return getSendMessage(userId, "Перейдите по ссылке, добавьтесь в игру"); //mojet nado znat nomer?
     }
 }

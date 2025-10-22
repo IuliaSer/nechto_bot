@@ -1,22 +1,26 @@
 package nechto.telegram_bot;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import nechto.dto.response.ResponseUserDto;
 import nechto.enums.Authority;
 import nechto.enums.BotCommand;
 import nechto.enums.BotState;
+import nechto.exception.EntityNotFoundException;
 import nechto.exception.RoleException;
 import nechto.service.UserService;
 import nechto.telegram_bot.cache.BotStateCache;
-import nechto.telegram_bot.cache.ScoresStateCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import static nechto.utils.BotUtils.getSendMessage;
+import java.util.Optional;
 
+import static nechto.enums.Authority.ROLE_USER;
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TelegramFacade {
@@ -24,12 +28,9 @@ public class TelegramFacade {
     private final MessageHandler messageHandler;
     private final CallbackQueryHandler callbackQueryHandler;
     private final UserService userService;
-    private final ScoresStateCache scoresStateCache;
     private final BotStateCache botStateCache;
 
-    public BotApiMethod<?> handleUpdate(Update update, long userId) {
-        scoresStateCache.put(userId);
-
+    public BotApiMethod<?> handleUpdate(Update update) {
         if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             return callbackQueryHandler.processCallbackQuery(callbackQuery);
@@ -43,16 +44,18 @@ public class TelegramFacade {
     }
 
     public BotApiMethod<?> handleInputMessage(Message message) {
+        Authority authority;
         String messageText = message.getText();
         Long userId = message.getFrom().getId();
-        ResponseUserDto responseUserDto = userService.findById(userId);
-        Authority authority = responseUserDto.getAuthority();
-        BotState botState;
-        try {
-            botState = BotCommand.match(messageText)
+        Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
+        if (responseUserDto.isEmpty() && !messageText.equals("/register")) {
+            throw new EntityNotFoundException("Вы не зарегестрированы");
+        }
+        authority = responseUserDto.isPresent()  ? responseUserDto.get().getAuthority() : ROLE_USER;
+        BotState botState = BotCommand.match(messageText)
                     .map(cmd -> {
                         if (!cmd.isAllowed(authority)) {
-                            throw new RoleException("Access denied for " + authority.getName());
+                            throw new RoleException("Доступ запрещен для роли " + authority.getName());
                         }
                         return cmd.state();
                     })
@@ -60,9 +63,6 @@ public class TelegramFacade {
                         BotState cached = botStateCache.get(userId);
                         return cached != null ? cached : BotState.START; //why start?
                     });
-        } catch (RoleException e) {
-            return getSendMessage(userId, "Доступ запрещен для роли " + authority.getName());
-        }
         return messageHandler.handle(message, botState);
     }
 }

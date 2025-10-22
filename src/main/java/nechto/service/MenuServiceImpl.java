@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import nechto.enums.Authority;
 import nechto.telegram_bot.TelegramFeignClient;
+import nechto.telegram_bot.cache.UserInfoCache;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
@@ -12,7 +13,9 @@ import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope
 import java.util.List;
 import java.util.Map;
 
-import static nechto.enums.Authority.*;
+import static nechto.enums.Authority.ROLE_ADMIN;
+import static nechto.enums.Authority.ROLE_OWNER;
+import static nechto.enums.Authority.ROLE_USER;
 
 @Getter
 @Service
@@ -37,16 +40,17 @@ public class MenuServiceImpl implements MenuService {
   );
 
   private final TelegramFeignClient telegram;
+  private final UserInfoCache userInfoCache;
 
   /**
    * Обновляем menu‑команды в Telegram, когда у пользователя меняется роль
    */
   @Override
   public void refreshCommands(long userId, Authority authority) {
+    userInfoCache.get(userId).incrementAndGet();
       telegram.setMyCommands(SetMyCommands.builder()
           .commands(menu.get(authority))
           .scope(new BotCommandScopeChat(String.valueOf(userId)))
           .build());
   }
-
 }

@@ -1,7 +1,6 @@
 package nechto.repository;
 
 import nechto.entity.Game;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -14,5 +13,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<Game> findAll();
 
 //    @EntityGraph(attributePaths = {"users"})
+
     Optional<Game> findById(@Param("gameId") Long gameId);
+
+    Optional<Game> findTopByScores_User_IdOrderByIdDesc(Long userId);
 }
