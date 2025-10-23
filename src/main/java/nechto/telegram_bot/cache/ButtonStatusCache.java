@@ -15,7 +15,6 @@ public class ButtonStatusCache {
         buttonStatusMap.put(Button.NECHTO_BUTTON, Status.NECHTO);
         buttonStatusMap.put(Button.HUMAN_BUTTON, Status.HUMAN);
         buttonStatusMap.put(Button.CONTAMINATED_BUTTON, Status.CONTAMINATED);
-        buttonStatusMap.put(Button.NECHTO_BUTTON, Status.NECHTO);
         buttonStatusMap.put(Button.WIN_BUTTON, Status.WON);
         buttonStatusMap.put(Button.LOOSE_BUTTON, Status.LOOSE);
         buttonStatusMap.put(Button.DANGEROUS_BUTTON, Status.DANGEROUS);

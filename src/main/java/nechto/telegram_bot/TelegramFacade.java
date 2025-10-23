@@ -19,6 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.Optional;
 
 import static nechto.enums.Authority.ROLE_USER;
+import static nechto.enums.BotState.REGISTRATION;
 
 @Slf4j
 @Component
@@ -48,7 +49,7 @@ public class TelegramFacade {
         String messageText = message.getText();
         Long userId = message.getFrom().getId();
         Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
-        if (responseUserDto.isEmpty() && !messageText.equals("/register")) {
+        if (responseUserDto.isEmpty() && !messageText.equals("/register") && !botStateCache.get(userId).equals(REGISTRATION)) {
             throw new EntityNotFoundException("Вы не зарегестрированы");
         }
         authority = responseUserDto.isPresent()  ? responseUserDto.get().getAuthority() : ROLE_USER;

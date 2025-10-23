@@ -1,7 +1,7 @@
 package nechto.telegram_bot.button.count;
 
 import lombok.RequiredArgsConstructor;
-import nechto.dto.request.RequestScoresDto;
+import nechto.dto.CachedScoresDto;
 import nechto.telegram_bot.InlineKeyboardService;
 import nechto.telegram_bot.button.Button;
 import nechto.telegram_bot.cache.ScoresStateCache;
@@ -25,7 +25,7 @@ public class PlusButtonWithAntiFlamethrower implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
-        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
+        CachedScoresDto requestScoresDto = scoresStateCache.get(userId);
         int messageId = callbackQuery.getMessage().getMessageId();
         int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
         requestScoresDto.setFlamethrowerAmount(++flamethrowerAmount);

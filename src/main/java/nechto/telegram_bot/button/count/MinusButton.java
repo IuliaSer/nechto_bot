@@ -1,6 +1,7 @@
 package nechto.telegram_bot.button.count;
 
 import lombok.RequiredArgsConstructor;
+import nechto.dto.CachedScoresDto;
 import nechto.dto.request.RequestScoresDto;
 import nechto.telegram_bot.InlineKeyboardService;
 import nechto.telegram_bot.button.Button;
@@ -25,10 +26,10 @@ public class MinusButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
-        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         int messageId = callbackQuery.getMessage().getMessageId();
-        int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
-        requestScoresDto.setFlamethrowerAmount(--flamethrowerAmount);
+        int flamethrowerAmount = cachedScoresDto.getFlamethrowerAmount();
+        cachedScoresDto.setFlamethrowerAmount(--flamethrowerAmount);
 
         return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinusForAntiHumanFlamethrower(userId, messageId,
                 format("Выберите количество:\n"), Math.max(flamethrowerAmount, 0));

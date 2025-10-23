@@ -1,6 +1,7 @@
 package nechto.telegram_bot.botstate;
 
 import lombok.RequiredArgsConstructor;
+import nechto.dto.CachedScoresDto;
 import nechto.dto.ScoresDto;
 import nechto.dto.request.RequestScoresDto;
 import nechto.dto.response.ResponseUserDto;
@@ -89,13 +90,13 @@ public class ShowResults implements BotState {
     private long getGameId(long userId) {
         ResponseUserDto responseUserDto = userService.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Вы не зарегестрированы"));
-        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
 
-        if (requestScoresDto != null && !responseUserDto.getAuthority().equals(ROLE_USER)) {
-            return requestScoresDto.getGameId();
+        if (cachedScoresDto != null && !responseUserDto.getAuthority().equals(ROLE_USER)) {
+            return cachedScoresDto.getGameId();
         } else {
-            return gameService.findLastGameByUserId(userId)
-                    .orElseThrow(() -> new EntityNotFoundException("Пользователь не добавлен в игру")).getId();
+            return gameService.findLastGameByUserId(userId) //он может быть админом но играть в другой игре в качестве пользователя
+                    .orElseThrow(() -> new EntityNotFoundException("Вы не зарегестрированы ни в одной игре")).getId();
         }
     }
 

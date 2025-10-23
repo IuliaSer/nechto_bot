@@ -1,8 +1,8 @@
 package nechto.telegram_bot.button.role;
 
 import lombok.RequiredArgsConstructor;
+import nechto.dto.CachedScoresDto;
 import nechto.dto.request.RequestScoresDto;
-import nechto.enums.Status;
 import nechto.service.ScoresService;
 import nechto.telegram_bot.InlineKeyboardService;
 import nechto.telegram_bot.button.Button;
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import java.util.Map;
-
-import static nechto.enums.Button.*;
+import static nechto.enums.Button.CONTAMINATED_BUTTON;
+import static nechto.enums.Button.HUMAN_BUTTON;
+import static nechto.enums.Button.NECHTO_BUTTON;
 
 @RequiredArgsConstructor
 @Component
@@ -36,7 +36,7 @@ public abstract class RoleButton implements Button {
         }
         buttonService.deactivateButtons(NECHTO_BUTTON.name(), HUMAN_BUTTON.name(), CONTAMINATED_BUTTON.name());
 
-        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
+        CachedScoresDto requestScoresDto = scoresStateCache.get(userId);
         long userIdToCount = requestScoresDto.getUserId();
         long gameId = requestScoresDto.getGameId();
         scoresService.addStatus(buttonStatusCache.getStatus(getButton()), userIdToCount, gameId);

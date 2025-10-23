@@ -28,6 +28,7 @@ public class EndGameButton implements Button {
 
         scoresService.countAndSaveAll(gameId);
         buttonService.activateAllButtons();
+        scoresStateCache.get(userId).setGameIsFinished(true);
         return getSendMessage(userId, "Успешно посчитано");
     }
 }

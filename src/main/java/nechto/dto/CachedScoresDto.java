@@ -1,23 +1,23 @@
-package nechto.dto.request;
+package nechto.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nechto.enums.Status;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestScoresDto {
+public class CachedScoresDto {
     private Long userId;
 
     private Long gameId;
 
-    private List<Status> statuses;
-
     private int flamethrowerAmount;
 
     private int antiHumanFlamethrowerAmount;
+
+//    @Builder.Default
+    private boolean gameIsFinished = false;
+
 }

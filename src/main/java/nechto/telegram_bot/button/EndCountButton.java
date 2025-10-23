@@ -1,6 +1,7 @@
 package nechto.telegram_bot.button;
 
 import lombok.RequiredArgsConstructor;
+import nechto.dto.CachedScoresDto;
 import nechto.dto.request.RequestScoresDto;
 import nechto.enums.BotState;
 import nechto.enums.Status;
@@ -32,11 +33,11 @@ public class EndCountButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
-        long userIdToCount = requestScoresDto.getUserId();
-        long gameId = requestScoresDto.getGameId();
-        int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
-        int antiHumanFlamethrowerAmount = requestScoresDto.getAntiHumanFlamethrowerAmount();
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
+        long userIdToCount = cachedScoresDto.getUserId();
+        long gameId = cachedScoresDto.getGameId();
+        int flamethrowerAmount = cachedScoresDto.getFlamethrowerAmount();
+        int antiHumanFlamethrowerAmount = cachedScoresDto.getAntiHumanFlamethrowerAmount();
 
         for (int i = 0; i < flamethrowerAmount; i++) {
             scoresService.addStatus(FLAMETHROWER, userIdToCount, gameId);
@@ -50,8 +51,8 @@ public class EndCountButton implements Button {
             scoresService.deleteStatus(BURNED, userIdToCount, gameId);
             scoresService.addStatus(LOOSE, userIdToCount, gameId);
         }
-        requestScoresDto.setFlamethrowerAmount(0);
-        requestScoresDto.setAntiHumanFlamethrowerAmount(0);
+        cachedScoresDto.setFlamethrowerAmount(0);
+        cachedScoresDto.setAntiHumanFlamethrowerAmount(0);
         if (botStateCache.get(userId).equals(BotState.CHANGE_GAME)) {
             return inlineKeyboardService.returnButtonsForChangingGame(userId);
         }

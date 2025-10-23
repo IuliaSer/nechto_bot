@@ -1,5 +1,6 @@
 package nechto.telegram_bot.cache;
 
+import nechto.dto.CachedScoresDto;
 import nechto.dto.request.RequestScoresDto;
 import org.springframework.stereotype.Component;
 
@@ -8,17 +9,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class ScoresStateCache {
-    private final Map<Long, RequestScoresDto> map = new ConcurrentHashMap<>();
+    private final Map<Long, CachedScoresDto> map = new ConcurrentHashMap<>();
 
-    public RequestScoresDto getOrCreate(long userId) {
-        return map.computeIfAbsent(userId, id -> new RequestScoresDto());
+    public CachedScoresDto getOrCreate(long userId) {
+        return map.computeIfAbsent(userId, id -> new CachedScoresDto());
     }
 
     public void put(long userId) {
-        map.put(userId, new RequestScoresDto());
+        map.put(userId, new CachedScoresDto());
     }
 
-    public RequestScoresDto get(long userId) {
+    public CachedScoresDto get(long userId) {
         return map.get(userId);
     }
 }

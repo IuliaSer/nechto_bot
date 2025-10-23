@@ -1,6 +1,7 @@
  package nechto.telegram_bot.button.attributes;
 
  import lombok.RequiredArgsConstructor;
+ import nechto.dto.CachedScoresDto;
  import nechto.dto.request.RequestScoresDto;
  import nechto.enums.Status;
  import nechto.service.ScoresService;
@@ -28,9 +29,9 @@ public abstract class AttributeButton implements Button {
         }
         buttonService.deactivateButtons(getButton().name());
 
-        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
-        long userIdToCount = requestScoresDto.getUserId();
-        long gameId = requestScoresDto.getGameId();
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
+        long userIdToCount = cachedScoresDto.getUserId();
+        long gameId = cachedScoresDto.getGameId();
         scoresService.addStatus(getStatus(), userIdToCount, gameId);
         return null;
     }

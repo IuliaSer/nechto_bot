@@ -33,10 +33,11 @@ public class CreateGame implements BotState {
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>());
         long gameId = gameService.save(requestGameDto).getId();
 
-        qrCodeGenerator.generateQrCode(String.valueOf(gameId), String.valueOf(userId));
+//        qrCodeGenerator.generateQrCode(String.valueOf(gameId), String.valueOf(userId));
 
         scoresStateCache.put(userId);
-        scoresStateCache.get(userId).setGameId(gameId);  //na vremya testa
-        return getSendMessage(userId, "Перейдите по ссылке, добавьтесь в игру");
+        scoresStateCache.get(userId).setGameId(gameId);
+        scoresStateCache.get(userId).setGameIsFinished(false);
+        return getSendMessage(userId, "Вы успешно создали игру");
     }
 }

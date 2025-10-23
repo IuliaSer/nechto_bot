@@ -28,14 +28,13 @@ public class ChangeGame implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        Scores scores;
-        long userIdToCount;
-        userIdToCount = userService.findByUsername(message.getText()).getId();
+        long userIdToCount = userService.findByUsername(message.getText()).getId();
         long gameId = scoresStateCache.get(userId).getGameId();
-        scores = scoresService.findByUserIdAndGameId(userIdToCount, gameId);
+        Scores scores = scoresService.findByUserIdAndGameId(userIdToCount, gameId);
         scoresService.deleteAllStatuses(scores);
-        scoresStateCache.get(userId).setGameId(gameId);
+
         scoresStateCache.get(userId).setUserId(userIdToCount);
+
         return inlineKeyboardService.returnButtonsWithStatuses(userId);
     }
 

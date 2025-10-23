@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static nechto.enums.Authority.ROLE_ADMIN;
 import static nechto.enums.Authority.ROLE_USER;
 
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByUsername(userDto.getUsername()) != null) {
             throw new EntityAlreadyExistsException("A user with this login already exists");
         }
-        userDto.setAuthority(ROLE_ADMIN); //change for role user
+//        userDto.setAuthority(ROLE_ADMIN);
         return userMapper.convertToResponseUserDto(userRepository.save(userMapper.convertToUser(userDto)));
     }
 
@@ -48,6 +49,13 @@ public class UserServiceImpl implements UserService {
     public Optional<ResponseUserDto> findById(Long id) {
         return userRepository.findById(id).map(userMapper::convertToResponseUserDto);
     }
+
+//    @Override
+//    public Optional<ResponseUserDto> getByIdOrThrow(Long id) {
+//        User user = userRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+//        return Optional.ofNullable(userMapper.convertToResponseUserDto(user));
+//    }
 
     @Override
     public List<ResponseUserDto> findAll() {

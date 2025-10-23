@@ -86,7 +86,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public ResponseGameDto findById(Long id) {
-        return gameMapper.convertToResponseGameDto(gameRepository.findById(id).get());
+        return gameMapper.convertToResponseGameDto(gameRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(format("Game with id %s not found", id))));
     }
 
     @Override

@@ -153,8 +153,8 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
     @Override
     public SendMessage returnButtonsForChangingGame(Long chatId) {
-        var buttonCountNext = createButton("Внести изменения для следующего игрока", CHANGE_NEXT_BUTTON.name());
-        var buttonEndGame = createButton("Подтвердить изменения", END_GAME_BUTTON.name());
+        var buttonCountNext = createButton("Изменить для следующего", CHANGE_NEXT_BUTTON.name());
+        var buttonEndGame = createButton("Подтвердить всех", END_GAME_BUTTON.name());
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonCountNext, buttonEndGame);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);

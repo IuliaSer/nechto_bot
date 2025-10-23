@@ -1,6 +1,7 @@
 package nechto.telegram_bot.button.status;
 
 import lombok.RequiredArgsConstructor;
+import nechto.dto.CachedScoresDto;
 import nechto.dto.request.RequestScoresDto;
 import nechto.enums.Status;
 import nechto.service.ScoresService;
@@ -35,9 +36,9 @@ public abstract class StatusButton implements Button {
         }
         buttonService.deactivateButtons(LOOSE_BUTTON.name(), WIN_BUTTON.name(), BURNED_BUTTON.name());
 
-        RequestScoresDto requestScoresDto = scoresStateCache.get(userId);
-        long userIdToCount = requestScoresDto.getUserId();
-        long gameId = requestScoresDto.getGameId();
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
+        long userIdToCount = cachedScoresDto.getUserId();
+        long gameId = cachedScoresDto.getGameId();
         scoresService.addStatus(buttonStatusCache.getStatus(getButton()), userIdToCount, gameId);
         return inlineKeyboardService.returnButtonsWithRoles(userId);
     }
