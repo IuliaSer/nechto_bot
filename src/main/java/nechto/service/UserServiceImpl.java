@@ -46,8 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<ResponseUserDto> findById(Long id) {
-        return userRepository.findById(id)
-                .map(userMapper::convertToResponseUserDto);
+        return userRepository.findById(id).map(userMapper::convertToResponseUserDto);
     }
 
     @Override

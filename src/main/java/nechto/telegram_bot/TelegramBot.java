@@ -50,7 +50,7 @@ public class TelegramBot extends SpringWebhookBot {
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
         Long userId = null;
         try {
-            userId = extractUserId(update); //oshibku obrabotat
+            userId = extractUserId(update);
             userInfoCache.put(userId);
             Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
             Authority authority = responseUserDto.isEmpty() ?

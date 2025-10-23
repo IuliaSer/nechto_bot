@@ -19,6 +19,7 @@ public class WebhookController {
 
     @PostMapping("/")
     public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
+        log.debug("Inside webhook controller");
         if (Integer.parseInt(telegramWebhookRegistrator.getUpdatesAmount()) > 1) {
             telegramWebhookRegistrator.clearUpdates();
             telegramWebhookRegistrator.registerWebhook();

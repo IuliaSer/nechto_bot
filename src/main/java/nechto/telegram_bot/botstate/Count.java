@@ -28,11 +28,9 @@ public class Count implements BotState {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         String userName = message.getText();
-        long userIdToCount;
-
-        userIdToCount = userService.findByUsername(userName).getId();
-        Long gameId = scoresStateCache.get(userId).getGameId(); //TODO reshit dobavlya li v addUser?
-        gameService.addUser(gameId, userIdToCount);  //TODO na vremya testa, userIdToCount)
+        long userIdToCount = userService.findByUsername(userName).getId();
+        long gameId = scoresStateCache.get(userId).getGameId();
+        gameService.addUser(gameId, userIdToCount);
         scoresStateCache.get(userId).setUserId(userIdToCount);
         return inlineKeyboardService.returnButtonsWithStatuses(userId);
     }

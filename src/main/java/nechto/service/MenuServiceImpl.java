@@ -36,7 +36,8 @@ public class MenuServiceImpl implements MenuService {
               new BotCommand("/start_count", "посчитать очки конкретного игрока"),
               new BotCommand("/show_results", "показать результаты"),
               new BotCommand("/change_game", "изменить игру"),
-              new BotCommand("/make_admin", "сделать пользователя админом"))
+              new BotCommand("/make_admin", "сделать пользователя админом"),
+                  new BotCommand("/make_user", "забрать права админа"))
   );
 
   private final TelegramFeignClient telegram;

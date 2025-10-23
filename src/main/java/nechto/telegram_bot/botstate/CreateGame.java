@@ -2,7 +2,6 @@ package nechto.telegram_bot.botstate;
 
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestGameDto;
-import nechto.dto.response.ResponseGameDto;
 import nechto.service.GameService;
 import nechto.service.QrCodeGenerator;
 import nechto.telegram_bot.cache.ScoresStateCache;
@@ -32,13 +31,12 @@ public class CreateGame implements BotState {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>());
-        ResponseGameDto responseGameDto = gameService.save(requestGameDto);
-        Long gameId = responseGameDto.getId();
+        long gameId = gameService.save(requestGameDto).getId();
 
         qrCodeGenerator.generateQrCode(String.valueOf(gameId), String.valueOf(userId));
 
         scoresStateCache.put(userId);
         scoresStateCache.get(userId).setGameId(gameId);  //na vremya testa
-        return getSendMessage(userId, "Перейдите по ссылке, добавьтесь в игру"); //mojet nado znat nomer?
+        return getSendMessage(userId, "Перейдите по ссылке, добавьтесь в игру");
     }
 }

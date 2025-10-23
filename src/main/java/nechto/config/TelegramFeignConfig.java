@@ -45,7 +45,7 @@ public class TelegramFeignConfig {
                     "Content-Type",
                     cts.stream()
                             .map(ct -> ct.replaceAll(";\\s*charset=[^;]+", "")) // "image/png" вместо "image/png; charset=UTF-8"
-                            .collect(Collectors.toList())
+                            .toList()
                             .toArray(String[]::new)
             );
         };

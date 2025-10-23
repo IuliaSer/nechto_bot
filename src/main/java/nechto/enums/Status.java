@@ -11,9 +11,9 @@ public enum Status {
         HUMAN("ч"),
         WON("выиграл(а)"),
         LOOSE("проиграл(а)"),
-        DANGEROUS("опасный"),
-        USEFULL("полезный"), // сократить
-        VICTIM("жертва"),
+        DANGEROUS("0.2(о)"),
+        USEFULL("0.2(п)"), // сократить
+        VICTIM("0.5(ж)"),
         FLAMETHROWER("огнемет"),
         ANTI_HUMAN_FLAMETHROWER("огнемет против человека"),
         BURNED("с"),

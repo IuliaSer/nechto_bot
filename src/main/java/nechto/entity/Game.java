@@ -29,9 +29,6 @@ public class Game {
 
     private LocalDateTime date;
 
-    //        @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(name = "SCORES", joinColumns = @JoinColumn(name = "game_id"),
-//        inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scores> scores;
