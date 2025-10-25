@@ -1,4 +1,4 @@
-package nechto.button.count;
+package nechto.button.flamethrower.count;
 
 import lombok.RequiredArgsConstructor;
 import nechto.dto.CachedScoresDto;

@@ -42,16 +42,10 @@ public class TelegramFacade {
     }
 
     public BotApiMethod<?> handleInputMessage(Message message) {
-        Authority authority;
-        String messageText = message.getText();
         long userId = message.getFrom().getId();
         Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
-//        if (responseUserDto.isEmpty() && !messageText.equals("/register") && botStateCache.get(userId) == null &&
-//                !botStateCache.get(userId).equals(REGISTRATION) && ) {
-//            throw new EntityNotFoundException("Вы не зарегестрированы");
-//        }
-        authority = responseUserDto.isPresent()  ? responseUserDto.get().getAuthority() : ROLE_USER;
-        BotState botState = BotCommand.match(messageText)
+        Authority authority = responseUserDto.isPresent()  ? responseUserDto.get().getAuthority() : ROLE_USER;
+        BotState botState = BotCommand.match(message.getText())
                     .map(cmd -> {
                         if (!cmd.isAllowed(authority)) {
                             throw new RoleException("Доступ запрещен для роли " + authority.getName());

@@ -1,4 +1,4 @@
-package nechto.button.count;
+package nechto.button.flamethrower.count;
 
 import lombok.RequiredArgsConstructor;
 import nechto.dto.CachedScoresDto;
@@ -10,17 +10,17 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static java.lang.String.format;
-import static nechto.enums.Button.MINUS_ANTI_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.MINUS_BUTTON;
 
 @RequiredArgsConstructor
 @Component
-public class MinusButtonWithAntiFlamethrower implements Button {
+public class MinusButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCache scoresStateCache;
 
     @Override
     public nechto.enums.Button getButton() {
-        return MINUS_ANTI_FLAMETHROWER_BUTTON;
+        return MINUS_BUTTON;
     }
 
     @Override
