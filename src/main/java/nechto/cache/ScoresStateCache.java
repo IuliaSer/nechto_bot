@@ -1,4 +1,4 @@
-package nechto.telegram_bot.cache;
+package nechto.cache;
 
 import nechto.dto.CachedScoresDto;
 import nechto.dto.request.RequestScoresDto;

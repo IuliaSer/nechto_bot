@@ -1,20 +1,19 @@
-package nechto.telegram_bot.botstate;
+package nechto.botstate;
 
 import lombok.RequiredArgsConstructor;
-import nechto.telegram_bot.cache.BotStateCache;
-import nechto.telegram_bot.cache.ScoresStateCache;
+import nechto.service.InlineKeyboardService;
+import nechto.cache.ScoresStateCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static nechto.enums.BotState.COUNT;
 import static nechto.utils.BotUtils.getSendMessage;
 
 @Component
 @RequiredArgsConstructor
 public class StartCount implements BotState {
-    private final BotStateCache botStateCache;
     private final ScoresStateCache scoresStateCache;
+    private final InlineKeyboardService inlineKeyboardService;
 
     @Override
     public nechto.enums.BotState getBotState() {
@@ -27,7 +26,6 @@ public class StartCount implements BotState {
         if (scoresStateCache.get(userId).isGameIsFinished()) {
             return getSendMessage(userId, "Создайте новую игру!");
         }
-        botStateCache.saveBotState(userId, COUNT);
-        return getSendMessage(userId, "Введите ник игрока, которого надо посчитать:");
+        return inlineKeyboardService.returnButtonsWithCommandStatuses(userId);
     }
 }

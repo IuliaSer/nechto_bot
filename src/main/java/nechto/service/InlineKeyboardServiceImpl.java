@@ -1,7 +1,7 @@
-package nechto.telegram_bot;
+package nechto.service;
 
 import lombok.RequiredArgsConstructor;
-import nechto.telegram_bot.button.ButtonService;
+import nechto.button.ButtonService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -22,7 +22,7 @@ import static nechto.enums.Button.END_GAME_BUTTON;
 import static nechto.enums.Button.FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.FLAMETHROWER_BUTTON_FOR_HUMAN;
 import static nechto.enums.Button.HUMAN_BUTTON;
-import static nechto.enums.Button.LOOSE_BUTTON;
+import static nechto.enums.Button.LAST_CONTAMINATED_BUTTON;
 import static nechto.enums.Button.MINUS_ANTI_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.MINUS_ANTI_HUMAN_BUTTON;
 import static nechto.enums.Button.MINUS_BUTTON;
@@ -33,7 +33,8 @@ import static nechto.enums.Button.PLUS_BUTTON;
 import static nechto.enums.Button.USEFULL_BUTTON;
 import static nechto.enums.Button.VALUE_BUTTON;
 import static nechto.enums.Button.VICTIM_BUTTON;
-import static nechto.enums.Button.WIN_BUTTON;
+import static nechto.enums.Button.WIN_NECHTO_BUTTON;
+import static nechto.enums.Button.WIN_PEOPLE_BUTTON;
 import static nechto.utils.BotUtils.getEditMessageWithInlineMarkup;
 import static nechto.utils.BotUtils.getSendMessage;
 
@@ -43,29 +44,47 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     private final ButtonService buttonService;
 
     @Override
-    public SendMessage returnButtonsWithStatuses(Long chatId) {
-        var buttonWin = createButton("Выиграл(а)", WIN_BUTTON.name());
-        var buttonLoose = createButton("Проиграл(а)", LOOSE_BUTTON.name());
-        var buttonBurned = createButton("Сожгли", BURNED_BUTTON.name());
+    public SendMessage returnButtonsWithCommandStatuses(Long chatId) {
+        var nechtoWin = createButton("Нечто выиграл(а)", WIN_NECHTO_BUTTON.name());
+        var nechtoLoose = createButton("Люди выиграли", WIN_PEOPLE_BUTTON.name());
 
-        buttonService.putButtonsToButtonCache(buttonWin, buttonLoose, buttonBurned);
+        buttonService.putButtonsToButtonCache(nechtoWin, nechtoLoose);
 
-        List<InlineKeyboardButton> rowInLine = List.of(buttonWin, buttonLoose, buttonBurned);
+        List<InlineKeyboardButton> rowInLine = List.of(nechtoWin, nechtoLoose);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
         return getSendMessage(chatId, "Выберите статус:", inlineKeyboardMarkup);
     }
 
     @Override
-    public SendMessage returnButtonsWithRoles(Long chatId) {
+    public SendMessage returnButtonsWithRolesForNechtoWin(Long chatId) {
         var buttonHuman = createButton("Человек", HUMAN_BUTTON.name());
         var buttonContaminated = createButton("Зараженный", CONTAMINATED_BUTTON.name());
         var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
+        var buttonBurned = createButton("Сожгли", BURNED_BUTTON.name());
+        var buttonLastContaminated = createButton("Последний зараженный", LAST_CONTAMINATED_BUTTON.name());
 
         buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto);
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonHuman, buttonContaminated, buttonNechto);
-        InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
+        List<InlineKeyboardButton> rowInLine2 = List.of(buttonLastContaminated, buttonBurned);
+        InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
+
+        return getSendMessage(chatId, "Выберите роль:", inlineKeyboardMarkup);
+    }
+
+    @Override
+    public SendMessage returnButtonsWithRolesForHumanWin(Long chatId) {
+        var buttonHuman = createButton("Человек", HUMAN_BUTTON.name());
+        var buttonContaminated = createButton("Зараженный", CONTAMINATED_BUTTON.name());
+        var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
+        var buttonBurned = createButton("Сожгли", BURNED_BUTTON.name());
+
+        buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto);
+
+        List<InlineKeyboardButton> rowInLine = List.of(buttonHuman, buttonContaminated);
+        List<InlineKeyboardButton> rowInLine2 = List.of(buttonNechto, buttonBurned);
+        InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
         return getSendMessage(chatId, "Выберите роль:", inlineKeyboardMarkup);
     }

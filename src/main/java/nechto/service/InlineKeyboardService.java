@@ -1,4 +1,4 @@
-package nechto.telegram_bot;
+package nechto.service;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -8,9 +8,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.List;
 
 public interface InlineKeyboardService {
-    SendMessage returnButtonsWithStatuses(Long chatId);
+    SendMessage returnButtonsWithCommandStatuses(Long chatId);
 
-    SendMessage returnButtonsWithRoles(Long chatId);
+    SendMessage returnButtonsWithRolesForNechtoWin(Long chatId);
+
+    SendMessage returnButtonsWithRolesForHumanWin(Long chatId);
 
     SendMessage returnButtonsForHuman(Long chatId);
 

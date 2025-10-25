@@ -1,14 +1,14 @@
-package nechto.telegram_bot.button;
+package nechto.button;
 
 import lombok.RequiredArgsConstructor;
 import nechto.dto.CachedScoresDto;
-import nechto.dto.request.RequestScoresDto;
 import nechto.enums.BotState;
+import nechto.enums.CommandStatus;
 import nechto.enums.Status;
 import nechto.service.ScoresService;
-import nechto.telegram_bot.InlineKeyboardService;
-import nechto.telegram_bot.cache.BotStateCache;
-import nechto.telegram_bot.cache.ScoresStateCache;
+import nechto.service.InlineKeyboardService;
+import nechto.cache.BotStateCache;
+import nechto.cache.ScoresStateCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -16,6 +16,8 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.util.List;
 
 import static nechto.enums.Button.END_COUNT_BUTTON;
+import static nechto.enums.CommandStatus.NECHTO_WIN;
+import static nechto.enums.CommandStatus.PEOPLE_WIN;
 import static nechto.enums.Status.*;
 
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class EndCountButton implements Button {
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();
         long gameId = cachedScoresDto.getGameId();
+        CommandStatus commandStatus = cachedScoresDto.getCommandStatus();
         int flamethrowerAmount = cachedScoresDto.getFlamethrowerAmount();
         int antiHumanFlamethrowerAmount = cachedScoresDto.getAntiHumanFlamethrowerAmount();
 
@@ -49,6 +52,12 @@ public class EndCountButton implements Button {
         List<Status> statuses = scoresService.findByUserIdAndGameId(userIdToCount, gameId).getStatuses();
         if (statuses.contains(BURNED) && statuses.contains(NECHTO)) {
             scoresService.deleteStatus(BURNED, userIdToCount, gameId);
+            scoresService.addStatus(LOOSE, userIdToCount, gameId);
+        }
+        if ((commandStatus.equals(PEOPLE_WIN) && statuses.contains(HUMAN)) ||
+                (commandStatus.equals(NECHTO_WIN) && !statuses.contains(HUMAN))) {
+            scoresService.addStatus(WON, userIdToCount, gameId);
+        } else {
             scoresService.addStatus(LOOSE, userIdToCount, gameId);
         }
         cachedScoresDto.setFlamethrowerAmount(0);

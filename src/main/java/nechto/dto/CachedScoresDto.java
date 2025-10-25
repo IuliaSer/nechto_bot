@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nechto.enums.CommandStatus;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +21,5 @@ public class CachedScoresDto {
 //    @Builder.Default
     private boolean gameIsFinished = false;
 
+    private CommandStatus commandStatus;
 }

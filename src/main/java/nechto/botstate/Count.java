@@ -1,10 +1,12 @@
-package nechto.telegram_bot.botstate;
+package nechto.botstate;
 
 import lombok.RequiredArgsConstructor;
+import nechto.dto.CachedScoresDto;
+import nechto.enums.CommandStatus;
 import nechto.service.GameService;
 import nechto.service.UserService;
-import nechto.telegram_bot.InlineKeyboardService;
-import nechto.telegram_bot.cache.ScoresStateCache;
+import nechto.service.InlineKeyboardService;
+import nechto.cache.ScoresStateCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -28,12 +30,16 @@ public class Count implements BotState {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         String userName = message.getText();
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = userService.findByUsername(userName).getId();
         long gameId = scoresStateCache.get(userId).getGameId();
 
         gameService.addUser(gameId, userIdToCount);
 
-        scoresStateCache.get(userId).setUserId(userIdToCount);
-        return inlineKeyboardService.returnButtonsWithStatuses(userId);
+        cachedScoresDto.setUserId(userIdToCount);
+
+        return scoresStateCache.get(userId).getCommandStatus().equals(CommandStatus.NECHTO_WIN) ?
+            inlineKeyboardService.returnButtonsWithRolesForNechtoWin(userId) :
+            inlineKeyboardService.returnButtonsWithRolesForHumanWin(userId);
     }
 }
