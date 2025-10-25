@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum Status {
         NECHTO("н"),
         CONTAMINATED("з"),
+        LAST_CONTAMINATED("з"),
         HUMAN("ч"),
         WON("выиграл(а)"),
         LOOSE("проиграл(а)"),

@@ -64,7 +64,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         var buttonBurned = createButton("Сожгли", BURNED_BUTTON.name());
         var buttonLastContaminated = createButton("Последний зараженный", LAST_CONTAMINATED_BUTTON.name());
 
-        buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto);
+        buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto, buttonBurned, buttonLastContaminated);
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonHuman, buttonContaminated, buttonNechto);
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonLastContaminated, buttonBurned);
@@ -80,7 +80,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
         var buttonBurned = createButton("Сожгли", BURNED_BUTTON.name());
 
-        buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto);
+        buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto, buttonBurned);
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonHuman, buttonContaminated);
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonNechto, buttonBurned);
