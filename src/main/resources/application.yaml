@@ -14,10 +14,6 @@ spring:
   sql:
     init:
       mode: never
-  liquibase:
-    default-schema: nechto
-    clearCheckSums: true
-    change-log: classpath:db/changelog/db.changelog-master.yaml
   cloud:
     openfeign:
       httpclient:
@@ -46,11 +42,11 @@ telegrambot:
   userName: nechto21_bot
   botToken: 8086975968:AAEWRBWduBoPDT7TUJpFlO5s_fOVvkvqSvY
 server:
-  port: 8000
+  port: 8080
 
 logging:
   level:
     feign-dump: TRACE
-    nechto.telegram_bot.TelegramFeignClient: DEBUG
+    nechto.service.TelegramFeignClient: DEBUG
     feign: DEBUG
 

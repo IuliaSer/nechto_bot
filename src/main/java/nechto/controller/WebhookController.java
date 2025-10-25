@@ -3,7 +3,7 @@ package nechto.controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nechto.service.TelegramWebhookRegistrator;
-import nechto.telegram_bot.TelegramBot;
+import nechto.service.TelegramBot;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
