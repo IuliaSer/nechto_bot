@@ -1,4 +1,4 @@
-package nechto.telegram_bot;
+package nechto.service;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,10 +7,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import nechto.dto.response.ResponseUserDto;
 import nechto.enums.Authority;
-import nechto.service.MenuService;
-import nechto.service.QrCodeGenerator;
-import nechto.service.UserService;
-import nechto.telegram_bot.cache.UserInfoCache;
+import nechto.cache.UserInfoCache;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -33,16 +30,14 @@ public class TelegramBot extends SpringWebhookBot {
     private TelegramFacade telegramFacade;
     private final UserService userService;
     private final MenuService menuService;
-    private final QrCodeGenerator qrCodeGenerator;
     private final UserInfoCache userInfoCache;
 
     public TelegramBot(SetWebhook setWebhook, TelegramFacade telegramFacade, UserService userService,
-                       MenuService menuService, QrCodeGenerator qrCodeGenerator, UserInfoCache userInfoCache) {
+                       MenuService menuService, UserInfoCache userInfoCache) {
         super(setWebhook);
         this.telegramFacade = telegramFacade;
         this.userService = userService;
         this.menuService = menuService;
-        this.qrCodeGenerator = qrCodeGenerator;
         this.userInfoCache = userInfoCache;
     }
 
