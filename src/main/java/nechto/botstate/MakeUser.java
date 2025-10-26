@@ -28,7 +28,7 @@ public class MakeUser implements BotState {
     public BotApiMethod<?> process(Message message) {
         final Long chatId = message.getChatId();
         String messageText = message.getText();
-        ResponseUserDto responseUserDto = userService.findByUsername(messageText);
+        ResponseUserDto responseUserDto = userService.findByUsernameOrThrow(messageText);
         long userIdToMakeUser = responseUserDto.getId();
         userService.makeAdmin(userIdToMakeUser);
         menuService.refreshCommands(userIdToMakeUser, Authority.ROLE_USER);

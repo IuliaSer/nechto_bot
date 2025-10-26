@@ -28,7 +28,7 @@ public class ChangeGame implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        long userIdToCount = userService.findByUsername(message.getText()).getId();
+        long userIdToCount = userService.findByUsernameOrThrow(message.getText()).getId();
         long gameId = scoresStateCache.get(userId).getGameId();
         Scores scores = scoresService.findByUserIdAndGameId(userIdToCount, gameId);
         scoresService.deleteAllStatuses(scores);

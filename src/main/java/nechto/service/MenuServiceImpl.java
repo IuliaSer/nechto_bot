@@ -24,7 +24,7 @@ public class MenuServiceImpl implements MenuService {
   private static final Map<Authority, List<BotCommand>> menu = Map.of(
       ROLE_ADMIN, List.of(
                   new BotCommand("/create_game", "создать игру"),
-                  new BotCommand("/start_count", "посчитать очки конкретного игрока"),
+                  new BotCommand("/start_count", "посчитать очки"),
                   new BotCommand("/show_results", "показать результаты"),
                   new BotCommand("/change_game", "изменить игру")),
       ROLE_USER,  List.of(
@@ -32,7 +32,7 @@ public class MenuServiceImpl implements MenuService {
                   new BotCommand("/show_results", "показать результаты")),
       ROLE_OWNER, List.of(
               new BotCommand("/create_game", "создать игру"),
-              new BotCommand("/start_count", "посчитать очки конкретного игрока"),
+              new BotCommand("/start_count", "посчитать очки"),
               new BotCommand("/show_results", "показать результаты"),
               new BotCommand("/change_game", "изменить игру"),
               new BotCommand("/make_admin", "сделать пользователя админом"),

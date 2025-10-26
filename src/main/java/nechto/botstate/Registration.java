@@ -37,6 +37,8 @@ public class Registration implements BotState {
             userService.save(user);
         } catch (EntityAlreadyExistsException e) {
             return getSendMessage(userId, "Пользователь с таким ником уже существует");
+        } catch (Exception e) {
+            return getSendMessage(userId, "Не удалось сохранить пользователя");
         }
 
         return getSendMessage(userId, "Вы успешно зарегистрированы как " + name + " (" + nickname + ")");

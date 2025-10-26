@@ -10,8 +10,7 @@ CREATE TABLE if not exists USERS (
                       id BIGSERIAL NOT NULL,
                       name varchar(255),
                       username varchar(255) NOT NULL,
-                      password varchar(255),
-                      authority varchar(255),
+                      authority varchar(255) NOT NULL DEFAULT 'ROLE_USER',
                       PRIMARY KEY (id),
                       UNIQUE(name, username)
 );

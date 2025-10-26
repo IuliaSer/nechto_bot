@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
     ResponseUserDto save(RequestUserDto userDto);
 
-    ResponseUserDto findByUsername(String login);
+    ResponseUserDto findByUsernameOrThrow(String login);
 
     List<ResponseUserDto> findAll();
 
@@ -21,8 +21,6 @@ public interface UserService {
     void makeAdmin(Long userId);
 
     void makeUser(Long userId);
-
-    ResponseUserDto updateUser(FullUserDto user);
 
     Optional<ResponseUserDto> findById(Long id);
 }

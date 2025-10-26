@@ -30,17 +30,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseUserDto save(RequestUserDto userDto) {
         if (userRepository.findByUsername(userDto.getUsername()) != null) {
-            throw new EntityAlreadyExistsException("A user with this login already exists");
+            throw new EntityAlreadyExistsException(format("Пользователь с таким ником %s уже существует", userDto.getUsername()));
         }
-//        userDto.setAuthority(ROLE_ADMIN);
         return userMapper.convertToResponseUserDto(userRepository.save(userMapper.convertToUser(userDto)));
     }
 
     @Override
-    public ResponseUserDto findByUsername(String username) {
+    public ResponseUserDto findByUsernameOrThrow(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new EntityNotFoundException(String.format("Пользователь с ником %s не существует", username));
+            throw new EntityNotFoundException(format("Пользователь с ником %s не существует", username));
         }
         return userMapper.convertToResponseUserDto(user);
     }
@@ -86,17 +85,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("User with id %s not found", userId)));
         user.setAuthority(ROLE_USER);
         userRepository.save(user);
-    }
-
-    @Override
-    public ResponseUserDto updateUser(FullUserDto userDto) {
-        User user = User.builder()
-                        .id(userDto.getId())
-                        .name(userDto.getName())
-                        .username(userDto.getUsername())
-                        .authority(userDto.getAuthority())
-                        .build();
-        return userMapper.convertToResponseUserDto(userRepository.save(user));
     }
 
 }

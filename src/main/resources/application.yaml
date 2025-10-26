@@ -6,8 +6,7 @@ spring:
     properties:
       hibernate.default_schema: nechto
   datasource:
-    show_sql: true
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=nechto
+    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=nechto
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
@@ -19,10 +18,6 @@ spring:
       httpclient:
         hc5:
           enabled: false
-      multipart:
-        enabled: true
-      okhttp:
-        enabled: true
       client:
         config:
           telegram:
@@ -38,7 +33,7 @@ spring:
         springframework:
           security: debug
 telegrambot:
-  webHookPath: https://9c75786e9920.ngrok-free.app
+  webHookPath: https://7a7af00cfb51.ngrok-free.app
   userName: nechto21_bot
   botToken: 8086975968:AAEWRBWduBoPDT7TUJpFlO5s_fOVvkvqSvY
 server:

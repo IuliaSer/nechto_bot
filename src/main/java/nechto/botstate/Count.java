@@ -31,7 +31,7 @@ public class Count implements BotState {
         long userId = message.getFrom().getId();
         String userName = message.getText();
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
-        long userIdToCount = userService.findByUsername(userName).getId();
+        long userIdToCount = userService.findByUsernameOrThrow(userName).getId();
         long gameId = scoresStateCache.get(userId).getGameId();
 
         gameService.addUser(gameId, userIdToCount);

@@ -61,9 +61,7 @@ public class ShowResults implements BotState {
 
         for (Scores score : scores) {
             float flamethrowerScores = 0;
-
             List<String> opjStatusesList = new ArrayList<>();
-
             ScoresDto scoresDto = new ScoresDto();
 
             for (Status status : score.getStatuses()) {
