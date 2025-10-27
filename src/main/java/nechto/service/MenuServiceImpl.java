@@ -26,20 +26,25 @@ public class MenuServiceImpl implements MenuService {
                   new BotCommand("/create_game", "создать игру"),
                   new BotCommand("/start_count", "посчитать очки"),
                   new BotCommand("/show_results", "показать результаты"),
+                  new BotCommand("/show_results_for_a_period", "показать результаты за период"),
                   new BotCommand("/change_game", "изменить игру")),
       ROLE_USER,  List.of(
                   new BotCommand("/register", "зарегистрироваться"),
-                  new BotCommand("/show_results", "показать результаты")),
+                  new BotCommand("/show_results", "показать результаты"),
+                  new BotCommand("/show_results_for_a_period", "показать результаты за период")),
+
       ROLE_OWNER, List.of(
               new BotCommand("/create_game", "создать игру"),
               new BotCommand("/start_count", "посчитать очки"),
               new BotCommand("/show_results", "показать результаты"),
+                  new BotCommand("/show_results_for_a_period", "показать результаты за период"),
               new BotCommand("/change_game", "изменить игру"),
               new BotCommand("/make_admin", "сделать пользователя админом"),
                   new BotCommand("/make_user", "забрать права админа"))
   );
 
   private final TelegramFeignClient telegram;
+
   private final UserInfoCache userInfoCache;
 
   /**

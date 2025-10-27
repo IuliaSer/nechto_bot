@@ -5,6 +5,7 @@ import nechto.dto.request.RequestScoresDto;
 import nechto.entity.Scores;
 import nechto.enums.Status;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ScoresService {
@@ -23,4 +24,6 @@ public interface ScoresService {
     void deleteAllStatuses(Scores scores);
 
     void deleteById(long id);
+
+    List<Scores> findAllByGameIds(List<Long> gameIds);
 }

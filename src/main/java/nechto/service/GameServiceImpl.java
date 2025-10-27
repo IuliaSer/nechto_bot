@@ -14,6 +14,7 @@ import nechto.repository.GameRepository;
 import nechto.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class GameServiceImpl implements GameService {
         try {
             gameSaved = gameRepository.save(game);
         } catch (Exception e) {
-            throw new EntityAlreadyExistsException("Пользователь уже добавлен в игру");
+            throw new EntityAlreadyExistsException("Пользователь уже добавлен в игру. Введите другого пользователя");
         }
         return gameMapper.convertToResponseGameDto(gameSaved);
     }
@@ -98,5 +99,13 @@ public class GameServiceImpl implements GameService {
     @Override
     public Optional<Game> findLastGameByUserId(Long userId) {
         return gameRepository.findTopByScores_User_IdOrderByIdDesc(userId);
+    }
+
+    @Override
+    public List<Long> findAllByDate(LocalDateTime start, LocalDateTime end) {
+        return gameRepository.findAllByDateBetween(start, end)
+                .stream()
+                .map(Game::getId)
+                .toList();
     }
 }

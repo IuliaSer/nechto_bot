@@ -13,6 +13,7 @@ public enum BotCommand {
     START_ADD("^/start\\s+add.*$", EnumSet.allOf(Authority.class), BotState.ADD_USER),
     START_COUNT("^/start_count$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.START_COUNT),
     SHOW_RESULTS("^/show_results$", EnumSet.allOf(Authority.class), BotState.SHOW_RESULTS),
+    SHOW_RESULTS_FOR_A_PERIOD("^/show_results_for_a_period$", EnumSet.allOf(Authority.class), BotState.START_SHOW_RESULTS_FOR_A_PERIOD),
     CHANGE_GAME("^/change_game$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.START_CHANGE_GAME),
     MAKE_ADMIN("^/make_admin$", EnumSet.of(ROLE_OWNER), BotState.MAKE_ADMIN_START),
     MAKE_USER("^/make_user$", EnumSet.of(ROLE_OWNER), BotState.MAKE_USER_START);

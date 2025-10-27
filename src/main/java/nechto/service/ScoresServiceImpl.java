@@ -91,4 +91,9 @@ public class ScoresServiceImpl implements ScoresService {
     public void deleteById(long id) {
         scoresRepository.deleteById(id);
     }
+
+    @Override
+    public List<Scores> findAllByGameIds(List<Long> gameIds) {
+        return scoresRepository.findAllByGameIds(gameIds);
+    }
 }
