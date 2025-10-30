@@ -20,7 +20,7 @@ public class CallbackQueryHandler {
         try {
             return buttonProcessor.processButton(callbackQuery, buttonName, userId);
         } catch (Exception e) {
-            return getSendMessage(userId, "Кнопка не найдена.");
+            return getSendMessage(userId, e.getMessage());
         }
     }
 }

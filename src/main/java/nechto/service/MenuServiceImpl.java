@@ -25,19 +25,25 @@ public class MenuServiceImpl implements MenuService {
       ROLE_ADMIN, List.of(
                   new BotCommand("/create_game", "создать игру"),
                   new BotCommand("/start_count", "посчитать очки"),
-                  new BotCommand("/show_results", "показать результаты"),
-                  new BotCommand("/show_results_for_a_period", "показать результаты за период"),
+                  new BotCommand("/results_for_a_game", "показать результаты за последнюю игру"),
+                  new BotCommand("/results_for_a_day", "показать результаты за день"),
+                  new BotCommand("/results_for_a_month", "показать результаты за месяц"),
+                  new BotCommand("/results_for_a_quarter", "показать результаты за квартал"),
                   new BotCommand("/change_game", "изменить игру")),
       ROLE_USER,  List.of(
                   new BotCommand("/register", "зарегистрироваться"),
-                  new BotCommand("/show_results", "показать результаты"),
-                  new BotCommand("/show_results_for_a_period", "показать результаты за период")),
+                  new BotCommand("/results_for_a_game", "показать результаты за последнюю игру"),
+                  new BotCommand("/results_for_a_day", "показать результаты за день"),
+          new BotCommand("/results_for_a_month", "показать результаты за месяц"),
+          new BotCommand("/results_for_a_quarter", "показать результаты за квартал")),
 
       ROLE_OWNER, List.of(
               new BotCommand("/create_game", "создать игру"),
               new BotCommand("/start_count", "посчитать очки"),
-              new BotCommand("/show_results", "показать результаты"),
-                  new BotCommand("/show_results_for_a_period", "показать результаты за период"),
+              new BotCommand("/results_for_a_game", "показать результаты за последнюю игру"),
+                          new BotCommand("/results_for_a_day", "показать результаты за день"),
+                          new BotCommand("/results_for_a_month", "показать результаты за месяц"),
+                          new BotCommand("/results_for_a_quarter", "показать результаты за квартал"),
               new BotCommand("/change_game", "изменить игру"),
               new BotCommand("/make_admin", "сделать пользователя админом"),
                   new BotCommand("/make_user", "забрать права админа"))

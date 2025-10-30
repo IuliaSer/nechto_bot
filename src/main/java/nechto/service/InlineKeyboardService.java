@@ -5,7 +5,9 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.time.YearMonth;
 import java.util.List;
+import java.util.Locale;
 
 public interface InlineKeyboardService {
     SendMessage returnButtonsWithCommandStatuses(Long chatId);
@@ -30,6 +32,9 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsForChangingGame(Long chatId);
 
+    // генерация клавиатуры-календаря
+    InlineKeyboardMarkup buildCalendar(long userId, YearMonth ym, Locale locale);
+
     InlineKeyboardButton createButton(String name, String callBackDataName);
 
     InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine);
@@ -51,4 +56,6 @@ public interface InlineKeyboardService {
     InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHumanFlamethrower(int flamethrowerAmount);
 
     InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHuman(int flamethrowerAmount);
+
+    InlineKeyboardMarkup buildMonthCalendar(long userId, YearMonth now, Locale ru);
 }

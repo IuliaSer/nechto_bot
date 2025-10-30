@@ -25,10 +25,12 @@ public class ButtonProcessorImpl implements ButtonProcessor {
 
     @Override
     public BotApiMethod<?> processButton(CallbackQuery callbackQuery, String buttonName, Long userId) {
-        if (buttonActionMap.containsKey(buttonName)) {
-            return buttonActionMap.get(buttonName).onButtonPressed(callbackQuery, userId);
-        } else {
-            throw new RuntimeException("Unknown button pressed");
-        }
+            return
+                    buttonActionMap.entrySet()
+                            .stream()
+                            .filter(e -> (buttonName).startsWith(e.getKey()))
+                            .map(Map.Entry::getValue)
+                                    .findFirst().orElseThrow(() -> new RuntimeException("Команда не найдена"))
+                            .onButtonPressed(callbackQuery, userId);
     }
 }

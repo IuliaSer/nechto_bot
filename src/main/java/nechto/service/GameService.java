@@ -24,4 +24,5 @@ public interface GameService {
     Optional<Game> findLastGameByUserId(Long userId);
 
     List<Long> findAllByDate(LocalDateTime startPeriod, LocalDateTime endPeriod);
+
 }

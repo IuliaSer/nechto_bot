@@ -22,4 +22,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     @Query("select g from Game g where g.date >= :start and g.date < :end")
     List<Game> findAllByDateBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+    List<Game> findAllByDate(LocalDateTime day);
 }

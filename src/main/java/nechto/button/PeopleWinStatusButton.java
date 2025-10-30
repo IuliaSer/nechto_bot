@@ -25,7 +25,7 @@ public class PeopleWinStatusButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().getName())) {
+        if(!buttonService.isActive(getButton().name())) {
             return null;
         }
         scoresStateCache.get(userId).setCommandStatus(PEOPLE_WIN);

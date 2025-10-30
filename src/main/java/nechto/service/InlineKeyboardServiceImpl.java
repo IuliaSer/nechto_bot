@@ -8,12 +8,21 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static nechto.enums.Button.ANTI_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.BURNED_BUTTON;
+import static nechto.enums.Button.CALNAV_BUTTON;
+import static nechto.enums.Button.CALNOOP_BUTTON;
+import static nechto.enums.Button.CAL_BUTTON;
 import static nechto.enums.Button.CHANGE_NEXT_BUTTON;
+import static nechto.enums.Button.CONFIRM_MONTH_BUTTON;
 import static nechto.enums.Button.CONTAMINATED_BUTTON;
 import static nechto.enums.Button.COUNT_NEXT_BUTTON;
 import static nechto.enums.Button.DANGEROUS_BUTTON;
@@ -104,7 +113,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2, rowInLine3);
 
-        return getSendMessage(chatId, "Выберите все аттрибуты:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выберите все аттрибуты по очереди:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -122,7 +131,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
-        return getSendMessage(chatId, "Выберите все аттрибуты:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выберите все аттрибуты по очереди:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -179,13 +188,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
         return getSendMessage(chatId, "Что дальше?", inlineKeyboardMarkup);
-    }
-
-    @Override
-    public InlineKeyboardButton createButton(String name, String callBackDataName) {
-        var button = new InlineKeyboardButton(name);
-        button.setCallbackData(callBackDataName);
-        return button;
     }
 
     @Override
@@ -280,5 +282,71 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonEndCount);
 
         return createInlineKeyboard(rowInLine, rowInLine2);
+    }
+
+    @Override
+    public InlineKeyboardMarkup buildMonthCalendar(long userId, YearMonth ym, Locale locale) {
+        String title = ym.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, locale) + " " + ym.getYear();
+        var confirmMonth = createButton("Посмотреть за месяц", CONFIRM_MONTH_BUTTON.name() + ":"
+                + ym.getYear() + "-" + ym.getMonth().getValue());
+
+        List<InlineKeyboardButton> rowInLine = List.of(
+                createButton("◀️", CALNAV_BUTTON.name() + ":" + ym.minusMonths(1)),
+                createButton("📅 " + title, CALNOOP_BUTTON.name()),
+                createButton("▶️", CALNAV_BUTTON.name() + ":" + ym.plusMonths(1)));
+        List<InlineKeyboardButton> rowInLine2 = List.of(confirmMonth);
+
+        return createInlineKeyboard(rowInLine, rowInLine2);
+    }
+
+    @Override
+    public InlineKeyboardMarkup buildCalendar(long userId, YearMonth ym, Locale locale) {
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        // Заголовок с месяцем
+        String title = ym.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, locale) + " " + ym.getYear();
+        rows.add(List.of(
+                createButton("◀️", CALNAV_BUTTON.name() + ":" + ym.minusMonths(1)),
+                createButton("📅 " + title, CALNOOP_BUTTON.name()),
+                createButton("▶️", CALNAV_BUTTON.name() + ":" + ym.plusMonths(1))));
+
+        // Шапка дней недели (Пн..Вс)
+        DayOfWeek firstDow = DayOfWeek.MONDAY; // или из настроек
+        List<InlineKeyboardButton> dowRow = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            DayOfWeek dow = firstDow.plus(i);
+            dowRow.add(createButton(dow.getDisplayName(TextStyle.NARROW, locale), CALNOOP_BUTTON.name()));
+        }
+        rows.add(dowRow);
+
+        // Пустые ячейки до первого дня
+        LocalDate first = ym.atDay(1);
+        int shift = (first.getDayOfWeek().getValue() - firstDow.getValue() + 7) % 7;
+        List<InlineKeyboardButton> week = new ArrayList<>();
+        for (int i = 0; i < shift; i++) {
+            week.add(createButton(" ", CALNOOP_BUTTON.name()));
+        }
+
+        // Дни месяца
+        for (int d = 1; d <= ym.lengthOfMonth(); d++) {
+            LocalDate date = ym.atDay(d);
+            week.add(createButton(String.valueOf(d), CAL_BUTTON.name() + ":" + date));
+            if (week.size() == 7) {
+                rows.add(week); week = new ArrayList<>();
+            }
+        }
+        if (!week.isEmpty()) {
+            while (week.size() < 7) {
+                week.add(createButton(" ", CALNOOP_BUTTON.name()));
+            }
+            rows.add(week);
+        }
+        return new InlineKeyboardMarkup(rows);
+    }
+
+    @Override
+    public InlineKeyboardButton createButton(String name, String callBackDataName) {
+        var button = new InlineKeyboardButton(name);
+        button.setCallbackData(callBackDataName);
+        return button;
     }
 }

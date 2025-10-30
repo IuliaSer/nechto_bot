@@ -32,7 +32,7 @@ public abstract class RoleButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().getName())) {
+        if(!buttonService.isActive(getButton().name())) {
             return null;
         }
         buttonService.deactivateButtons(NECHTO_BUTTON.name(), HUMAN_BUTTON.name(), CONTAMINATED_BUTTON.name(),
