@@ -2,7 +2,6 @@ package nechto.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import nechto.dto.request.FullUserDto;
 import nechto.dto.request.RequestUserDto;
 import nechto.dto.response.ResponseUserDto;
 import nechto.entity.User;
@@ -62,8 +61,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ResponseUserDto> findUsersOrderedByGamesAmount() {
-        return userMapper.convertToListOfResponseUserDto(userRepository.findAllOrderedByGameAmount());
+    public List<ResponseUserDto> findAllByGameId(Long gameId) {
+        return userMapper.convertToListOfResponseUserDto(userRepository.findAllByGameId(gameId));
     }
 
     @Override

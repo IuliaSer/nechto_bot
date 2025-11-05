@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import nechto.enums.Authority;
 
-
 @Data
 public class FullUserDto {
     @NotNull(message = "Id should not be null")

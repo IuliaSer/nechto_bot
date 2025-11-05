@@ -15,6 +15,7 @@ import static nechto.enums.Button.CAL_BUTTON;
 @Component
 public class CalButton implements Button {
     private final ShowResultsService showResultsService;
+
     @Override
     public nechto.enums.Button getButton() {
         return CAL_BUTTON;

@@ -24,6 +24,6 @@ public class MakeUserStart implements BotState {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         botStateCache.saveBotState(userId, MAKE_USER);
-        return getSendMessage(userId, "Введите ник игрока, которого надо сделать пользователем:"); //или забрать права :)
+        return getSendMessage(userId, "Введите ник игрока, у которого надо забрать права админа:");
     }
 }

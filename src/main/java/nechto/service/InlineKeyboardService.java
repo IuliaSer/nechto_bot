@@ -20,6 +20,10 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsForContaminated(Long chatId);
 
+    SendMessage returnButtonsForLastContaminated(Long chatId);
+
+    SendMessage returnButtonsForBurned(Long chatId);
+
     SendMessage returnButtonsForNechto(Long chatId);
 
     SendMessage getMessageWithInlineMurkupPlusMinus(Long chatId, int flamethrowerAmount);
@@ -32,17 +36,13 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsForChangingGame(Long chatId);
 
-    // генерация клавиатуры-календаря
+    InlineKeyboardMarkup returnButtonsWithUsers(Long userId, Long gameId);
+
     InlineKeyboardMarkup buildCalendar(long userId, YearMonth ym, Locale locale);
 
     InlineKeyboardButton createButton(String name, String callBackDataName);
 
-    InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine);
-
-    InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine, List<InlineKeyboardButton> rowInLine2);
-
-    InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton> rowInLine, List<InlineKeyboardButton> rowInLine2,
-                                              List<InlineKeyboardButton> rowInLine3);
+    InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton>... rows);
 
     EditMessageText editeMessageForInlineKeyboardPlusMinus(long chatId, int messageId, String text, int flamethrowerAmount);
 

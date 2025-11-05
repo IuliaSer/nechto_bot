@@ -25,21 +25,10 @@ public class ScoresServiceImpl implements ScoresService {
     private final StatusProcessor statusProcessor;
 
     @Override
-    public ResponseScoresDto update(RequestScoresDto scoresDto) {
-        Long userId = scoresDto.getUserId();
-        Long gameId = scoresDto.getGameId();
-        Scores scores = scoresRepository.findByUserIdAndGameId(userId, gameId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        format("Scores with user id %s and game id %s not found", userId, gameId)));
-        scores.setStatuses(scoresDto.getStatuses());
-        return scoresMapper.convertToResponseScoresDto(scoresRepository.save(scores));
-    }
-
-    @Override
     public Scores findByUserIdAndGameId(long userId, long gameId) {
         return scoresRepository.findByUserIdAndGameId(userId, gameId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        format("Scores with user id %s and game id %s not found", userId, gameId)));
+                        format("Для введенного пользователя отсутствуют очки", userId, gameId)));
     }
 
     @Override

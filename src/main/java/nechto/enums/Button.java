@@ -34,5 +34,6 @@ public enum Button {
     CALNAV_BUTTON,
     CAL_BUTTON,
     CALNOOP_BUTTON,
+    PICKED_BUTTON,
     CONFIRM_MONTH_BUTTON
 }

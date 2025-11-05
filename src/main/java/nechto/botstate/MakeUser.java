@@ -26,12 +26,12 @@ public class MakeUser implements BotState {
 
     @Override
     public BotApiMethod<?> process(Message message) {
-        final Long chatId = message.getChatId();
+        long userId = message.getFrom().getId();
         String messageText = message.getText();
         ResponseUserDto responseUserDto = userService.findByUsernameOrThrow(messageText);
         long userIdToMakeUser = responseUserDto.getId();
-        userService.makeAdmin(userIdToMakeUser);
+        userService.makeUser(userIdToMakeUser);
         menuService.refreshCommands(userIdToMakeUser, Authority.ROLE_USER);
-        return getSendMessage(chatId, format("Пользователь %s теперь является пользователем", messageText));
+        return getSendMessage(userId, format("У пользователя %s теперь отсутствуют права админа", messageText));
     }
 }

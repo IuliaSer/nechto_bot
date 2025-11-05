@@ -1,6 +1,5 @@
 package nechto.service;
 
-import nechto.dto.request.FullUserDto;
 import nechto.dto.request.RequestUserDto;
 import nechto.dto.response.ResponseUserDto;
 
@@ -14,7 +13,7 @@ public interface UserService {
 
     List<ResponseUserDto> findAll();
 
-    List<ResponseUserDto> findUsersOrderedByGamesAmount();
+    List<ResponseUserDto> findAllByGameId(Long gameId);
 
     void deleteUser(Long userId);
 

@@ -15,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import static nechto.enums.Button.BURNED_BUTTON;
 import static nechto.enums.Button.CONTAMINATED_BUTTON;
 import static nechto.enums.Button.HUMAN_BUTTON;
-import static nechto.enums.Button.LAST_CONTAMINATED_BUTTON;
 import static nechto.enums.Button.NECHTO_BUTTON;
 
 @RequiredArgsConstructor
@@ -36,7 +35,7 @@ public abstract class RoleButton implements Button {
             return null;
         }
         buttonService.deactivateButtons(NECHTO_BUTTON.name(), HUMAN_BUTTON.name(), CONTAMINATED_BUTTON.name(),
-                BURNED_BUTTON.name(), LAST_CONTAMINATED_BUTTON.name());
+                BURNED_BUTTON.name());
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();

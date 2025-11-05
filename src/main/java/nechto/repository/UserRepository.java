@@ -17,4 +17,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
         ORDER BY COUNT(u.id) DESC
     """, nativeQuery = true)
     List<User> findAllOrderedByGameAmount();
+
+    @Query(value = """
+        SELECT u.id, u.name, u.username, u.authority
+        FROM USERS u
+        INNER JOIN SCORES s ON u.id = s.user_id
+        WHERE s.game_id = :gameId
+    """, nativeQuery = true)
+    List<User> findAllByGameId(Long gameId);
 }
