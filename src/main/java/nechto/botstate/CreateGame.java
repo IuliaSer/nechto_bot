@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static java.lang.String.format;
 import static nechto.enums.BotState.CREATE_GAME;
 import static nechto.utils.BotUtils.getSendMessage;
 
@@ -34,6 +35,6 @@ public class CreateGame implements BotState {
         scoresStateCache.put(userId);
         scoresStateCache.get(userId).setGameId(gameId);
         scoresStateCache.get(userId).setGameIsFinished(false);
-        return getSendMessage(userId, "Вы успешно создали игру");
+        return getSendMessage(userId, format("Вы успешно создали игру %s", gameId));
     }
 }

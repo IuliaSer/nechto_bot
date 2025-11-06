@@ -54,7 +54,6 @@ import static nechto.utils.BotUtils.getSendMessage;
 @Component
 public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     private final ButtonService buttonService;
-    private final UserService userService;
 
     @Override
     public SendMessage returnButtonsWithCommandStatuses(Long chatId) {
@@ -312,10 +311,9 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
-    public InlineKeyboardMarkup returnButtonsWithUsers(Long userId, Long gameId) {
+    public InlineKeyboardMarkup returnButtonsWithUsers(List<ResponseUserDto> users) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<ResponseUserDto> users = userService.findAllByGameId(gameId);
         int buttonsInRow = 0;
         int lastRow = users.size() / 3;
         int amountOfRows = 0;

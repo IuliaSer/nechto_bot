@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.cache.BotStateCache;
 import nechto.cache.ScoresStateCache;
 import nechto.service.InlineKeyboardService;
+import nechto.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -19,6 +20,7 @@ public class PeopleWinStatusButton implements Button {
     private final ButtonService buttonService;
     private final BotStateCache botStateCache;
     private final InlineKeyboardService inlineKeyboardService;
+    private final UserService userService;
 
     @Override
     public nechto.enums.Button getButton() {
@@ -35,6 +37,6 @@ public class PeopleWinStatusButton implements Button {
 
         return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
                 "Выберите ник игрока, которого надо посчитать:",
-                inlineKeyboardService.returnButtonsWithUsers(userId, scoresStateCache.get(userId).getGameId()));
+                inlineKeyboardService.returnButtonsWithUsers(userService.findAllByGameId(scoresStateCache.get(userId).getGameId())));
     }
 }

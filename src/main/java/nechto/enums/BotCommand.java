@@ -11,12 +11,12 @@ public enum BotCommand {
     CREATE_GAME("^/create_game$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.CREATE_GAME),
     REGISTER("^/register$", EnumSet.allOf(Authority.class), BotState.START_REGISTRATION),
     START_ADD("^/start\\s+add.*$", EnumSet.allOf(Authority.class), BotState.ADD_USER),
-    START_COUNT("^/start_count$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.START_COUNT),
+    START_COUNT("^/count$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.COUNT),
     SHOW_RESULTS("^/results_for_a_game$", EnumSet.allOf(Authority.class), BotState.SHOW_RESULTS),
     SHOW_RESULTS_FOR_A_DAY("^/results_for_a_day$", EnumSet.allOf(Authority.class), BotState.SHOW_RESULTS_FOR_A_DAY),
     SHOW_RESULTS_FOR_A_MONTH("^/results_for_a_month$", EnumSet.allOf(Authority.class), BotState.SHOW_RESULTS_FOR_A_MONTH),
     SHOW_RESULTS_FOR_A_QUARTER("^/results_for_a_quarter$", EnumSet.allOf(Authority.class), BotState.SHOW_RESULTS_FOR_A_QUARTER),
-    CHANGE_GAME("^/change_game$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.START_CHANGE_GAME),
+    CHANGE_GAME("^/change_game$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.CHANGE_GAME),
     MAKE_ADMIN("^/make_admin$", EnumSet.of(ROLE_OWNER), BotState.MAKE_ADMIN_START),
     MAKE_USER("^/make_user$", EnumSet.of(ROLE_OWNER), BotState.MAKE_USER_START);
 

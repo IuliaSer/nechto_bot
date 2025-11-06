@@ -1,11 +1,10 @@
 package nechto.botstate;
 
 import lombok.RequiredArgsConstructor;
-import nechto.entity.Scores;
-import nechto.service.ScoresService;
-import nechto.service.UserService;
-import nechto.service.InlineKeyboardService;
 import nechto.cache.ScoresStateCache;
+import nechto.dto.CachedScoresDto;
+import nechto.service.InlineKeyboardService;
+import nechto.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -15,10 +14,9 @@ import static nechto.enums.BotState.CHANGE_GAME;
 @RequiredArgsConstructor
 @Component
 public class ChangeGame implements BotState {
-    private final UserService userService;
-    private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCache scoresStateCache;
-    private final ScoresService scoresService;
+    private final InlineKeyboardService inlineKeyboardService;
+    private final UserService userService;
 
     @Override
     public nechto.enums.BotState getBotState() {
@@ -28,14 +26,10 @@ public class ChangeGame implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        long userIdToCount = userService.findByUsernameOrThrow(message.getText()).getId();
-        long gameId = scoresStateCache.get(userId).getGameId();
-        Scores scores = scoresService.findByUserIdAndGameId(userIdToCount, gameId);
-        scoresService.deleteAllStatuses(scores);
-
-        scoresStateCache.get(userId).setUserId(userIdToCount);
-
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
+        cachedScoresDto.setUsers(userService.findAllByGameId(cachedScoresDto.getGameId()));
         return inlineKeyboardService.returnButtonsWithCommandStatuses(userId);
+
     }
 
 }

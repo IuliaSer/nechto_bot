@@ -1,5 +1,6 @@
 package nechto.service;
 
+import nechto.dto.response.ResponseUserDto;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -36,7 +37,7 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsForChangingGame(Long chatId);
 
-    InlineKeyboardMarkup returnButtonsWithUsers(Long userId, Long gameId);
+    InlineKeyboardMarkup returnButtonsWithUsers(List<ResponseUserDto> users);
 
     InlineKeyboardMarkup buildCalendar(long userId, YearMonth ym, Locale locale);
 
