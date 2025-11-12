@@ -1,6 +1,7 @@
 package nechto.button.flamethrower;
 
 import lombok.RequiredArgsConstructor;
+import nechto.button.ButtonService;
 import nechto.dto.CachedScoresDto;
 import nechto.service.InlineKeyboardService;
 import nechto.button.Button;
@@ -16,6 +17,7 @@ import static nechto.enums.Button.ANTI_HUMAN_FLAMETHROWER_BUTTON;
 public class AntiHumanFlamethrowerButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCache scoresStateCache;
+    private final ButtonService buttonService;
 
     @Override
     public nechto.enums.Button getButton() {
@@ -24,9 +26,12 @@ public class AntiHumanFlamethrowerButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
+        if(!buttonService.isActive(getButton().name())) {
+            return null;
+        }
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         int antiHumanFlamethrowerAmount = cachedScoresDto.getAntiHumanFlamethrowerAmount();
-        
+        buttonService.deactivateButtons(getButton().name());
         return inlineKeyboardService.getMessageWithInlineMurkupPlusMinusAntiHuman(userId, antiHumanFlamethrowerAmount);
     }
 }

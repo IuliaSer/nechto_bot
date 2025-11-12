@@ -29,7 +29,8 @@ public class NechtoButton extends RoleButton {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        super.onButtonPressed(callbackquery, userId);
-        return inlineKeyboardService.returnButtonsForNechto(userId);
+
+        return super.onButtonPressed(callbackquery, userId) != null ?
+                inlineKeyboardService.returnButtonsForNechto(userId) : null;
     }
 }

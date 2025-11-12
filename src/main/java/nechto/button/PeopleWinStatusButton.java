@@ -33,7 +33,6 @@ public class PeopleWinStatusButton implements Button {
             return null;
         }
         scoresStateCache.get(userId).setCommandStatus(PEOPLE_WIN);
-        botStateCache.saveBotState(userId, COUNT);
 
         return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
                 "Выберите ник игрока, которого надо посчитать:",

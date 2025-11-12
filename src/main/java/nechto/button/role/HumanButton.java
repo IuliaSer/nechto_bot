@@ -16,7 +16,6 @@ import static nechto.enums.Button.HUMAN_BUTTON;
 public class HumanButton extends RoleButton {
     private final InlineKeyboardService inlineKeyboardService;
 
-
     public HumanButton(ScoresStateCache scoresStateCache, ScoresService scoresService,
                        InlineKeyboardService inlineKeyboardService, ButtonService buttonService, ButtonStatusCache buttonStatusCache) {
         super(scoresStateCache, scoresService, inlineKeyboardService, buttonService, buttonStatusCache);
@@ -30,7 +29,7 @@ public class HumanButton extends RoleButton {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        super.onButtonPressed(callbackquery, userId);
-        return inlineKeyboardService.returnButtonsForHuman(userId);
+        return super.onButtonPressed(callbackquery, userId) != null ?
+                inlineKeyboardService.returnButtonsForHuman(userId) : null;
     }
 }

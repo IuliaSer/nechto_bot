@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestGameDto;
 import nechto.service.GameService;
 import nechto.cache.ScoresStateCache;
+import nechto.service.QrCodeGenerator;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -20,6 +21,7 @@ import static nechto.utils.BotUtils.getSendMessage;
 public class CreateGame implements BotState {
     private final GameService gameService;
     private final ScoresStateCache scoresStateCache;
+    private final QrCodeGenerator qrCodeGenerator;
 
     @Override
     public nechto.enums.BotState getBotState() {
@@ -32,9 +34,11 @@ public class CreateGame implements BotState {
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>());
         long gameId = gameService.save(requestGameDto).getId();
 
+        qrCodeGenerator.generateQrCode(String.valueOf(gameId), String.valueOf(userId));
+
         scoresStateCache.put(userId);
         scoresStateCache.get(userId).setGameId(gameId);
         scoresStateCache.get(userId).setGameIsFinished(false);
-        return getSendMessage(userId, format("Вы успешно создали игру %s", gameId));
+        return getSendMessage(userId, format("Перейдите по ссылке, добавьтесь в игру %s", gameId));
     }
 }

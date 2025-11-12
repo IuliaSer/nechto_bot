@@ -24,7 +24,10 @@ public class ButtonServiceImpl implements ButtonService {
     @Override
     public void deactivateButtons(String... names) {
         for (String buttonToInactivate: names) {
-            buttonsCache.get(buttonToInactivate).setActive(false);
+            ButtonInfo buttonInfo = buttonsCache.get(buttonToInactivate);
+            if (buttonInfo != null) {
+                buttonInfo.setActive(false);
+            }
         }
     }
 
