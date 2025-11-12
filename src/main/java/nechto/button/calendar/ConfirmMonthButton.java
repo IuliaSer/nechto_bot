@@ -1,6 +1,7 @@
-package nechto.button;
+package nechto.button.calendar;
 
 import lombok.RequiredArgsConstructor;
+import nechto.button.Button;
 import nechto.service.ShowResultsService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
