@@ -30,7 +30,7 @@ public class LastContaminatedButton extends RoleButton {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        super.onButtonPressed(callbackquery, userId);
-        return inlineKeyboardService.returnButtonsForLastContaminated(userId);
+        return super.onButtonPressed(callbackquery, userId) != null ?
+                inlineKeyboardService.returnButtonsForLastContaminated(userId) : null;
     }
 }

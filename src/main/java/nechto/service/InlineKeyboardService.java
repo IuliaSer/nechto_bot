@@ -41,10 +41,6 @@ public interface InlineKeyboardService {
 
     InlineKeyboardMarkup buildCalendar(long userId, YearMonth ym, Locale locale);
 
-    InlineKeyboardButton createButton(String name, String callBackDataName);
-
-    InlineKeyboardMarkup createInlineKeyboard(List<InlineKeyboardButton>... rows);
-
     EditMessageText editeMessageForInlineKeyboardPlusMinus(long chatId, int messageId, String text, int flamethrowerAmount);
 
 

@@ -18,7 +18,8 @@ public enum Status {
         FLAMETHROWER("огнемет"),
         ANTI_HUMAN_FLAMETHROWER("огнемет против человека"),
         BURNED("с"),
-        PENALTY("штраф");
+        PENALTY("штраф"),
+        LAST_CONTAMINATED_LOOSE("з");
 
         private String name;
 
