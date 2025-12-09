@@ -24,7 +24,10 @@ public class CountNextButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        buttonService.deactivateAllButtons(); // нужно ли? ведь были конкретные кнопки
+        if(!buttonService.isActive(getButton().name())) {
+            return null;
+        }
+        buttonService.deactivateButtons(getButton().name());
 
         return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
                 "Выберите ник игрока, которого надо посчитать:",

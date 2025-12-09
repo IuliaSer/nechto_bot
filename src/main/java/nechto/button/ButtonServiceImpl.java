@@ -5,6 +5,8 @@ import nechto.cache.ButtonsCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import static nechto.enums.Button.PICKED_BUTTON;
+
 @RequiredArgsConstructor
 @Component
 public class ButtonServiceImpl implements ButtonService {
@@ -46,5 +48,12 @@ public class ButtonServiceImpl implements ButtonService {
     @Override
     public void deactivateAllButtons() {
         buttonsCache.getValues().forEach(buttonInfo -> buttonInfo.setActive(false));
+    }
+
+    @Override
+    public void deactivateAllPickedUserButtons() {
+        buttonsCache.getValues().stream()
+                .filter(b -> b.getButton().getCallbackData().startsWith(PICKED_BUTTON.name()))
+                .forEach(buttonInfo -> buttonInfo.setActive(false));
     }
 }

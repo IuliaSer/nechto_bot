@@ -22,6 +22,7 @@ public class PickedUserButton implements Button {
     private final ScoresStateCache scoresStateCache;
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresService scoresService;
+    private final ButtonService buttonService;
 
     @Override
     public nechto.enums.Button getButton() {
@@ -30,13 +31,19 @@ public class PickedUserButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = callbackQuery.getData();
+        if(!buttonService.isActive(buttonName)) {
+            return null;
+        }
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
-        long userIdToCount = Long.parseLong(callbackQuery.getData().substring(PICKED_BUTTON.name().length()));
+        long userIdToCount = Long.parseLong(buttonName.substring(PICKED_BUTTON.name().length()));
         clearStatusesIfGameIsChanging(cachedScoresDto, userIdToCount);
 
         List<ResponseUserDto> users = cachedScoresDto.getUsers();
-        users.removeIf(user -> user.getId().equals(userIdToCount));
+        users.removeIf(user -> user.getId().equals(userIdToCount)); 
+
+        buttonService.deactivateAllPickedUserButtons();
         return scoresStateCache.get(userId).getCommandStatus().equals(CommandStatus.NECHTO_WIN) ?
                 inlineKeyboardService.returnButtonsWithRolesForNechtoWin(userId) :
                 inlineKeyboardService.returnButtonsWithRolesForHumanWin(userId);

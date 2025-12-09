@@ -29,6 +29,7 @@ public class EndCountButton implements Button {
     private final ScoresStateCache scoresStateCache;
     private final ScoresService scoresService;
     private final InlineKeyboardService inlineKeyboardService;
+    private final ButtonService buttonService;
 
     @Override
     public nechto.enums.Button getButton() {
@@ -37,6 +38,11 @@ public class EndCountButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
+        if(!buttonService.isActive(getButton().name())) {
+            return null;
+        }
+        buttonService.deactivateButtons(getButton().name());
+
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();
         long gameId = cachedScoresDto.getGameId();

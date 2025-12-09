@@ -1,7 +1,6 @@
 package nechto.button;
 
 import lombok.RequiredArgsConstructor;
-import nechto.cache.BotStateCache;
 import nechto.cache.ScoresStateCache;
 import nechto.service.InlineKeyboardService;
 import nechto.service.UserService;
@@ -18,7 +17,6 @@ import static nechto.utils.BotUtils.getEditMessageWithInlineMarkup;
 public class NechtoWinStatusButton implements Button {
     private final ScoresStateCache scoresStateCache;
     private final ButtonService buttonService;
-    private final BotStateCache botStateCache;
     private final InlineKeyboardService inlineKeyboardService;
     private final UserService userService;
 
@@ -32,6 +30,8 @@ public class NechtoWinStatusButton implements Button {
         if(!buttonService.isActive(getButton().name())) {
             return null;
         }
+        buttonService.deactivateButtons(getButton().name());
+
         scoresStateCache.get(userId).setCommandStatus(NECHTO_WIN);
 
         return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),

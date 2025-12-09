@@ -24,11 +24,17 @@ public class EndGameButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
+        if(!buttonService.isActive(getButton().name())) {
+            return null;
+        }
+
         long gameId = scoresStateCache.get(userId).getGameId();
 
         scoresService.countAndSaveAll(gameId);
-        buttonService.activateAllButtons();
         scoresStateCache.get(userId).setGameIsFinished(true);
+
+        buttonService.deactivateAllButtons();
+
         return getSendMessage(userId, "Успешно посчитано");
     }
 }

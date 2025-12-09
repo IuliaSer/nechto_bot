@@ -67,8 +67,8 @@ public class ShowResultsServiceImpl implements ShowResultsService {
         var aggs = scoresRepository.aggregateByUserBetween(range.start(), range.end());
 
         var t = new TableRenderer()
-                .addColumn("Ник", 4, true)
-                .addColumn("Очки", 5, false);
+                .addColumn("Ник", 4)
+                .addColumn(" Очки", 5);
         aggs.stream()
                 .sorted(Comparator.comparing(AggregateScoresDto::getScores).reversed())
                 .forEach(a -> t.addRow(a.getUsername(), NumFmt.withSign(a.getScores(), NumFmt.two(a.getScores()))));
@@ -86,9 +86,9 @@ public class ShowResultsServiceImpl implements ShowResultsService {
                 .toList();
 
         var t = new TableRenderer()
-                .addColumn("Ник", 4, true)
-                .addColumn("Коэф", 5, false)
-                .addColumn("Очки", 5, false);
+                .addColumn("Ник", 4)
+                .addColumn(" Коэф", 5)
+                .addColumn(" Очки", 5);
 
         for (var r : rows) {
             t.addRow(r.username(),
@@ -101,11 +101,11 @@ public class ShowResultsServiceImpl implements ShowResultsService {
     private String renderGame(List<ScoresDto> rows) {
         int maxNick = rows.stream().mapToInt(s -> s.getUsername().length()).max().orElse(4);
         var t = new TableRenderer()
-                .addColumn("Ник", Math.max(4, maxNick), true)
-                .addColumn("Роль", 5, true)
-                .addColumn("\uD83D\uDD25", 5, false)
-                .addColumn("о/п/ж", 7, true)
-                .addColumn("Очки", 5, false);
+                .addColumn("Ник", Math.max(4, maxNick))
+                .addColumn("Роль", 5)
+                .addColumn("\uD83D\uDD25", 5)
+                .addColumn("о/п/ж", 7)
+                .addColumn(" Очки", 5);
 
         for (var s : rows) {
             t.addRow(s.getUsername(),
