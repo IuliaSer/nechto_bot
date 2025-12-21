@@ -1,27 +1,28 @@
-package nechto.button.flamethrower;
+package nechto.button;
 
 import lombok.RequiredArgsConstructor;
-import nechto.button.ButtonService;
-import nechto.dto.CachedScoresDto;
-import nechto.service.InlineKeyboardService;
-import nechto.button.Button;
 import nechto.cache.ScoresStateCache;
+import nechto.dto.CachedScoresDto;
+import nechto.enums.Status;
+import nechto.service.InlineKeyboardService;
+import nechto.service.ScoresService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.enums.Button.FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.YES_LAST_CONTAMINATED_BUTTON;
 
 @RequiredArgsConstructor
 @Component
-public class FlamethrowerButton implements Button {
+public class YesLastContaminatedButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
+    private final ScoresService scoresService;
     private final ScoresStateCache scoresStateCache;
     private final ButtonService buttonService;
 
     @Override
     public nechto.enums.Button getButton() {
-        return FLAMETHROWER_BUTTON;
+        return YES_LAST_CONTAMINATED_BUTTON;
     }
 
     @Override
@@ -29,9 +30,12 @@ public class FlamethrowerButton implements Button {
         if(!buttonService.isActive(getButton().name())) {
             return null;
         }
-        CachedScoresDto requestScoresDto = scoresStateCache.get(userId);
-        requestScoresDto.setFlamethrowerAmount(1);
         buttonService.deactivateButtons(getButton().name());
-        return inlineKeyboardService.getMessageWithInlineMurkupPlusMinus(userId, 1);
+
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
+        long userIdToCount = cachedScoresDto.getUserId();
+        long gameId = cachedScoresDto.getGameId();
+        scoresService.addStatus(Status.LAST_CONTAMINATED_LOOSE, userIdToCount, gameId);
+        return inlineKeyboardService.returnButtonsForContaminated(userId);
     }
 }

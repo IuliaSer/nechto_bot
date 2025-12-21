@@ -4,7 +4,6 @@ import nechto.dto.response.ResponseUserDto;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.time.YearMonth;
 import java.util.List;
@@ -17,13 +16,17 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsWithRolesForHumanWin(Long chatId);
 
+    SendMessage returnButtonsToAskIfBurned(Long chatId);
+
     SendMessage returnButtonsForHuman(Long chatId);
 
     SendMessage returnButtonsForContaminated(Long chatId);
 
     SendMessage returnButtonsForLastContaminated(Long chatId);
 
-    SendMessage returnButtonsForBurned(Long chatId);
+    SendMessage returnButtonsForBurnedContaminated(Long chatId);
+
+    SendMessage returnButtonsForBurnedHuman(Long chatId);
 
     SendMessage returnButtonsForNechto(Long chatId);
 
@@ -50,7 +53,7 @@ public interface InlineKeyboardService {
 
     InlineKeyboardMarkup getInlineKeybordWithPlusMinus(int flamethrowerAmount);
 
-    InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHumanFlamethrower(int flamethrowerAmount);
+    InlineKeyboardMarkup getInlineKeybordWithPlusMinusAgainstHumanFlamethrower(int flamethrowerAmount);
 
     InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHuman(int flamethrowerAmount);
 

@@ -1,6 +1,7 @@
 package nechto.button.role;
 
 import nechto.enums.Button;
+import nechto.enums.Status;
 import nechto.service.ScoresService;
 import nechto.button.ButtonService;
 import nechto.service.InlineKeyboardService;
@@ -15,12 +16,14 @@ import static nechto.enums.Button.CONTAMINATED_BUTTON;
 @Component
 public class ContaminatedButton extends RoleButton {
     private final InlineKeyboardService inlineKeyboardService;
+    private final ScoresStateCache scoresStateCache;
 
     public ContaminatedButton(ScoresStateCache scoresStateCache, ScoresService scoresService,
                               InlineKeyboardService inlineKeyboardService, ButtonService buttonService,
                               ButtonStatusCache buttonStatusCache) {
         super(scoresStateCache, scoresService, inlineKeyboardService, buttonService, buttonStatusCache);
         this.inlineKeyboardService = inlineKeyboardService;
+        this.scoresStateCache = scoresStateCache;
     }
 
     @Override
@@ -30,7 +33,8 @@ public class ContaminatedButton extends RoleButton {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
+        scoresStateCache.get(userId).setStatus(Status.CONTAMINATED);
         return super.onButtonPressed(callbackquery, userId) != null ?
-                inlineKeyboardService.returnButtonsForContaminated(userId) : null;
+                inlineKeyboardService.returnButtonsToAskIfBurned(userId) : null;
     }
 }

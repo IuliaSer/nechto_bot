@@ -1,4 +1,4 @@
-package nechto.service;
+package nechto.service.qrcode;
 
 import com.google.zxing.WriterException;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import static java.lang.String.format;
 @Component
 public class QrCodeGenerator {
     private final BufferedImageGenerator bufferedImageGenerator;
-    private final TelegramRestSender telegramRestSender;
+    private final TelegramQrCodeSender telegramQrCodeSender;
 
     public void generateQrCode(String gameId, String chatId) {
         BufferedImage qrImage;
@@ -35,7 +35,7 @@ public class QrCodeGenerator {
         }
         byte[] data = baos.toByteArray();
 
-        telegramRestSender.sendPhoto(
+        telegramQrCodeSender.sendPhoto(
                 Long.parseLong(chatId),
                 data,
                 "Сканируйте QR и начинайте",

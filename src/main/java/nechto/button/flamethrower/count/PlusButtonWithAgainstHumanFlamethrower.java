@@ -14,7 +14,7 @@ import static nechto.enums.Button.PLUS_ANTI_FLAMETHROWER_BUTTON;
 
 @RequiredArgsConstructor
 @Component
-public class PlusButtonWithAntiFlamethrower implements Button {
+public class PlusButtonWithAgainstHumanFlamethrower implements Button {
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCache scoresStateCache;
 

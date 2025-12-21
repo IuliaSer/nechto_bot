@@ -10,27 +10,27 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static java.lang.String.format;
-import static nechto.enums.Button.MINUS_ANTI_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.PLUS_ANTI_HUMAN_BUTTON;
 
 @RequiredArgsConstructor
 @Component
-public class MinusButtonWithAntiFlamethrower implements Button {
+public class PlusButtonAgainstHumanFlamethrower implements Button {
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCache scoresStateCache;
 
     @Override
     public nechto.enums.Button getButton() {
-        return MINUS_ANTI_FLAMETHROWER_BUTTON;
+        return PLUS_ANTI_HUMAN_BUTTON;
     }
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         int messageId = callbackQuery.getMessage().getMessageId();
-        int flamethrowerAmount = cachedScoresDto.getFlamethrowerAmount();
-        cachedScoresDto.setFlamethrowerAmount(--flamethrowerAmount);
+        int antiHumanFlamethrowerAmount = cachedScoresDto.getAntiHumanFlamethrowerAmount();
+        cachedScoresDto.setAntiHumanFlamethrowerAmount(++antiHumanFlamethrowerAmount);
 
-        return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinusForAntiHumanFlamethrower(userId, messageId,
-                format("Выберите количество:\n"), Math.max(flamethrowerAmount, 0));
+        return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinusForAntiHuman(userId, messageId,
+                format("Выберите количество:\n"), antiHumanFlamethrowerAmount);
     }
 }

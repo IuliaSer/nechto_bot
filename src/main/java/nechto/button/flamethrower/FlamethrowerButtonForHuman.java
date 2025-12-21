@@ -30,10 +30,10 @@ public class FlamethrowerButtonForHuman implements Button {
             return null;
         }
         CachedScoresDto requestScoresDto = scoresStateCache.get(userId);
-        int flamethrowerAmount = requestScoresDto.getFlamethrowerAmount();
+        requestScoresDto.setFlamethrowerAmount(1);
         buttonService.deactivateButtons(getButton().name());
 
         return inlineKeyboardService
-                .getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(userId, flamethrowerAmount);
+                .getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(userId, 1);
     }
 }

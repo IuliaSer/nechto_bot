@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+//dannie za poslednyy scores
+//userId is adminId
 @Component
 public class ScoresStateCache {
     private final Map<Long, CachedScoresDto> map = new ConcurrentHashMap<>();

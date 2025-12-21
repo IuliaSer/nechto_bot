@@ -10,18 +10,18 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.enums.Button.FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.ANTI_HUMAN_FLAMETHROWER_BUTTON;
 
 @RequiredArgsConstructor
 @Component
-public class FlamethrowerButton implements Button {
+public class AgainstHumanFlamethrowerButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCache scoresStateCache;
     private final ButtonService buttonService;
 
     @Override
     public nechto.enums.Button getButton() {
-        return FLAMETHROWER_BUTTON;
+        return ANTI_HUMAN_FLAMETHROWER_BUTTON;
     }
 
     @Override
@@ -29,9 +29,9 @@ public class FlamethrowerButton implements Button {
         if(!buttonService.isActive(getButton().name())) {
             return null;
         }
-        CachedScoresDto requestScoresDto = scoresStateCache.get(userId);
-        requestScoresDto.setFlamethrowerAmount(1);
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
+        cachedScoresDto.setAntiHumanFlamethrowerAmount(1);
         buttonService.deactivateButtons(getButton().name());
-        return inlineKeyboardService.getMessageWithInlineMurkupPlusMinus(userId, 1);
+        return inlineKeyboardService.getMessageWithInlineMurkupPlusMinusAntiHuman(userId, 1);
     }
 }

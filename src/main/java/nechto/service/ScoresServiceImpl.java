@@ -2,7 +2,6 @@ package nechto.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import nechto.dto.request.RequestScoresDto;
 import nechto.dto.response.ResponseScoresDto;
 import nechto.entity.Scores;
 import nechto.enums.Status;

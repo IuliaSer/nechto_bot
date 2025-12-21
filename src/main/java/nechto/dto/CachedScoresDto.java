@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import nechto.dto.response.ResponseUserDto;
 import nechto.enums.CommandStatus;
+import nechto.enums.Status;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class CachedScoresDto {
     private boolean gameIsFinished = false;
 
     private CommandStatus commandStatus;
+
+    private Status status;
 
     private List<ResponseUserDto> users;
 }

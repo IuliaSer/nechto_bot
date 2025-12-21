@@ -1,4 +1,4 @@
-package nechto.service;
+package nechto.service.results;
 
 import lombok.RequiredArgsConstructor;
 import nechto.cache.ScoresStateCache;
@@ -6,8 +6,12 @@ import nechto.dto.AggregateScoresDto;
 import nechto.dto.ScoresDto;
 import nechto.exception.EntityNotFoundException;
 import nechto.repository.ScoresRepository;
+import nechto.service.GameService;
+import nechto.service.ScoresService;
+import nechto.service.UserService;
 import nechto.service.results.DateParsers;
 import nechto.service.results.ScoresDtoMapper;
+import nechto.service.results.ShowResultsService;
 import nechto.service.results.TableRenderer;
 import nechto.service.results.TimeRange;
 import nechto.utils.NumFmt;

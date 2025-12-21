@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static nechto.enums.Status.BURNED;
 import static nechto.enums.Status.CONTAMINATED;
 import static nechto.enums.Status.WON;
 
@@ -13,6 +14,9 @@ public class Contaminated implements Status {
 
     @Override
     public float count(List<nechto.enums.Status> statuses, List<Scores> scoresList) {
+        if (statuses.contains(BURNED)) {
+            return 0;
+        }
         return statuses.contains(WON) ? 1 : -1;
     }
 

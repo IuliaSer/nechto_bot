@@ -13,4 +13,6 @@ public interface ButtonService {
     void activateAllButtons();
 
     void deactivateAllButtons();
+
+    void deactivateAllPickedUserButtons();
 }

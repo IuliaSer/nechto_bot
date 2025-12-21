@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestGameDto;
 import nechto.service.GameService;
 import nechto.cache.ScoresStateCache;
-import nechto.service.QrCodeGenerator;
+import nechto.service.qrcode.QrCodeGenerator;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;

@@ -36,7 +36,7 @@ public abstract class RoleButton implements Button {
             return null;
         }
         buttonService.deactivateButtons(NECHTO_BUTTON.name(), HUMAN_BUTTON.name(), CONTAMINATED_BUTTON.name(),
-                BURNED_BUTTON.name(), LAST_CONTAMINATED_BUTTON.name());
+                 LAST_CONTAMINATED_BUTTON.name());
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();

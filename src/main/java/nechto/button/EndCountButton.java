@@ -21,6 +21,7 @@ import static nechto.enums.Status.CONTAMINATED;
 import static nechto.enums.Status.FLAMETHROWER;
 import static nechto.enums.Status.HUMAN;
 import static nechto.enums.Status.LOOSE;
+import static nechto.enums.Status.NECHTO;
 import static nechto.enums.Status.WON;
 
 @RequiredArgsConstructor
@@ -58,8 +59,10 @@ public class EndCountButton implements Button {
             scoresService.addStatus(ANTI_HUMAN_FLAMETHROWER, userIdToCount, gameId);
         }
         List<Status> statuses = scoresService.findByUserIdAndGameId(userIdToCount, gameId).getStatuses();
+
         if ((commandStatus.equals(PEOPLE_WIN) && statuses.contains(HUMAN)) ||
-                (commandStatus.equals(NECHTO_WIN) && statuses.contains(CONTAMINATED))) {
+                (commandStatus.equals(NECHTO_WIN) && statuses.contains(CONTAMINATED) ||
+                        commandStatus.equals(NECHTO_WIN) && statuses.contains(NECHTO))) {
             scoresService.addStatus(WON, userIdToCount, gameId);
         } else {
             scoresService.addStatus(LOOSE, userIdToCount, gameId);

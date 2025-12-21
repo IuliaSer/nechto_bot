@@ -1,35 +1,30 @@
 package nechto.button;
 
 import lombok.RequiredArgsConstructor;
-import nechto.cache.ScoresStateCache;
-import nechto.dto.CachedScoresDto;
-import nechto.enums.Status;
 import nechto.service.InlineKeyboardService;
-import nechto.service.ScoresService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.enums.Button.YES_BUTTON;
+import static nechto.enums.Button.NO_LAST_CONTAMINATED_BUTTON;
 
 @RequiredArgsConstructor
 @Component
-public class YesButton implements Button {
+public class NoLastContaminatedButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
-    private final ScoresService scoresService;
-    private final ScoresStateCache scoresStateCache;
+    private final ButtonService buttonService;
 
     @Override
     public nechto.enums.Button getButton() {
-        return YES_BUTTON;
+        return NO_LAST_CONTAMINATED_BUTTON;
     }
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
-        long userIdToCount = cachedScoresDto.getUserId();
-        long gameId = cachedScoresDto.getGameId();
-        scoresService.addStatus(Status.LAST_CONTAMINATED_LOOSE, userIdToCount, gameId);
+        if(!buttonService.isActive(getButton().name())) {
+            return null;
+        }
+        buttonService.deactivateButtons(getButton().name());
         return inlineKeyboardService.returnButtonsForContaminated(userId);
     }
 }

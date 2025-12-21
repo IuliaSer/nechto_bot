@@ -1,4 +1,4 @@
-package nechto.service;
+package nechto.service.qrcode;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-public class TelegramRestSender {
+public class TelegramQrCodeSender {
 
     private final RestTemplate restTemplate;
 

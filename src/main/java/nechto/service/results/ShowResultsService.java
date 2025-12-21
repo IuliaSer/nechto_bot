@@ -1,4 +1,4 @@
-package nechto.service;
+package nechto.service.results;
 
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 

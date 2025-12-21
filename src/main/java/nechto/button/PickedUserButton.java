@@ -32,16 +32,18 @@ public class PickedUserButton implements Button {
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = callbackQuery.getData();
-        if(!buttonService.isActive(buttonName)) {
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = Long.parseLong(buttonName.substring(PICKED_BUTTON.name().length()));
+
         clearStatusesIfGameIsChanging(cachedScoresDto, userIdToCount);
 
+        cachedScoresDto.setUserId(userIdToCount);
         List<ResponseUserDto> users = cachedScoresDto.getUsers();
-        users.removeIf(user -> user.getId().equals(userIdToCount)); 
+        users.removeIf(user -> user.getId().equals(userIdToCount));
 
         buttonService.deactivateAllPickedUserButtons();
         return scoresStateCache.get(userId).getCommandStatus().equals(CommandStatus.NECHTO_WIN) ?
@@ -50,10 +52,9 @@ public class PickedUserButton implements Button {
     }
 
     private void clearStatusesIfGameIsChanging(CachedScoresDto cachedScoresDto, long userIdToCount) {
-        if(!cachedScoresDto.isGameIsFinished()) {
+        if (cachedScoresDto.isGameIsFinished()) {
             Scores scores = scoresService.findByUserIdAndGameId(userIdToCount, cachedScoresDto.getGameId());
             scoresService.deleteAllStatuses(scores);
-            cachedScoresDto.setUserId(userIdToCount);
         }
     }
 }
