@@ -1,0 +1,40 @@
+package nechto.button;
+
+import lombok.RequiredArgsConstructor;
+import nechto.cache.ScoresStateCache;
+import nechto.dto.CachedScoresDto;
+import nechto.service.InlineKeyboardService;
+import nechto.service.UserService;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+
+import static nechto.utils.BotUtils.getEditMessageWithInlineMarkup;
+
+@Component
+@RequiredArgsConstructor
+abstract public class CommandStatusButton implements Button {
+    private final ScoresStateCache scoresStateCache;
+    private final ButtonService buttonService;
+    private final InlineKeyboardService inlineKeyboardService;
+    private final UserService userService;
+
+    @Override
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
+        if(!buttonService.isActive(getButton().name())) {
+            return null;
+        }
+        buttonService.deactivateButtons(getButton().name());
+
+        CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
+        long gameId = cachedScoresDto.getGameId();
+        if (cachedScoresDto.isGameIsFinished()) {
+            return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
+                    "Завершить изменения или изменить очки для игроков:",
+                    inlineKeyboardService.returnButtonsWithEndChangingAndChangeNext(userService.findAllByGameId(gameId)));
+        }
+        return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
+                "Выберите ник игрока, которого надо посчитать:",
+                inlineKeyboardService.returnButtonsWithUsers(userService.findAllByGameId(gameId)));
+    }
+}

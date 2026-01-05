@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static java.lang.String.format;
+import static nechto.enums.Status.ANTI_HUMAN_FLAMETHROWER;
+import static nechto.enums.Status.BURNED;
+import static nechto.enums.Status.FLAMETHROWER;
 
 @Service
 @RequiredArgsConstructor
@@ -54,16 +57,27 @@ public class ScoresServiceImpl implements ScoresService {
     @Override
     public List<ResponseScoresDto> countAndSaveAll(Long gameId) {
         List<Scores> scoresList = scoresRepository.findAllByGameId(gameId);
+        int amountOfFlamethrowersByGame = 0;
+        int amountOfBurnedByGame = 0;
 
         for (Scores scores : scoresList) {
             List<Status> statuses = scores.getStatuses();
             float results = 0;
 
             for (Status status : statuses) {
+                if (FLAMETHROWER.equals(status) || ANTI_HUMAN_FLAMETHROWER.equals(status)) {
+                    amountOfFlamethrowersByGame++;
+                }
+                if (BURNED.equals(status)) {
+                    amountOfBurnedByGame++;
+                }
                 results += statusProcessor.processStatus(statuses, scoresList, status);
             }
             scores.setScores(results);
             scoresRepository.save(scores);
+        }
+        if (amountOfFlamethrowersByGame != amountOfBurnedByGame) {
+
         }
         return scoresMapper.convertToListResponseScoresDto(scoresList);
     }

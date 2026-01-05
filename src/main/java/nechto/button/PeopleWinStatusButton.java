@@ -1,6 +1,5 @@
 package nechto.button;
 
-import lombok.RequiredArgsConstructor;
 import nechto.cache.ScoresStateCache;
 import nechto.service.InlineKeyboardService;
 import nechto.service.UserService;
@@ -9,15 +8,18 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.CommandStatus.PEOPLE_WIN;
-import static nechto.utils.BotUtils.getEditMessageWithInlineMarkup;
 
-@RequiredArgsConstructor
 @Component
-public class PeopleWinStatusButton implements Button {
+public class PeopleWinStatusButton extends CommandStatusButton {
     private final ScoresStateCache scoresStateCache;
     private final ButtonService buttonService;
-    private final InlineKeyboardService inlineKeyboardService;
-    private final UserService userService;
+
+    public PeopleWinStatusButton(ScoresStateCache scoresStateCache, ButtonService buttonService,
+                                 InlineKeyboardService inlineKeyboardService, UserService userService) {
+        super(scoresStateCache, buttonService, inlineKeyboardService, userService);
+        this.scoresStateCache = scoresStateCache;
+        this.buttonService = buttonService;
+    }
 
     @Override
     public nechto.enums.Button getButton() {
@@ -29,12 +31,7 @@ public class PeopleWinStatusButton implements Button {
         if(!buttonService.isActive(getButton().name())) {
             return null;
         }
-        buttonService.deactivateButtons(getButton().name());
-
         scoresStateCache.get(userId).setCommandStatus(PEOPLE_WIN);
-
-        return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
-                "Выберите ник игрока, которого надо посчитать:",
-                inlineKeyboardService.returnButtonsWithUsers(userService.findAllByGameId(scoresStateCache.get(userId).getGameId())));
+        return super.onButtonPressed(callbackquery, userId);
     }
 }

@@ -42,6 +42,8 @@ public interface InlineKeyboardService {
 
     InlineKeyboardMarkup returnButtonsWithUsers(List<ResponseUserDto> users);
 
+    InlineKeyboardMarkup returnButtonsWithEndChangingAndChangeNext(List<ResponseUserDto> users);
+
     InlineKeyboardMarkup buildCalendar(long userId, YearMonth ym, Locale locale);
 
     EditMessageText editeMessageForInlineKeyboardPlusMinus(long chatId, int messageId, String text, int flamethrowerAmount);

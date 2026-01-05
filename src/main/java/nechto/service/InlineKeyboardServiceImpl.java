@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -331,7 +332,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     public InlineKeyboardMarkup buildMonthCalendar(long userId, YearMonth ym, Locale locale) {
         String title = ym.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, locale) + " " + ym.getYear();
         var confirmMonth = createButton("Посмотреть за месяц", CONFIRM_MONTH_BUTTON.name() + ":"
-                + ym.getYear() + "-" + ym.getMonth().getValue());
+                + ym.format(DateTimeFormatter.ofPattern("yyyy-MM")));
 
         List<InlineKeyboardButton> rowInLine = List.of(
                 createButton("◀️", MONTH_CALNAV_BUTTON.name() + ":" + ym.minusMonths(1)),
@@ -344,7 +345,24 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
     @Override
     public InlineKeyboardMarkup returnButtonsWithUsers(List<ResponseUserDto> users) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInLine = addUsersButtonsToInlineKeyboard(users);
+
+        return createInlineKeyboard(rowsInLine);
+    }
+
+    @Override
+    public InlineKeyboardMarkup returnButtonsWithEndChangingAndChangeNext(List<ResponseUserDto> users) {
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        var buttonEndCount = createButton("Завершить изменения", END_GAME_BUTTON.name());
+        var buttonChangeUser = createButton("Изменить очки игроков", CHANGE_NEXT_BUTTON.name());
+
+        row1.add(buttonEndCount);
+        row2.add(buttonChangeUser);
+        return createInlineKeyboard(row1, row2);
+    }
+
+    private List<List<InlineKeyboardButton>> addUsersButtonsToInlineKeyboard(List<ResponseUserDto> users) {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         int buttonsInRow = 0;
         int lastRow = users.size() / 3;
@@ -366,9 +384,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
             buttonService.putButtonsToButtonCache(buttonUserName);
         }
-        inlineKeyboardMarkup.setKeyboard(rowsInLine);
-
-        return inlineKeyboardMarkup;
+        return rowsInLine;
     }
 
     @Override
@@ -376,6 +392,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
         // Заголовок с месяцем
         String title = ym.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, locale) + " " + ym.getYear();
+
         rows.add(List.of(
                 createButton("◀️", CALNAV_BUTTON.name() + ":" + ym.minusMonths(1)),
                 createButton("📅 " + title, CALNOOP_BUTTON.name()),
@@ -424,6 +441,14 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>(Arrays.asList(rows));
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
+
+        return inlineKeyboardMarkup;
+    }
+
+    private InlineKeyboardMarkup createInlineKeyboard(List<List<InlineKeyboardButton>> rows) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        inlineKeyboardMarkup.setKeyboard(rows);
 
         return inlineKeyboardMarkup;
     }
