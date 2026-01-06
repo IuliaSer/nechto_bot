@@ -1,13 +1,16 @@
 package nechto.service;
 
+import jakarta.validation.Valid;
 import nechto.dto.request.RequestUserDto;
 import nechto.dto.response.ResponseUserDto;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 
+@Validated
 public interface UserService {
-    ResponseUserDto save(RequestUserDto userDto);
+    ResponseUserDto save(@Valid RequestUserDto userDto);
 
     ResponseUserDto findByUsernameOrThrow(String login);
 

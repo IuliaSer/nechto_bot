@@ -15,11 +15,13 @@ import static nechto.enums.Button.*;
 @Component
 public class NechtoButton extends RoleButton {
     private final InlineKeyboardService inlineKeyboardService;
+    private final ScoresStateCache scoresStateCache;
 
     public NechtoButton(ScoresStateCache scoresStateCache, ScoresService scoresService, InlineKeyboardService inlineKeyboardService,
                         ButtonService buttonService, ButtonStatusCache buttonStatusCache) {
         super(scoresStateCache, scoresService, inlineKeyboardService, buttonService, buttonStatusCache);
         this.inlineKeyboardService = inlineKeyboardService;
+        this.scoresStateCache = scoresStateCache;
     }
 
     @Override
@@ -29,6 +31,7 @@ public class NechtoButton extends RoleButton {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
+        scoresStateCache.get(userId).setNechtoIsChoosen(true);
 
         return super.onButtonPressed(callbackquery, userId) != null ?
                 inlineKeyboardService.returnButtonsForNechto(userId) : null;

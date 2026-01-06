@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+//создается в момент создания игры, т.е для для каждой игры свой
 //dannie za poslednyy scores
 //userId is adminId
 @Component

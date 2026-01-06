@@ -24,12 +24,8 @@ public class User {
     @Id
     private Long id;
 
-    @NotNull(message = "Name should not be null")
-    @Size(min = 3, max = 10, message = "Username should have expected size")
     private String name;
 
-    @NotNull(message = "Username should not be null")
-    @Size(min = 3, max = 10, message = "Username should have expected size")
     private String username;
 
     @Builder.Default

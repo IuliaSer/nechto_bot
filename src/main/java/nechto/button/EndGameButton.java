@@ -1,6 +1,7 @@
 package nechto.button;
 
 import lombok.RequiredArgsConstructor;
+import nechto.exception.FlamethrowerDisbalanceException;
 import nechto.service.ScoresService;
 import nechto.cache.ScoresStateCache;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,11 @@ public class EndGameButton implements Button {
 
         long gameId = scoresStateCache.get(userId).getGameId();
 
-        scoresService.countAndSaveAll(gameId);
+        try {
+            scoresService.countAndSaveAll(gameId);
+        } catch (FlamethrowerDisbalanceException e) {
+            return getSendMessage(userId, e.getMessage());
+        }
 
         buttonService.deactivateAllButtons();
 

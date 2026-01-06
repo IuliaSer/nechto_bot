@@ -6,6 +6,7 @@ import nechto.dto.response.ResponseScoresDto;
 import nechto.entity.Scores;
 import nechto.enums.Status;
 import nechto.exception.EntityNotFoundException;
+import nechto.exception.FlamethrowerDisbalanceException;
 import nechto.mappers.ScoresMapper;
 import nechto.repository.ScoresRepository;
 import nechto.status.StatusProcessor;
@@ -17,6 +18,8 @@ import static java.lang.String.format;
 import static nechto.enums.Status.ANTI_HUMAN_FLAMETHROWER;
 import static nechto.enums.Status.BURNED;
 import static nechto.enums.Status.FLAMETHROWER;
+import static nechto.enums.Status.LOOSE;
+import static nechto.enums.Status.NECHTO;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +58,7 @@ public class ScoresServiceImpl implements ScoresService {
     }
 
     @Override
-    public List<ResponseScoresDto> countAndSaveAll(Long gameId) {
+    public List<ResponseScoresDto> countAndSaveAll(Long gameId) { //убрать return value
         List<Scores> scoresList = scoresRepository.findAllByGameId(gameId);
         int amountOfFlamethrowersByGame = 0;
         int amountOfBurnedByGame = 0;
@@ -68,7 +71,7 @@ public class ScoresServiceImpl implements ScoresService {
                 if (FLAMETHROWER.equals(status) || ANTI_HUMAN_FLAMETHROWER.equals(status)) {
                     amountOfFlamethrowersByGame++;
                 }
-                if (BURNED.equals(status)) {
+                if (BURNED.equals(status) || (NECHTO.equals(status) && statuses.contains(LOOSE))) {
                     amountOfBurnedByGame++;
                 }
                 results += statusProcessor.processStatus(statuses, scoresList, status);
@@ -77,15 +80,15 @@ public class ScoresServiceImpl implements ScoresService {
             scoresRepository.save(scores);
         }
         if (amountOfFlamethrowersByGame != amountOfBurnedByGame) {
-
+            throw new FlamethrowerDisbalanceException("Количество сожженых и использованных огнеметов не совпадает! " +
+                    "Пожалуйста измените игру!");
         }
         return scoresMapper.convertToListResponseScoresDto(scoresList);
     }
 
     @Override
     public void deleteAllStatuses(Scores scores) {
-        List<Status> statuses = scores.getStatuses();
-        statuses.removeAll(statuses);
+        scores.getStatuses().clear();
         scoresRepository.save(scores);
     }
 

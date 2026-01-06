@@ -40,8 +40,7 @@ public abstract class RoleButton implements Button {
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();
-        long gameId = cachedScoresDto.getGameId();
-        scoresService.addStatus(buttonStatusCache.getStatus(getButton()), userIdToCount, gameId);
+        scoresService.addStatus(buttonStatusCache.getStatus(getButton()), userIdToCount, cachedScoresDto.getGameId());
         return inlineKeyboardService.returnButtonsForHuman(userId);
     }
 }

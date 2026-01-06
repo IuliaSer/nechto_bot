@@ -24,6 +24,8 @@ public class CachedScoresDto {
 //    @Builder.Default
     private boolean gameIsFinished = false;
 
+    private boolean nechtoIsChoosen = false;
+
     private CommandStatus commandStatus;
 
     private Status status;

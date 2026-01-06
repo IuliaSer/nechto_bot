@@ -2,6 +2,7 @@ package nechto.service;
 
 import lombok.RequiredArgsConstructor;
 import nechto.button.ButtonService;
+import nechto.cache.ScoresStateCache;
 import nechto.dto.response.ResponseUserDto;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -59,6 +60,7 @@ import static nechto.utils.BotUtils.getSendMessage;
 @Component
 public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     private final ButtonService buttonService;
+    private final ScoresStateCache scoresStateCache;
 
     @Override
     public SendMessage returnButtonsWithCommandStatuses(Long chatId) {
@@ -77,12 +79,17 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     public SendMessage returnButtonsWithRolesForNechtoWin(Long chatId) {
         var buttonHuman = createButton("Человек", HUMAN_BUTTON.name());
         var buttonContaminated = createButton("Зараженный", CONTAMINATED_BUTTON.name());
-        var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
         var buttonLastContaminated = createButton("Последний зараженный", LAST_CONTAMINATED_BUTTON.name());
 
-        buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto, buttonLastContaminated);
-
-        List<InlineKeyboardButton> rowInLine = List.of(buttonHuman, buttonContaminated, buttonNechto);
+        List<InlineKeyboardButton> rowInLine;
+        if(scoresStateCache.get(chatId).isNechtoIsChoosen()) {
+            rowInLine = List.of(buttonHuman, buttonContaminated);
+            buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonLastContaminated);
+        } else {
+            var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
+            rowInLine = List.of(buttonHuman, buttonContaminated, buttonNechto);
+            buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto, buttonLastContaminated);
+        }
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonLastContaminated);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
@@ -93,13 +100,18 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     public SendMessage returnButtonsWithRolesForHumanWin(Long chatId) {
         var buttonHuman = createButton("Человек", HUMAN_BUTTON.name());
         var buttonContaminated = createButton("Зараженный", CONTAMINATED_BUTTON.name());
-        var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
-
-        buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto);
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonHuman, buttonContaminated);
-        List<InlineKeyboardButton> rowInLine2 = List.of(buttonNechto);
-        InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
+        InlineKeyboardMarkup inlineKeyboardMarkup;
+        if(!scoresStateCache.get(chatId).isNechtoIsChoosen()) {
+            var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
+            List<InlineKeyboardButton> rowInLine2 = List.of(buttonNechto);
+            buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto);
+            inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
+        } else {
+            buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated);
+            inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
+        }
 
         return getSendMessage(chatId, "Выберите роль:", inlineKeyboardMarkup);
     }

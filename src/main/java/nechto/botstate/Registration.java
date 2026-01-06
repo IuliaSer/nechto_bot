@@ -26,7 +26,7 @@ public class Registration implements BotState {
         String messageText = message.getText();
         String[] parts = messageText.trim().split("\\s+");
 
-        if (parts.length < 2) {
+        if (parts.length != 2) {
             return getSendMessage(userId, "Неверный формат. Введите: имя ник");
         }
 
@@ -38,7 +38,10 @@ public class Registration implements BotState {
         } catch (EntityAlreadyExistsException e) {
             return getSendMessage(userId, "Пользователь с таким ником уже существует");
         } catch (Exception e) {
-            return getSendMessage(userId, "Не удалось сохранить пользователя");
+            System.out.println(e.getMessage());
+
+            return getSendMessage(userId, String.format("Не удалось сохранить пользователя! %s",
+                    e.getMessage().substring(e.getMessage().indexOf(": ") + 2)));
         }
 
         return getSendMessage(userId, "Вы успешно зарегистрированы как " + name + " (" + nickname + ")");

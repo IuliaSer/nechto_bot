@@ -24,6 +24,6 @@ public class StartRegistration implements BotState {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         botStateCache.saveBotState(userId, REGISTRATION);
-        return getSendMessage(userId, "Введите своё имя и ник, например: Иван ivan123");
+        return getSendMessage(userId, "Введите своё имя и школьный ник, например: Саша agertha");
     }
 }
