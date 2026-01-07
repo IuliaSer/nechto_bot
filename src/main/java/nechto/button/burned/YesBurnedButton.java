@@ -1,6 +1,8 @@
-package nechto.button;
+package nechto.button.burned;
 
 import lombok.RequiredArgsConstructor;
+import nechto.button.Button;
+import nechto.button.ButtonService;
 import nechto.cache.ScoresStateCache;
 import nechto.dto.CachedScoresDto;
 import nechto.enums.Status;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import static nechto.enums.Button.NO_BURNED_BUTTON;
 import static nechto.enums.Button.YES_BURNED_BUTTON;
 import static nechto.utils.BotUtils.getSendMessage;
 
@@ -31,7 +34,7 @@ public class YesBurnedButton implements Button {
         if(!buttonService.isActive(getButton().name())) {
             return null;
         }
-        buttonService.deactivateButtons(getButton().name());
+        buttonService.deactivateButtons(getButton().name(), NO_BURNED_BUTTON.name());
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();

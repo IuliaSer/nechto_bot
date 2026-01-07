@@ -1,5 +1,6 @@
-package nechto.button;
+package nechto.button.command_status;
 
+import nechto.button.ButtonService;
 import nechto.cache.ScoresStateCache;
 import nechto.service.InlineKeyboardService;
 import nechto.service.UserService;
