@@ -28,9 +28,14 @@ public class ButtonProcessorImpl implements ButtonProcessor {
             return
                     buttonActionMap.entrySet()
                             .stream()
-                            .filter(e -> (buttonName).startsWith(e.getKey()))
+                            .filter(e -> (buttonName).equals(e.getKey()) ||
+                                    (isCalendarOrPickedButton(buttonName) && buttonName.startsWith(e.getKey()))) //plohoe reshenie
                             .map(Map.Entry::getValue)
                                     .findFirst().orElseThrow(() -> new RuntimeException("Команда не найдена"))
                             .onButtonPressed(callbackQuery, userId);
+    }
+
+    private boolean isCalendarOrPickedButton(String buttonName) {
+        return buttonName.startsWith("CAL") || buttonName.startsWith("PICKED");
     }
 }

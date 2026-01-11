@@ -33,12 +33,13 @@ public class NoBurnedButton implements Button {
             return null;
         }
         buttonService.deactivateButtons(getButton().name(), YES_BURNED_BUTTON.name());
+
         if (status.equals(Status.HUMAN)) {
             return inlineKeyboardService.returnButtonsForHuman(userId);
         } else if (status.equals(Status.CONTAMINATED)) {
             return inlineKeyboardService.returnButtonsForContaminated(userId);
         } else {
-            return getSendMessage(userId, "Не выбран статус человек, зараженный или нечто!");
+            return getSendMessage(userId, "Не выбран статус: человек, зараженный или нечто!");
         }
     }
 }

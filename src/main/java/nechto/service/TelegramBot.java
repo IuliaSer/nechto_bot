@@ -46,7 +46,7 @@ public class TelegramBot extends SpringWebhookBot {
         Long userId = null;
         try {
             userId = extractUserId(update);
-            userInfoCache.put(userId);
+            userInfoCache.put(userId); //для регистрации первого входа пользователя, чтобы устанавливать команды 1 раз
             Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
             Authority authority = responseUserDto.isEmpty() ?
                     Authority.ROLE_USER :

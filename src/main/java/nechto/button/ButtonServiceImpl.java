@@ -3,7 +3,6 @@ package nechto.button;
 import lombok.RequiredArgsConstructor;
 import nechto.cache.ButtonsCache;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import static nechto.enums.Button.PICKED_BUTTON;
 
@@ -14,46 +13,38 @@ public class ButtonServiceImpl implements ButtonService {
 
     @Override
     public boolean isActive(String buttonName) {
-        var buttonInfo = buttonsCache.get(buttonName);
+        return buttonsCache.get(buttonName);
 
-        if (buttonInfo != null && !buttonInfo.isActive()) {
-            buttonInfo.getButton().setCallbackData("noop");
-            return false;
-        }
-        return true;
+//        if (buttonInfo != null && !buttonInfo.isActive()) {
+//            buttonInfo.getButton().setCallbackData("noop");
+//            return false;
+//        }
+//        return true;
     }
 
     @Override
     public void deactivateButtons(String... names) {
         for (String buttonToInactivate: names) {
-            ButtonInfo buttonInfo = buttonsCache.get(buttonToInactivate);
-            if (buttonInfo != null) {
-                buttonInfo.setActive(false);
-            }
+            buttonsCache.put(buttonToInactivate, false);
         }
     }
 
     @Override
-    public void putButtonsToButtonCache(InlineKeyboardButton... inlineKeyboardButtons) {
-        for (InlineKeyboardButton button: inlineKeyboardButtons) {
-            buttonsCache.put(button.getCallbackData(), new ButtonInfo(true, button));
+    public void putButtonsToButtonCache(String... buttons) {
+        for (String button: buttons) {
+            buttonsCache.put(button, true);
         }
     }
 
-    @Override
-    public void activateAllButtons() {
-        buttonsCache.getValues().forEach(buttonInfo -> buttonInfo.setActive(true));
-    }
-
-    @Override
-    public void deactivateAllButtons() {
-        buttonsCache.getValues().forEach(buttonInfo -> buttonInfo.setActive(false));
-    }
+//    @Override
+//    public void deactivateAllButtons() {
+//        buttonsCache.getValues().forEach(buttonInfo -> buttonInfo.setActive(false));
+//    }
 
     @Override
     public void deactivateAllPickedUserButtons() {
-        buttonsCache.getValues().stream()
-                .filter(b -> b.getButton().getCallbackData().startsWith(PICKED_BUTTON.name()))
-                .forEach(buttonInfo -> buttonInfo.setActive(false));
+        buttonsCache.getMap().keySet().stream()
+                .filter(b -> b.startsWith(PICKED_BUTTON.name()))
+                .forEach(b -> buttonsCache.put(b, false));
     }
 }

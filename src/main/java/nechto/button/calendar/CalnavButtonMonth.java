@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.time.YearMonth;
 import java.util.Locale;
 
-import static nechto.enums.Button.MONTH_CALNAV_BUTTON;
+import static nechto.enums.Button.CALNAV_BUTTON_MONTH;
 import static nechto.utils.BotUtils.getEditMessageWithInlineMarkup;
 
 @RequiredArgsConstructor
@@ -20,13 +20,13 @@ public class CalnavButtonMonth implements Button {
 
     @Override
     public nechto.enums.Button getButton() {
-        return MONTH_CALNAV_BUTTON;
+        return CALNAV_BUTTON_MONTH;
     }
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String message = callbackQuery.getData();
-        YearMonth target = YearMonth.parse(message.substring(MONTH_CALNAV_BUTTON.name().length() + 1));
+        YearMonth target = YearMonth.parse(message.substring(CALNAV_BUTTON_MONTH.name().length() + 1));
         return getEditMessageWithInlineMarkup(userId, callbackQuery.getMessage().getMessageId(), "Привяу",
                 inlineKeyboardService.buildMonthCalendar(userId, target, Locale.forLanguageTag("ru")));
     }

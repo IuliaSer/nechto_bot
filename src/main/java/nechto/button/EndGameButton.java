@@ -37,7 +37,7 @@ public class EndGameButton implements Button {
             return getSendMessage(userId, e.getMessage());
         }
 
-        buttonService.deactivateAllButtons();
+//        buttonService.deactivateAllButtons();
 
         scoresStateCache.get(userId).setGameIsFinished(true);
 

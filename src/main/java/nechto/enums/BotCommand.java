@@ -31,9 +31,13 @@ public enum BotCommand {
     }
 
     public static Optional<BotCommand> match(String text) {
-        if (text == null) return Optional.empty();
+        if (text == null) {
+            return Optional.empty();
+        }
         for (var c : values()) {
-            if (c.pattern.matcher(text).matches()) return Optional.of(c);
+            if (c.pattern.matcher(text).matches()) {
+                return Optional.of(c);
+            }
         }
         return Optional.empty();
     }

@@ -34,7 +34,7 @@ public interface InlineKeyboardService {
 
     SendMessage getMessageWithInlineMurkupPlusMinusAntiHuman(Long chatId, int flamethrowerAmount);
 
-    SendMessage getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(Long chatId, int flamethrowerAmount);
+    SendMessage getMessageWithInlineMurkupPlusMinusWithAgainstHumanFlamethrower(Long chatId, int flamethrowerAmount);
 
     SendMessage returnButtonsToEndGameOrCountNext(Long chatId);
 
@@ -55,7 +55,7 @@ public interface InlineKeyboardService {
 
     InlineKeyboardMarkup getInlineKeybordWithPlusMinus(int flamethrowerAmount);
 
-    InlineKeyboardMarkup getInlineKeybordWithPlusMinusAgainstHumanFlamethrower(int flamethrowerAmount);
+    InlineKeyboardMarkup getInlineKeybordWithPlusMinusWithAgainstHumanFlamethrower(int flamethrowerAmount);
 
     InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHuman(int flamethrowerAmount);
 

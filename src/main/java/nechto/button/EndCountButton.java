@@ -1,6 +1,7 @@
 package nechto.button;
 
 import lombok.RequiredArgsConstructor;
+import nechto.cache.ButtonsCache;
 import nechto.cache.ScoresStateCache;
 import nechto.dto.CachedScoresDto;
 import nechto.enums.CommandStatus;
@@ -31,6 +32,7 @@ public class EndCountButton implements Button {
     private final ScoresService scoresService;
     private final InlineKeyboardService inlineKeyboardService;
     private final ButtonService buttonService;
+    private final ButtonsCache buttonsCache;
 
     @Override
     public nechto.enums.Button getButton() {
@@ -39,10 +41,12 @@ public class EndCountButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name())) {
+        String buttonName = END_COUNT_BUTTON.name() + callbackquery.getMessage().getMessageId();
+
+        if (buttonsCache.get(buttonName) != null && !buttonsCache.get(buttonName)) {
             return null;
         }
-        buttonService.deactivateButtons(getButton().name());
+        buttonService.deactivateButtons(buttonName);
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();

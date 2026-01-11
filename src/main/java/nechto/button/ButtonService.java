@@ -1,18 +1,14 @@
 package nechto.button;
 
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
 public interface ButtonService {
 
     boolean isActive(String buttonName);
 
     void deactivateButtons(String... names);
 
-    void putButtonsToButtonCache(InlineKeyboardButton... inlineKeyboardButtons);
+//    void deactivateAllButtons();
 
-    void activateAllButtons();
-
-    void deactivateAllButtons();
+    void putButtonsToButtonCache(String... buttons);
 
     void deactivateAllPickedUserButtons();
 }

@@ -1,27 +1,29 @@
 package nechto.cache;
 
 import lombok.Getter;
-import nechto.button.ButtonInfo;
+import nechto.enums.Button;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
 @Getter
+@Component
 public class ButtonsCache {
-    private final Map<String, ButtonInfo> map = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> map;
 
-    public ButtonInfo get(String buttonId) {
+    public Boolean get(String buttonId) {
         return map.get(buttonId);
     }
 
-    public void put(String buttonId, ButtonInfo buttonInfo) {
-        map.put(buttonId, buttonInfo);
+    public void put(String buttonId, Boolean status) {
+        map.put(buttonId, status);
     }
 
-    public Collection<ButtonInfo> getValues() {
-        return map.values();
+    public ButtonsCache() {
+        this.map = new ConcurrentHashMap<>();
+        for (Button button : Button.values()) {
+            put(button.name(), true);
+        }
     }
 }

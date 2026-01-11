@@ -1,6 +1,8 @@
-package nechto.button;
+package nechto.button.command_status;
 
 import lombok.RequiredArgsConstructor;
+import nechto.button.Button;
+import nechto.button.ButtonService;
 import nechto.cache.ScoresStateCache;
 import nechto.dto.CachedScoresDto;
 import nechto.service.InlineKeyboardService;

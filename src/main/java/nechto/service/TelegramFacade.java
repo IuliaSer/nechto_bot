@@ -41,10 +41,10 @@ public class TelegramFacade {
         return null;
     }
 
-    public BotApiMethod<?> handleInputMessage(Message message) {
+    public BotApiMethod<?> handleInputMessage(Message message) { //вынести в messageHandler
         long userId = message.getFrom().getId();
         Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
-        Authority authority = responseUserDto.isPresent()  ? responseUserDto.get().getAuthority() : ROLE_USER;
+        Authority authority = responseUserDto.isPresent()  ? responseUserDto.get().getAuthority() : ROLE_USER; //вынести метод в utils
         BotState botState = BotCommand.match(message.getText())
                     .map(cmd -> {
                         if (!cmd.isAllowed(authority)) {
