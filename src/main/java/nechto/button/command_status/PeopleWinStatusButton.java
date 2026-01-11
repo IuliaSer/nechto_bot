@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.CommandStatus.PEOPLE_WIN;
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 
 @Component
 public class PeopleWinStatusButton extends CommandStatusButton {
@@ -28,11 +29,13 @@ public class PeopleWinStatusButton extends CommandStatusButton {
     };
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name())) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
+
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
         scoresStateCache.get(userId).setCommandStatus(PEOPLE_WIN);
-        return super.onButtonPressed(callbackquery, userId);
+        return super.onButtonPressed(callbackQuery, userId);
     }
 }

@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.Button.NO_BURNED_BUTTON;
 import static nechto.enums.Button.YES_BURNED_BUTTON;
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 import static nechto.utils.BotUtils.getSendMessage;
 
 @RequiredArgsConstructor
@@ -27,12 +28,14 @@ public class NoBurnedButton implements Button {
     }
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         Status status = scoresStateCache.get(userId).getStatus();
-        if(!buttonService.isActive(getButton().name())) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
+
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
-        buttonService.deactivateButtons(getButton().name(), YES_BURNED_BUTTON.name());
+        buttonService.deactivateButtons(buttonName, getButtonNameWithMessageId(callbackQuery, YES_BURNED_BUTTON));
 
         if (status.equals(Status.HUMAN)) {
             return inlineKeyboardService.returnButtonsForHuman(userId);

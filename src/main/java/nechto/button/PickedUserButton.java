@@ -32,10 +32,10 @@ public class PickedUserButton implements Button {
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = callbackQuery.getData();
+
         if (!buttonService.isActive(buttonName)) {
             return null;
         }
-
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = Long.parseLong(buttonName.substring(PICKED_BUTTON.name().length()));
 

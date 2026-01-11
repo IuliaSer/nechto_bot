@@ -31,10 +31,10 @@ public class HumanButton extends RoleButton {
     }
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         scoresStateCache.get(userId).setStatus(Status.HUMAN);
 
-        return super.onButtonPressed(callbackquery, userId) != null ?
+        return super.onButtonPressed(callbackQuery, userId) != null ?
                 inlineKeyboardService.returnButtonsToAskIfBurned(userId) : null;
     }
 }

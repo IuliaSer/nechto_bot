@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.Button.YES_LAST_CONTAMINATED_BUTTON;
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 
 @RequiredArgsConstructor
 @Component
@@ -26,16 +27,18 @@ public class YesLastContaminatedButton implements Button {
     }
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name())) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
+
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
-        buttonService.deactivateButtons(getButton().name());
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();
         long gameId = cachedScoresDto.getGameId();
         scoresService.addStatus(Status.LAST_CONTAMINATED_LOOSE, userIdToCount, gameId);
+        buttonService.deactivateButtons(buttonName);
         return inlineKeyboardService.returnButtonsForContaminated(userId);
     }
 }

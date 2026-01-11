@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.Button.END_GAME_BUTTON;
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 import static nechto.utils.BotUtils.getSendMessage;
 
 @RequiredArgsConstructor
@@ -24,8 +25,10 @@ public class EndGameButton implements Button {
     }
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name())) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
+
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
 
@@ -37,9 +40,9 @@ public class EndGameButton implements Button {
             return getSendMessage(userId, e.getMessage());
         }
 
-//        buttonService.deactivateAllButtons();
-
         scoresStateCache.get(userId).setGameIsFinished(true);
+
+        buttonService.deactivateButtons(buttonName);
 
         return getSendMessage(userId, "Успешно посчитано");
     }

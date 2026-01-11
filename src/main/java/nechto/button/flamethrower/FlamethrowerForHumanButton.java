@@ -28,16 +28,16 @@ public class FlamethrowerForHumanButton implements Button {
     }
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        String buttonName = getButton().name() + callbackquery.getMessage().getMessageId();
-        String endCountButtonName = END_COUNT_BUTTON.name() + callbackquery.getMessage().getMessageId();
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButton().name() + callbackQuery.getMessage().getMessageId();
+        String endCountButtonName = END_COUNT_BUTTON.name() + callbackQuery.getMessage().getMessageId();
 
         if (buttonsCache.get(buttonName) != null && !buttonsCache.get(buttonName)) {
             return null;
         }
         CachedScoresDto requestScoresDto = scoresStateCache.get(userId);
         requestScoresDto.setFlamethrowerAmount(1);
-        buttonService.deactivateButtons(buttonName, endCountButtonName); //add , END_COUNT_BUTTON.name()
+        buttonService.deactivateButtons(buttonName, endCountButtonName);
 
         return inlineKeyboardService
                 .getMessageWithInlineMurkupPlusMinusWithAgainstHumanFlamethrower(userId, 1);

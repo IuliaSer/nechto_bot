@@ -32,13 +32,13 @@ import static nechto.enums.Button.DANGEROUS_BUTTON;
 import static nechto.enums.Button.END_COUNT_BUTTON;
 import static nechto.enums.Button.END_GAME_BUTTON;
 import static nechto.enums.Button.FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.FLAMETHROWER_BUTTON_FOR_HUMAN;
+import static nechto.enums.Button.FLAMETHROWER_FOR_HUMAN_BUTTON;
 import static nechto.enums.Button.HUMAN_BUTTON;
 import static nechto.enums.Button.LAST_CONTAMINATED_BUTTON;
 import static nechto.enums.Button.MINUS_ANTI_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.MINUS_ANTI_HUMAN_BUTTON;
 import static nechto.enums.Button.MINUS_BUTTON;
-import static nechto.enums.Button.MONTH_CALNAV_BUTTON;
+import static nechto.enums.Button.CALNAV_BUTTON_MONTH;
 import static nechto.enums.Button.NECHTO_BUTTON;
 import static nechto.enums.Button.NO_BURNED_BUTTON;
 import static nechto.enums.Button.NO_LAST_CONTAMINATED_BUTTON;
@@ -67,8 +67,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         var nechtoWin = createButton("Нечто выиграл(а)", WIN_NECHTO_BUTTON.name());
         var nechtoLoose = createButton("Люди выиграли", WIN_PEOPLE_BUTTON.name());
 
-        buttonService.putButtonsToButtonCache(nechtoWin, nechtoLoose);
-
         List<InlineKeyboardButton> rowInLine = List.of(nechtoWin, nechtoLoose);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
@@ -84,11 +82,9 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine;
         if(scoresStateCache.get(chatId).isNechtoIsChoosen()) {
             rowInLine = List.of(buttonHuman, buttonContaminated);
-            buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonLastContaminated);
         } else {
             var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
             rowInLine = List.of(buttonHuman, buttonContaminated, buttonNechto);
-            buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto, buttonLastContaminated);
         }
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonLastContaminated);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
@@ -106,10 +102,8 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         if(!scoresStateCache.get(chatId).isNechtoIsChoosen()) {
             var buttonNechto = createButton("Нечто", NECHTO_BUTTON.name());
             List<InlineKeyboardButton> rowInLine2 = List.of(buttonNechto);
-            buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated, buttonNechto);
             inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
         } else {
-            buttonService.putButtonsToButtonCache(buttonHuman, buttonContaminated);
             inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
         }
 
@@ -121,8 +115,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         var buttonYes = createButton("Да", YES_BURNED_BUTTON.name());
         var buttonNo = createButton("Нет", NO_BURNED_BUTTON.name());
 
-        buttonService.putButtonsToButtonCache(buttonYes, buttonNo);
-
         List<InlineKeyboardButton> rowInLine = List.of(buttonYes, buttonNo);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
@@ -132,11 +124,9 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     @Override
     public SendMessage returnButtonsForHuman(Long chatId) {
         var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON.name());
-        var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_BUTTON_FOR_HUMAN.name());
+        var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_FOR_HUMAN_BUTTON.name());
         var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
-
-        buttonService.putButtonsToButtonCache(buttonDangerous, buttonFlamethrower, buttonAntiHumanFlamethrower, buttonEndCount);
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonDangerous);
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonFlamethrower, buttonAntiHumanFlamethrower);
@@ -154,8 +144,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
-        buttonService.putButtonsToButtonCache(buttonDangerous, buttonUsefull, buttonFlamethrower, buttonEndCount);
-
         List<InlineKeyboardButton> rowInLine = List.of(buttonDangerous, buttonUsefull, buttonFlamethrower);
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonEndCount);
 
@@ -168,8 +156,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     public SendMessage returnButtonsForLastContaminated(Long chatId) {
         var buttonYes = createButton("Да", YES_LAST_CONTAMINATED_BUTTON.name());
         var buttonNo = createButton("Нет", NO_LAST_CONTAMINATED_BUTTON.name());
-
-        buttonService.putButtonsToButtonCache(buttonYes, buttonNo);
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonYes, buttonNo);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
@@ -185,8 +171,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
-        buttonService.putButtonsToButtonCache(buttonDangerous, buttonUsefull, buttonVictim, buttonFlamethrower, buttonEndCount);
-
         List<InlineKeyboardButton> rowInLine = List.of(buttonDangerous, buttonUsefull, buttonVictim, buttonFlamethrower);
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonEndCount);
 
@@ -200,10 +184,8 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON.name());
         var buttonUsefull = createButton("Полезный", USEFULL_BUTTON.name());
         var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON.name());
-        var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_BUTTON.name());
+        var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_FOR_HUMAN_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
-
-        buttonService.putButtonsToButtonCache(buttonDangerous, buttonUsefull, buttonAntiHumanFlamethrower, buttonFlamethrower, buttonEndCount);
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonDangerous, buttonUsefull, buttonFlamethrower, buttonAntiHumanFlamethrower);
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonEndCount);
@@ -223,8 +205,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
-        buttonService.putButtonsToButtonCache(buttonFlamethrower, buttonEndCount);
-
         return getSendMessage(chatId, "Использовался ли огнемет? ", inlineKeyboardMarkup);
     }
 
@@ -243,8 +223,8 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
-    public SendMessage getMessageWithInlineMurkupPlusMinusWithAntiHumanFlamethrower(Long chatId, int flamethrowerAmount) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinusAgainstHumanFlamethrower(flamethrowerAmount);
+    public SendMessage getMessageWithInlineMurkupPlusMinusWithAgainstHumanFlamethrower(Long chatId, int flamethrowerAmount) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinusWithAgainstHumanFlamethrower(flamethrowerAmount);
 
         return getSendMessage(chatId, "Выберите количество:\n", inlineKeyboardMarkup);
     }
@@ -257,8 +237,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine = List.of(buttonCountNext, buttonEndGame);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
-        buttonService.putButtonsToButtonCache(buttonCountNext, buttonEndGame);
-
         return getSendMessage(chatId, "Что дальше?", inlineKeyboardMarkup);
     }
 
@@ -269,8 +247,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonChangeNext, buttonEndChanging);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
-
-        buttonService.putButtonsToButtonCache(buttonChangeNext, buttonEndChanging);
 
         return getSendMessage(chatId, "Что дальше?", inlineKeyboardMarkup);
     }
@@ -283,7 +259,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
     @Override
     public EditMessageText editeMessageForInlineKeyboardPlusMinusForAntiHumanFlamethrower(long chatId, int messageId, String text, int flamethrowerAmount) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinusAgainstHumanFlamethrower(flamethrowerAmount);
+        InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinusWithAgainstHumanFlamethrower(flamethrowerAmount);
 
         return getEditMessageWithInlineMarkup(chatId, messageId, text, inlineKeyboardMarkup);
     }
@@ -309,18 +285,16 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
-    public InlineKeyboardMarkup getInlineKeybordWithPlusMinusAgainstHumanFlamethrower(int flamethrowerAmount) {
+    public InlineKeyboardMarkup getInlineKeybordWithPlusMinusWithAgainstHumanFlamethrower(int flamethrowerAmount) {
         var buttonMinus = createButton("➖", MINUS_ANTI_FLAMETHROWER_BUTTON.name());
         var buttonValue = createButton(String.valueOf(flamethrowerAmount), VALUE_BUTTON.name());
         var buttonPlus = createButton("➕", PLUS_ANTI_FLAMETHROWER_BUTTON.name());
-        var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
         var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON.name());
+        var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonMinus, buttonValue, buttonPlus);
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonAntiHumanFlamethrower);
         List<InlineKeyboardButton> rowInLine3 = List.of(buttonEndCount);
-
-        buttonService.putButtonsToButtonCache(buttonMinus, buttonPlus, buttonEndCount, buttonAntiHumanFlamethrower);
 
         return createInlineKeyboard(rowInLine, rowInLine2, rowInLine3);
     }
@@ -335,8 +309,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine = List.of(buttonMinus, buttonValue, buttonPlus);
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonEndCount);
 
-        buttonService.putButtonsToButtonCache(buttonMinus, buttonPlus, buttonEndCount);
-
         return createInlineKeyboard(rowInLine, rowInLine2);
     }
 
@@ -347,9 +319,9 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
                 + ym.format(DateTimeFormatter.ofPattern("yyyy-MM")));
 
         List<InlineKeyboardButton> rowInLine = List.of(
-                createButton("◀️", MONTH_CALNAV_BUTTON.name() + ":" + ym.minusMonths(1)),
+                createButton("◀️", CALNAV_BUTTON_MONTH.name() + ":" + ym.minusMonths(1)),
                 createButton("📅 " + title, CALNOOP_BUTTON.name()),
-                createButton("▶️", MONTH_CALNAV_BUTTON.name() + ":" + ym.plusMonths(1)));
+                createButton("▶️", CALNAV_BUTTON_MONTH.name() + ":" + ym.plusMonths(1)));
         List<InlineKeyboardButton> rowInLine2 = List.of(confirmMonth);
 
         return createInlineKeyboard(rowInLine, rowInLine2);
@@ -383,7 +355,8 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
         for (ResponseUserDto user : users) {
-            var buttonUserName = createButton(user.getUsername(), PICKED_BUTTON.name() + user.getId());
+            String callbackDataName = PICKED_BUTTON.name() + user.getId();
+            var buttonUserName = createButton(user.getUsername(), callbackDataName);
 
             rowInLine.add(buttonUserName);
             buttonsInRow++;
@@ -394,7 +367,6 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
                 amountOfRows++;
             }
 
-            buttonService.putButtonsToButtonCache(buttonUserName);
         }
         return rowsInLine;
     }

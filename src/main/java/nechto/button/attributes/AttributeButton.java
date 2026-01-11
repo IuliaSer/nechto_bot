@@ -11,7 +11,9 @@
  import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
  import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-@RequiredArgsConstructor
+ import static nechto.utils.BotUtils.getButtonNameWithMessageId;
+
+ @RequiredArgsConstructor
 @Component
 public abstract class AttributeButton implements Button {
     private final ScoresStateCache scoresStateCache;
@@ -22,16 +24,18 @@ public abstract class AttributeButton implements Button {
     public abstract nechto.enums.Button getButton();
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name())) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
+
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
-        buttonService.deactivateButtons(getButton().name());
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();
         long gameId = cachedScoresDto.getGameId();
         scoresService.addStatus(getStatus(), userIdToCount, gameId);
+        buttonService.deactivateButtons(buttonName);
         return null;
     }
 

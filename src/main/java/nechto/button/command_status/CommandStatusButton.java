@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 import static nechto.utils.BotUtils.getEditMessageWithInlineMarkup;
 
 @Component
@@ -22,20 +23,22 @@ abstract public class CommandStatusButton implements Button {
     private final UserService userService;
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name())) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
+        int messageId = callbackQuery.getMessage().getMessageId();
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
-        buttonService.deactivateButtons(getButton().name());
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long gameId = cachedScoresDto.getGameId();
         if (cachedScoresDto.isGameIsFinished()) {
-            return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
+            return getEditMessageWithInlineMarkup(userId, messageId,
                     "Завершить изменения или изменить очки для игроков:",
                     inlineKeyboardService.returnButtonsWithEndChangingAndChangeNext(userService.findAllByGameId(gameId)));
         }
-        return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
+        buttonService.deactivateButtons(buttonName);
+        return getEditMessageWithInlineMarkup(userId, messageId,
                 "Выберите ник игрока, которого надо посчитать:",
                 inlineKeyboardService.returnButtonsWithUsers(userService.findAllByGameId(gameId)));
     }

@@ -1,7 +1,6 @@
 package nechto.button;
 
 import lombok.RequiredArgsConstructor;
-import nechto.cache.ButtonsCache;
 import nechto.cache.ScoresStateCache;
 import nechto.dto.CachedScoresDto;
 import nechto.enums.CommandStatus;
@@ -24,6 +23,7 @@ import static nechto.enums.Status.HUMAN;
 import static nechto.enums.Status.LOOSE;
 import static nechto.enums.Status.NECHTO;
 import static nechto.enums.Status.WON;
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 
 @RequiredArgsConstructor
 @Component
@@ -32,7 +32,6 @@ public class EndCountButton implements Button {
     private final ScoresService scoresService;
     private final InlineKeyboardService inlineKeyboardService;
     private final ButtonService buttonService;
-    private final ButtonsCache buttonsCache;
 
     @Override
     public nechto.enums.Button getButton() {
@@ -40,13 +39,12 @@ public class EndCountButton implements Button {
     }
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        String buttonName = END_COUNT_BUTTON.name() + callbackquery.getMessage().getMessageId();
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
 
-        if (buttonsCache.get(buttonName) != null && !buttonsCache.get(buttonName)) {
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
-        buttonService.deactivateButtons(buttonName);
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();
@@ -76,7 +74,7 @@ public class EndCountButton implements Button {
         if (cachedScoresDto.isGameIsFinished()) {
             return inlineKeyboardService.returnButtonsForChangingGame(userId);
         }
-
+        buttonService.deactivateButtons(buttonName);
         return inlineKeyboardService.returnButtonsToEndGameOrCountNext(userId);
     }
 }

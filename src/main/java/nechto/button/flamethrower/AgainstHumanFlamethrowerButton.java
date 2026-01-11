@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.Button.ANTI_HUMAN_FLAMETHROWER_BUTTON;
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 
 @RequiredArgsConstructor
 @Component
@@ -25,13 +26,15 @@ public class AgainstHumanFlamethrowerButton implements Button {
     }
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name())) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
+
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         cachedScoresDto.setAntiHumanFlamethrowerAmount(1);
-        buttonService.deactivateButtons(getButton().name());
+        buttonService.deactivateButtons(buttonName);
         return inlineKeyboardService.getMessageWithInlineMurkupPlusMinusAntiHuman(userId, 1);
     }
 }

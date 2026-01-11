@@ -1,8 +1,10 @@
 package nechto.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import nechto.enums.Button;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
@@ -54,5 +56,9 @@ public class BotUtils {
             throw new RuntimeException(format("Unsupported update type: {}", update));
         }
         return userId;
+    }
+
+    public static String getButtonNameWithMessageId(CallbackQuery callbackQuery, Button button) {
+        return button.name() + callbackQuery.getMessage().getMessageId();
     }
 }

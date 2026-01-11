@@ -2,13 +2,18 @@ package nechto.button;
 
 import lombok.RequiredArgsConstructor;
 import nechto.cache.ScoresStateCache;
+import nechto.dto.response.ResponseUserDto;
 import nechto.service.InlineKeyboardService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import java.util.List;
+
 import static nechto.enums.Button.COUNT_NEXT_BUTTON;
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 import static nechto.utils.BotUtils.getEditMessageWithInlineMarkup;
+import static nechto.utils.BotUtils.getSendMessage;
 
 @RequiredArgsConstructor
 @Component
@@ -23,14 +28,19 @@ public class CountNextButton implements Button {
     }
 
     @Override
-    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackquery, Long userId) {
-        if(!buttonService.isActive(getButton().name())) {
+    public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
+        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
+
+        if (!buttonService.isActive(buttonName)) {
             return null;
         }
-        buttonService.deactivateButtons(getButton().name());
+        buttonService.deactivateButtons(buttonName);
 
-        return getEditMessageWithInlineMarkup(userId, callbackquery.getMessage().getMessageId(),
-                "Выберите ник игрока, которого надо посчитать:",
-                inlineKeyboardService.returnButtonsWithUsers(scoresStateCache.get(userId).getUsers()));
+        List<ResponseUserDto> users = scoresStateCache.get(userId).getUsers();
+        if (users.isEmpty()) {
+            return getSendMessage(userId, "Все пользователи добавленные в игру посчитаны!");
+        }
+        return getEditMessageWithInlineMarkup(userId, callbackQuery.getMessage().getMessageId(),
+                "Выберите ник игрока, которого надо посчитать:", inlineKeyboardService.returnButtonsWithUsers(users));
     }
 }
