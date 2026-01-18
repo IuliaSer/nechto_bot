@@ -40,10 +40,10 @@ public class CountNextButton implements Button {
         }
 
         List<ResponseUserDto> users = scoresStateCache.get(userId).getUsers();
+        buttonService.deactivateButtons(buttonName, endGameButtonName);
         if (users.isEmpty()) {
             return getSendMessage(userId, "Все пользователи добавленные в игру посчитаны!");
         }
-        buttonService.deactivateButtons(buttonName, endGameButtonName);
         return getEditMessageWithInlineMarkup(userId, callbackQuery.getMessage().getMessageId(),
                 "Выберите ник игрока, которого надо посчитать:", inlineKeyboardService.returnButtonsWithUsers(users));
     }

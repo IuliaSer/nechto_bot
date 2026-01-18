@@ -91,12 +91,12 @@ public class EndCountButton implements Button {
         }
         cachedScoresDto.setFlamethrowerAmount(0);
         cachedScoresDto.setAntiHumanFlamethrowerAmount(0);
-        if (cachedScoresDto.isGameIsFinished()) {
-            return inlineKeyboardService.returnButtonsForChangingGame(userId);
-        }
         buttonService.deactivateButtons(buttonName, minusButtonName, plusButtonName, minusAntiHumanButtonName,
                 plusAntiHumanButtonName, dangerousButtonName, usefullButtonName, victimButtonName,
                 flamethrowerButtonName, againstHumanFlamethrowerButtonName);
+        if (cachedScoresDto.isGameIsFinished()) {
+            return inlineKeyboardService.returnButtonsForChangingGame(userId);
+        }
         return inlineKeyboardService.returnButtonsToEndGameOrCountNext(userId);
     }
 }
