@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static nechto.enums.Button.ANTI_HUMAN_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.CALNAV_BUTTON;
 import static nechto.enums.Button.CALNOOP_BUTTON;
 import static nechto.enums.Button.CAL_BUTTON;
@@ -35,16 +35,16 @@ import static nechto.enums.Button.FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.FLAMETHROWER_FOR_HUMAN_BUTTON;
 import static nechto.enums.Button.HUMAN_BUTTON;
 import static nechto.enums.Button.LAST_CONTAMINATED_BUTTON;
-import static nechto.enums.Button.MINUS_ANTI_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.MINUS_ANTI_HUMAN_BUTTON;
+import static nechto.enums.Button.MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.MINUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.MINUS_BUTTON;
 import static nechto.enums.Button.CALNAV_BUTTON_MONTH;
 import static nechto.enums.Button.NECHTO_BUTTON;
 import static nechto.enums.Button.NO_BURNED_BUTTON;
 import static nechto.enums.Button.NO_LAST_CONTAMINATED_BUTTON;
 import static nechto.enums.Button.PICKED_BUTTON;
-import static nechto.enums.Button.PLUS_ANTI_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.PLUS_ANTI_HUMAN_BUTTON;
+import static nechto.enums.Button.PLUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.PLUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.PLUS_BUTTON;
 import static nechto.enums.Button.USEFULL_BUTTON;
 import static nechto.enums.Button.VALUE_BUTTON;
@@ -125,7 +125,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     public SendMessage returnButtonsForHuman(Long chatId) {
         var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON.name());
         var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_FOR_HUMAN_BUTTON.name());
-        var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON.name());
+        var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", AGAINST_HUMAN_FLAMETHROWER_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonDangerous);
@@ -183,7 +183,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     public SendMessage returnButtonsForBurnedHuman(Long chatId) {
         var buttonDangerous = createButton("Опасный", DANGEROUS_BUTTON.name());
         var buttonUsefull = createButton("Полезный", USEFULL_BUTTON.name());
-        var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON.name());
+        var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", AGAINST_HUMAN_FLAMETHROWER_BUTTON.name());
         var buttonFlamethrower = createButton("Огнемет", FLAMETHROWER_FOR_HUMAN_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
@@ -286,10 +286,10 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
     @Override
     public InlineKeyboardMarkup getInlineKeybordWithPlusMinusWithAgainstHumanFlamethrower(int flamethrowerAmount) {
-        var buttonMinus = createButton("➖", MINUS_ANTI_FLAMETHROWER_BUTTON.name());
+        var buttonMinus = createButton("➖", MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON.name());
         var buttonValue = createButton(String.valueOf(flamethrowerAmount), VALUE_BUTTON.name());
-        var buttonPlus = createButton("➕", PLUS_ANTI_FLAMETHROWER_BUTTON.name());
-        var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", ANTI_HUMAN_FLAMETHROWER_BUTTON.name());
+        var buttonPlus = createButton("➕", PLUS_WITH_AGAINST_FLAMETHROWER_BUTTON.name());
+        var buttonAntiHumanFlamethrower = createButton("Огнемет против человека", AGAINST_HUMAN_FLAMETHROWER_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonMinus, buttonValue, buttonPlus);
@@ -301,9 +301,9 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
     @Override
     public InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHuman(int flamethrowerAmount) {
-        var buttonMinus = createButton("➖", MINUS_ANTI_HUMAN_BUTTON.name());
+        var buttonMinus = createButton("➖", MINUS_FOR_AGAINST_FLAMETHROWER_BUTTON.name());
         var buttonValue = createButton(String.valueOf(flamethrowerAmount), VALUE_BUTTON.name());
-        var buttonPlus = createButton("➕", PLUS_ANTI_HUMAN_BUTTON.name());
+        var buttonPlus = createButton("➕", PLUS_FOR_AGAINST_FLAMETHROWER_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonMinus, buttonValue, buttonPlus);
@@ -366,7 +366,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
                 buttonsInRow = 0;
                 amountOfRows++;
             }
-
+            buttonService.putButtonsToButtonCache(callbackDataName);
         }
         return rowsInLine;
     }

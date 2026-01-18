@@ -23,7 +23,7 @@ public class ButtonStatusCache {
         buttonStatusMap.put(Button.BURNED_BUTTON, BURNED);
         buttonStatusMap.put(Button.VICTIM_BUTTON, VICTIM);
         buttonStatusMap.put(Button.FLAMETHROWER_BUTTON, FLAMETHROWER);
-        buttonStatusMap.put(Button.ANTI_HUMAN_FLAMETHROWER_BUTTON, ANTI_HUMAN_FLAMETHROWER);
+        buttonStatusMap.put(Button.AGAINST_HUMAN_FLAMETHROWER_BUTTON, ANTI_HUMAN_FLAMETHROWER);
     }
 
     public Status getStatus(Button button) {

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static nechto.enums.Button.ANTI_HUMAN_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.AGAINST_HUMAN_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.END_COUNT_BUTTON;
+import static nechto.enums.Button.FLAMETHROWER_FOR_HUMAN_BUTTON;
 import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 
 @RequiredArgsConstructor
@@ -22,19 +24,21 @@ public class AgainstHumanFlamethrowerButton implements Button {
 
     @Override
     public nechto.enums.Button getButton() {
-        return ANTI_HUMAN_FLAMETHROWER_BUTTON;
+        return AGAINST_HUMAN_FLAMETHROWER_BUTTON;
     }
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
-
         if (!buttonService.isActive(buttonName)) {
             return null;
         }
+        String endCountButtonName = getButtonNameWithMessageId(callbackQuery, END_COUNT_BUTTON);
+        String flamethrowerButtonName = getButtonNameWithMessageId(callbackQuery, FLAMETHROWER_FOR_HUMAN_BUTTON);
+
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         cachedScoresDto.setAntiHumanFlamethrowerAmount(1);
-        buttonService.deactivateButtons(buttonName);
+        buttonService.deactivateButtons(buttonName, endCountButtonName, flamethrowerButtonName);
         return inlineKeyboardService.getMessageWithInlineMurkupPlusMinusAntiHuman(userId, 1);
     }
 }

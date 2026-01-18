@@ -41,10 +41,10 @@ public abstract class RoleButton implements Button {
         if (!buttonService.isActive(buttonName)) {
             return null;
         }
-        buttonService.deactivateButtons(nechtoButtonName, humanButtonName, contaminatedButtonName, lastContaminatedButtonName);
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         scoresService.addStatus(buttonStatusCache.getStatus(getButton()), cachedScoresDto.getUserId(), cachedScoresDto.getGameId());
+        buttonService.deactivateButtons(nechtoButtonName, humanButtonName, contaminatedButtonName, lastContaminatedButtonName);
         return inlineKeyboardService.returnButtonsForHuman(userId);
     }
 }

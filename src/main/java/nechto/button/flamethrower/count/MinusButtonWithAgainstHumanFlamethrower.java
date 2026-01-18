@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static java.lang.String.format;
-import static nechto.enums.Button.MINUS_ANTI_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
 
 @RequiredArgsConstructor
 @Component
@@ -20,7 +20,7 @@ public class MinusButtonWithAgainstHumanFlamethrower implements Button {
 
     @Override
     public nechto.enums.Button getButton() {
-        return MINUS_ANTI_FLAMETHROWER_BUTTON;
+        return MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
     }
 
     @Override

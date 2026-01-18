@@ -10,17 +10,17 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static java.lang.String.format;
-import static nechto.enums.Button.PLUS_ANTI_HUMAN_BUTTON;
+import static nechto.enums.Button.PLUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
 
 @RequiredArgsConstructor
 @Component
-public class PlusButtonAgainstHumanFlamethrower implements Button {
+public class PlusButtonForAgainstHumanFlamethrower implements Button {
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresStateCache scoresStateCache;
 
     @Override
     public nechto.enums.Button getButton() {
-        return PLUS_ANTI_HUMAN_BUTTON;
+        return PLUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
     }
 
     @Override
