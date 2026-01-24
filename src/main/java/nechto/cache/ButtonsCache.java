@@ -1,7 +1,6 @@
 package nechto.cache;
 
 import lombok.Getter;
-import nechto.enums.Button;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -10,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 @Component
 public class ButtonsCache {
-    private final Map<String, Boolean> map;
+    private final Map<String, Boolean> map = new ConcurrentHashMap<>();
 
     public Boolean get(String buttonId) {
         return map.get(buttonId);
@@ -20,10 +19,4 @@ public class ButtonsCache {
         map.put(buttonId, status);
     }
 
-    public ButtonsCache() {
-        this.map = new ConcurrentHashMap<>();
-        for (Button button : Button.values()) {
-            put(button.name(), true);
-        }
-    }
 }

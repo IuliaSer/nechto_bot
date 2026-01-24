@@ -24,7 +24,7 @@ import static nechto.enums.Button.AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.CALNAV_BUTTON;
 import static nechto.enums.Button.CALNOOP_BUTTON;
 import static nechto.enums.Button.CAL_BUTTON;
-import static nechto.enums.Button.CHANGE_NEXT_BUTTON;
+//import static nechto.enums.Button.CHANGE_NEXT_BUTTON;
 import static nechto.enums.Button.CONFIRM_MONTH_BUTTON;
 import static nechto.enums.Button.CONTAMINATED_BUTTON;
 import static nechto.enums.Button.COUNT_NEXT_BUTTON;
@@ -242,7 +242,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
     @Override
     public SendMessage returnButtonsForChangingGame(Long chatId) {
-        var buttonChangeNext = createButton("Изменить для следующего", CHANGE_NEXT_BUTTON.name());
+        var buttonChangeNext = createButton("Изменить для следующего", COUNT_NEXT_BUTTON.name());
         var buttonEndChanging = createButton("Подтвердить всех", END_GAME_BUTTON.name());
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonChangeNext, buttonEndChanging);
@@ -339,7 +339,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         var buttonEndCount = createButton("Завершить изменения", END_GAME_BUTTON.name());
-        var buttonChangeUser = createButton("Изменить очки игроков", CHANGE_NEXT_BUTTON.name());
+        var buttonChangeUser = createButton("Изменить очки игроков", COUNT_NEXT_BUTTON.name());
 
         row1.add(buttonEndCount);
         row2.add(buttonChangeUser);

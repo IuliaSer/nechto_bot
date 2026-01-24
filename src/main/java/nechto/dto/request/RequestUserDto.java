@@ -16,7 +16,7 @@ public class RequestUserDto {
     private String name;
 
     @NotNull(message = "Username should not be null")
-    @Size(min = 3, max = 8, message = "Ник пользователя должно быть не меньше 3 символов и не больше 8")
+    @Size(min = 3, max = 8, message = "Ник пользователя должен быть не меньше 3 символов и не больше 8")
     private String username;
 
     private Authority authority;

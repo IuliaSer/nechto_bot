@@ -26,9 +26,8 @@ public class AddUser implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        String messageText = message.getText();
         Pattern pattern = Pattern.compile("(?<=id=)\\d+");
-        Matcher matcher = pattern.matcher(messageText);
+        Matcher matcher = pattern.matcher(message.getText());
         long gameId = 0;
         long adminId = 0;
         if (matcher.find()) {

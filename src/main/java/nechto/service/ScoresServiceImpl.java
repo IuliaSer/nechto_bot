@@ -79,10 +79,10 @@ public class ScoresServiceImpl implements ScoresService {
             scores.setScores(results);
             scoresRepository.save(scores);
         }
-        if (amountOfFlamethrowersByGame != amountOfBurnedByGame) {
-            throw new FlamethrowerDisbalanceException("Количество сожженых и использованных огнеметов не совпадает! " +
-                    "Пожалуйста измените игру!");
-        }
+//        if (amountOfFlamethrowersByGame != amountOfBurnedByGame) {
+//            throw new FlamethrowerDisbalanceException("Количество сожженых и использованных огнеметов не совпадает! " +
+//                    "Пожалуйста измените игру!");
+//        }
         return scoresMapper.convertToListResponseScoresDto(scoresList);
     }
 

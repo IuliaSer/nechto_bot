@@ -25,9 +25,9 @@ public class CalnavButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
-        String message = callbackQuery.getData();
-        YearMonth target = YearMonth.parse(message.substring(CALNAV_BUTTON.name().length() + 1));
-        return getEditMessageWithInlineMarkup(userId, callbackQuery.getMessage().getMessageId(), "Привяу",
+        YearMonth target = YearMonth.parse(callbackQuery.getData().substring(CALNAV_BUTTON.name().length() + 1));
+        return getEditMessageWithInlineMarkup(userId, callbackQuery.getMessage().getMessageId(),
+                String.format("Вы выбрали месяц %s", target.getMonth()),
                 inlineKeyboardService.buildCalendar(userId, target, Locale.forLanguageTag("ru")));
     }
 }
