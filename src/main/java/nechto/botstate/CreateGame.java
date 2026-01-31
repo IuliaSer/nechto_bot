@@ -38,7 +38,7 @@ public class CreateGame implements BotState {
 
         scoresStateCache.put(userId);
         scoresStateCache.get(userId).setGameId(gameId);
-        scoresStateCache.get(userId).setGameIsFinished(false); //?
+        scoresStateCache.get(userId).setGameIsFinished(false);
         return getSendMessage(userId, format("Перейдите по ссылке, добавьтесь в игру %s", gameId));
     }
 }

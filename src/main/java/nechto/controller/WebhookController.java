@@ -27,5 +27,4 @@ public class WebhookController {
         }
         return telegramBot.onWebhookUpdateReceived(update);
     }
-
 }

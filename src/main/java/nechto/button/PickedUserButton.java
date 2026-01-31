@@ -1,6 +1,7 @@
 package nechto.button;
 
 import lombok.RequiredArgsConstructor;
+import nechto.cache.ButtonsCache;
 import nechto.cache.ScoresStateCache;
 import nechto.dto.CachedScoresDto;
 import nechto.dto.response.ResponseUserDto;
@@ -23,6 +24,7 @@ public class PickedUserButton implements Button {
     private final InlineKeyboardService inlineKeyboardService;
     private final ScoresService scoresService;
     private final ButtonService buttonService;
+    private final ButtonsCache buttonsCache;
 
     @Override
     public nechto.enums.Button getButton() {
@@ -33,11 +35,8 @@ public class PickedUserButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = callbackQuery.getData();
 
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
-        long userIdToCount = Long.parseLong(buttonName.substring(PICKED_BUTTON.name().length()));
+        long userIdToCount = Long.parseLong(buttonName.substring(PICKED_BUTTON.name().length() + 1));
 
         clearStatusesIfGameIsChanging(cachedScoresDto, userIdToCount);
 
@@ -45,7 +44,7 @@ public class PickedUserButton implements Button {
         List<ResponseUserDto> users = cachedScoresDto.getUsers();
         users.removeIf(user -> user.getId().equals(userIdToCount));
 
-        buttonService.deactivateAllPickedUserButtons();
+        buttonService.deactivateAllPickedUserButtons(callbackQuery);
         return scoresStateCache.get(userId).getCommandStatus().equals(CommandStatus.NECHTO_WIN) ?
                 inlineKeyboardService.returnButtonsWithRolesForNechtoWin(userId) :
                 inlineKeyboardService.returnButtonsWithRolesForHumanWin(userId);

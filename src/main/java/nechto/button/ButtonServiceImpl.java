@@ -3,8 +3,10 @@ package nechto.button;
 import lombok.RequiredArgsConstructor;
 import nechto.cache.ButtonsCache;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static nechto.enums.Button.PICKED_BUTTON;
+import static nechto.utils.BotUtils.getButtonNameWithMessageId;
 
 @RequiredArgsConstructor
 @Component
@@ -34,9 +36,9 @@ public class ButtonServiceImpl implements ButtonService {
     }
 
     @Override
-    public void deactivateAllPickedUserButtons() {
+    public void deactivateAllPickedUserButtons(CallbackQuery callbackQuery) {
         buttonsCache.getMap().keySet().stream()
                 .filter(b -> b.startsWith(PICKED_BUTTON.name()))
-                .forEach(b -> buttonsCache.put(b, false));
+                .forEach(b -> buttonsCache.put(getButtonNameWithMessageId(callbackQuery, b), false));
     }
 }

@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 public class TelegramBotConfig {
-    @Value("${telegrambot.webHookPath}")
+    @Value("${telegram.bot.webHookPath}")
     String webHookPath;
 
-    @Value("${telegrambot.userName}")
+    @Value("${telegram.bot.userName}")
     String userName;
 
-    @Value("${telegrambot.botToken}")
+    @Value("${telegram.bot.token}")
     String botToken;
 }

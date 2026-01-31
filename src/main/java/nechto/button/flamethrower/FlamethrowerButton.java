@@ -25,11 +25,6 @@ public abstract class FlamethrowerButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
-        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
-
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
         String flamethrowerButtonName = getButtonNameWithMessageId(callbackQuery, FLAMETHROWER_FOR_HUMAN_BUTTON);
         String flamethrowerForContaminatedButtonName = getButtonNameWithMessageId(callbackQuery, FLAMETHROWER_BUTTON);
         String endCountButtonName = getButtonNameWithMessageId(callbackQuery, END_COUNT_BUTTON);

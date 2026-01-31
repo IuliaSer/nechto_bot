@@ -31,9 +31,6 @@ public class NoBurnedButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
 
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
         Status status = scoresStateCache.get(userId).getStatus();
 
         buttonService.deactivateButtons(buttonName, getButtonNameWithMessageId(callbackQuery, YES_BURNED_BUTTON));

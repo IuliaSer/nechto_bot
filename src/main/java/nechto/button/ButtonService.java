@@ -1,5 +1,7 @@
 package nechto.button;
 
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+
 public interface ButtonService {
 
     boolean isActive(String buttonName);
@@ -10,5 +12,5 @@ public interface ButtonService {
 
     void putButtonsToButtonCache(String... buttons);
 
-    void deactivateAllPickedUserButtons();
+    void deactivateAllPickedUserButtons(CallbackQuery callbackQuery);
 }

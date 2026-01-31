@@ -33,17 +33,12 @@ public class YesBurnedButton implements Button {
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
-
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
-
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();
         long gameId = cachedScoresDto.getGameId();
-        scoresService.addStatus(Status.BURNED, userIdToCount, gameId);
         Status status = cachedScoresDto.getStatus();
 
+        scoresService.addStatus(Status.BURNED, userIdToCount, gameId);
         buttonService.deactivateButtons(buttonName, getButtonNameWithMessageId(callbackQuery, NO_BURNED_BUTTON));
 
         if (status.equals(Status.HUMAN)) {

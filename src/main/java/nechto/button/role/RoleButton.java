@@ -32,17 +32,12 @@ public abstract class RoleButton implements Button {
 
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
-        String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
         String nechtoButtonName = getButtonNameWithMessageId(callbackQuery, NECHTO_BUTTON);
         String humanButtonName = getButtonNameWithMessageId(callbackQuery, HUMAN_BUTTON);
         String contaminatedButtonName = getButtonNameWithMessageId(callbackQuery, CONTAMINATED_BUTTON);
         String lastContaminatedButtonName = getButtonNameWithMessageId(callbackQuery, LAST_CONTAMINATED_BUTTON);
-
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
-
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
+
         scoresService.addStatus(buttonStatusCache.getStatus(getButton()), cachedScoresDto.getUserId(), cachedScoresDto.getGameId());
         buttonService.deactivateButtons(nechtoButtonName, humanButtonName, contaminatedButtonName, lastContaminatedButtonName);
         return inlineKeyboardService.returnButtonsForHuman(userId);

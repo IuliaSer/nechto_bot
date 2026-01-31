@@ -24,7 +24,6 @@ import static nechto.enums.Button.AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.CALNAV_BUTTON;
 import static nechto.enums.Button.CALNOOP_BUTTON;
 import static nechto.enums.Button.CAL_BUTTON;
-//import static nechto.enums.Button.CHANGE_NEXT_BUTTON;
 import static nechto.enums.Button.CONFIRM_MONTH_BUTTON;
 import static nechto.enums.Button.CONTAMINATED_BUTTON;
 import static nechto.enums.Button.COUNT_NEXT_BUTTON;
@@ -36,7 +35,7 @@ import static nechto.enums.Button.FLAMETHROWER_FOR_HUMAN_BUTTON;
 import static nechto.enums.Button.HUMAN_BUTTON;
 import static nechto.enums.Button.LAST_CONTAMINATED_BUTTON;
 import static nechto.enums.Button.MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.MINUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.MINUS_BUTTON;
 import static nechto.enums.Button.CALNAV_BUTTON_MONTH;
 import static nechto.enums.Button.NECHTO_BUTTON;
@@ -44,7 +43,7 @@ import static nechto.enums.Button.NO_BURNED_BUTTON;
 import static nechto.enums.Button.NO_LAST_CONTAMINATED_BUTTON;
 import static nechto.enums.Button.PICKED_BUTTON;
 import static nechto.enums.Button.PLUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.PLUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.PLUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.PLUS_BUTTON;
 import static nechto.enums.Button.USEFULL_BUTTON;
 import static nechto.enums.Button.VALUE_BUTTON;
@@ -301,9 +300,9 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
     @Override
     public InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHuman(int flamethrowerAmount) {
-        var buttonMinus = createButton("➖", MINUS_FOR_AGAINST_FLAMETHROWER_BUTTON.name());
+        var buttonMinus = createButton("➖", MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON.name());
         var buttonValue = createButton(String.valueOf(flamethrowerAmount), VALUE_BUTTON.name());
-        var buttonPlus = createButton("➕", PLUS_FOR_AGAINST_FLAMETHROWER_BUTTON.name());
+        var buttonPlus = createButton("➕", PLUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON.name());
         var buttonEndCount = createButton("Посчитать", END_COUNT_BUTTON.name());
 
         List<InlineKeyboardButton> rowInLine = List.of(buttonMinus, buttonValue, buttonPlus);
@@ -355,7 +354,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
         for (ResponseUserDto user : users) {
-            String callbackDataName = PICKED_BUTTON.name() + user.getId();
+            String callbackDataName = PICKED_BUTTON.name() + ":" + user.getId();
             var buttonUserName = createButton(user.getUsername(), callbackDataName);
 
             rowInLine.add(buttonUserName);
@@ -383,7 +382,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
                 createButton("▶️", CALNAV_BUTTON.name() + ":" + ym.plusMonths(1))));
 
         // Шапка дней недели (Пн..Вс)
-        DayOfWeek firstDow = DayOfWeek.MONDAY; // или из настроек
+        DayOfWeek firstDow = DayOfWeek.MONDAY;
         List<InlineKeyboardButton> dowRow = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             DayOfWeek dow = firstDow.plus(i);

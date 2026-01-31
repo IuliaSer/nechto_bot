@@ -1,8 +1,8 @@
 package nechto.service;
 
 import lombok.RequiredArgsConstructor;
-import nechto.cache.UserInfoCache;
 import nechto.enums.Authority;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
@@ -14,6 +14,9 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
+
+  @Value("${telegram.bot.token}")
+  private String token;
 
   private static final List<BotCommand> COMMON_RESULTS = List.of(
           cmd("/results_for_a_game", "показать результаты за последнюю игру"),
@@ -60,13 +63,11 @@ public class MenuServiceImpl implements MenuService {
   }
 
   private final TelegramFeignClient telegram;
-  private final UserInfoCache userInfoCache;
 
   @Override
   public void refreshCommands(long userId, Authority authority) {
-    userInfoCache.get(userId).incrementAndGet();
-
-    telegram.setMyCommands(SetMyCommands.builder()
+    telegram.setMyCommands(token,
+            SetMyCommands.builder()
             .commands(MENU.getOrDefault(authority, List.of()))
             .scope(new BotCommandScopeChat(String.valueOf(userId)))
             .build());

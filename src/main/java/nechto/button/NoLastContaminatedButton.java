@@ -24,9 +24,6 @@ public class NoLastContaminatedButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
 
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
         buttonService.deactivateButtons(buttonName);
         return inlineKeyboardService.returnButtonsForContaminated(userId);
     }

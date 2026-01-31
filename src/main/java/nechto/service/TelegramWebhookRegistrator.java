@@ -24,7 +24,7 @@ public class TelegramWebhookRegistrator {
   private final RestTemplate restTemplate;
   private final ObjectMapper mapper;
 
-  @Value("${telegrambot.botToken}")
+  @Value("${telegram.bot.token}")
   private String botToken;
 
   @Value("${ngrok.apiBase:http://localhost:4040}") //nastroit v dokere tozhe

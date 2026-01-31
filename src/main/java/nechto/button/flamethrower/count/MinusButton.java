@@ -1,10 +1,10 @@
 package nechto.button.flamethrower.count;
 
 import lombok.RequiredArgsConstructor;
-import nechto.dto.CachedScoresDto;
-import nechto.service.InlineKeyboardService;
 import nechto.button.Button;
 import nechto.cache.ScoresStateCache;
+import nechto.dto.CachedScoresDto;
+import nechto.service.InlineKeyboardService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;

@@ -2,6 +2,7 @@ package nechto.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import nechto.enums.Button;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -59,6 +60,20 @@ public class BotUtils {
     }
 
     public static String getButtonNameWithMessageId(CallbackQuery callbackQuery, Button button) {
-        return button.name() + callbackQuery.getMessage().getMessageId();
+        return button.name() + "_" + callbackQuery.getMessage().getMessageId();
+    }
+
+    public static String getButtonNameWithMessageId(CallbackQuery callbackQuery, String buttonName) {
+        return buttonName + "_" + callbackQuery.getMessage().getMessageId();
+    }
+
+    public static String getButtonNameWithMessageId(CallbackQuery callbackQuery) {
+        return callbackQuery.getData() + "_" + callbackQuery.getMessage().getMessageId();
+    }
+
+    public static AnswerCallbackQuery getAnswerCallbackQuery(CallbackQuery callbackQuery) {
+        return AnswerCallbackQuery.builder()
+                .callbackQueryId(callbackQuery.getId())
+                .build();
     }
 }

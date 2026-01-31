@@ -26,9 +26,6 @@ abstract public class CommandStatusButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
         int messageId = callbackQuery.getMessage().getMessageId();
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long gameId = cachedScoresDto.getGameId();

@@ -1,16 +1,16 @@
 package nechto.button.flamethrower.count;
 
 import lombok.RequiredArgsConstructor;
-import nechto.dto.CachedScoresDto;
-import nechto.service.InlineKeyboardService;
 import nechto.button.Button;
 import nechto.cache.ScoresStateCache;
+import nechto.dto.CachedScoresDto;
+import nechto.service.InlineKeyboardService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static java.lang.String.format;
-import static nechto.enums.Button.MINUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 
 @RequiredArgsConstructor
 @Component
@@ -20,7 +20,7 @@ public class MinusButtonForAgainstHumanFlamethrower implements Button {
 
     @Override
     public nechto.enums.Button getButton() {
-        return MINUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
+        return MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
     }
 
     @Override

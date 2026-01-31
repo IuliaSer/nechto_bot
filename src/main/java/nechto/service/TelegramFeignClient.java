@@ -14,12 +14,11 @@ import org.telegram.telegrambots.meta.api.objects.ApiResponse;
         url = "https://api.telegram.org",
         configuration = TelegramFeignConfig.class)
 public interface TelegramFeignClient {
-
     @PostMapping("/bot{token}/sendMessage")
     ApiResponse sendMessage(@PathVariable String token,
                             @RequestBody SendMessage req);
 
-    @PostMapping("/bot8086975968:AAEWRBWduBoPDT7TUJpFlO5s_fOVvkvqSvY/setMyCommands")
-    ApiResponse setMyCommands(@RequestBody SetMyCommands req);
+    @PostMapping("/bot{token}/setMyCommands")
+    ApiResponse setMyCommands(@PathVariable String token, @RequestBody SetMyCommands req);
 
 }

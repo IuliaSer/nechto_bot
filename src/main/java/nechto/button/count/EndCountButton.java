@@ -19,10 +19,12 @@ import static nechto.enums.Button.AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.DANGEROUS_BUTTON;
 import static nechto.enums.Button.END_COUNT_BUTTON;
 import static nechto.enums.Button.FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.MINUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.MINUS_BUTTON;
-import static nechto.enums.Button.PLUS_FOR_AGAINST_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.PLUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.PLUS_BUTTON;
+import static nechto.enums.Button.PLUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.USEFULL_BUTTON;
 import static nechto.enums.Button.VICTIM_BUTTON;
 import static nechto.enums.CommandStatus.NECHTO_WIN;
@@ -53,13 +55,13 @@ public class EndCountButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
 
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
+        
         String minusButtonName = getButtonNameWithMessageId(callbackQuery, MINUS_BUTTON);
         String plusButtonName = getButtonNameWithMessageId(callbackQuery, PLUS_BUTTON);
-        String minusAntiHumanButtonName = getButtonNameWithMessageId(callbackQuery, MINUS_FOR_AGAINST_FLAMETHROWER_BUTTON);
-        String plusAntiHumanButtonName = getButtonNameWithMessageId(callbackQuery, PLUS_FOR_AGAINST_FLAMETHROWER_BUTTON);
+        String minusAntiHumanButtonName = getButtonNameWithMessageId(callbackQuery, MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON);
+        String plusAntiHumanButtonName = getButtonNameWithMessageId(callbackQuery, PLUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON);
+        String minusWithAgainstHumanFlamethrowerButtonName = getButtonNameWithMessageId(callbackQuery, MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON);
+        String plusWithAgainstHumanFlamethrowerButtonName = getButtonNameWithMessageId(callbackQuery, PLUS_WITH_AGAINST_FLAMETHROWER_BUTTON);
         String dangerousButtonName = getButtonNameWithMessageId(callbackQuery, DANGEROUS_BUTTON);
         String usefullButtonName = getButtonNameWithMessageId(callbackQuery, USEFULL_BUTTON);
         String victimButtonName = getButtonNameWithMessageId(callbackQuery, VICTIM_BUTTON);
@@ -93,7 +95,8 @@ public class EndCountButton implements Button {
         cachedScoresDto.setAntiHumanFlamethrowerAmount(0);
         buttonService.deactivateButtons(buttonName, minusButtonName, plusButtonName, minusAntiHumanButtonName,
                 plusAntiHumanButtonName, dangerousButtonName, usefullButtonName, victimButtonName,
-                flamethrowerButtonName, againstHumanFlamethrowerButtonName);
+                flamethrowerButtonName, againstHumanFlamethrowerButtonName, minusWithAgainstHumanFlamethrowerButtonName,
+                plusWithAgainstHumanFlamethrowerButtonName);
         if (cachedScoresDto.isGameIsFinished()) {
             return inlineKeyboardService.returnButtonsForChangingGame(userId);
         }

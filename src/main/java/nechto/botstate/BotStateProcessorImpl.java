@@ -26,6 +26,7 @@ public class BotStateProcessorImpl implements BotStateProcessor {
     @Override
     public BotApiMethod<?> process(nechto.enums.BotState botState, Message message) {
         var state = botStatesMap.get(botState);
+
         if (state == null) {
             throw new RuntimeException("Нет такой команды");
         }

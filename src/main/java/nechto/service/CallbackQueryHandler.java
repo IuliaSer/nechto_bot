@@ -14,11 +14,10 @@ public class CallbackQueryHandler {
     private final ButtonProcessor buttonProcessor;
 
     public BotApiMethod<?> processCallbackQuery(CallbackQuery callbackQuery) {
-        String buttonName = callbackQuery.getData();
         long userId = callbackQuery.getFrom().getId();
 
         try {
-            return buttonProcessor.processButton(callbackQuery, buttonName, userId);
+            return buttonProcessor.processButton(callbackQuery, userId);
         } catch (Exception e) {
             return getSendMessage(userId, e.getMessage());
         }

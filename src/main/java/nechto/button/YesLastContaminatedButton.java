@@ -29,14 +29,10 @@ public class YesLastContaminatedButton implements Button {
     @Override
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
-
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
-
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
         long userIdToCount = cachedScoresDto.getUserId();
         long gameId = cachedScoresDto.getGameId();
+
         scoresService.addStatus(Status.LAST_CONTAMINATED_LOOSE, userIdToCount, gameId);
         buttonService.deactivateButtons(buttonName);
         return inlineKeyboardService.returnButtonsForContaminated(userId);

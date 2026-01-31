@@ -32,9 +32,6 @@ public class EndGameButton implements Button {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
         String countNextButtonName = getButtonNameWithMessageId(callbackQuery, COUNT_NEXT_BUTTON);
 
-        if (!buttonService.isActive(buttonName)) {
-            return null;
-        }
         long gameId = scoresStateCache.get(userId).getGameId();
         buttonService.deactivateButtons(buttonName, countNextButtonName);
 

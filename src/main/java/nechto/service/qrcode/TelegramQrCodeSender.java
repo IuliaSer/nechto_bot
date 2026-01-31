@@ -16,7 +16,7 @@ public class TelegramQrCodeSender {
 
     private final RestTemplate restTemplate;
 
-    @Value("${telegrambot.botToken}")
+    @Value("${telegram.bot.token}")
     private String token;
 
     private String baseUrl() {

@@ -38,8 +38,6 @@ public class Registration implements BotState {
         } catch (EntityAlreadyExistsException e) {
             return getSendMessage(userId, "Пользователь с таким ником уже существует");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-
             return getSendMessage(userId, String.format("Не удалось сохранить пользователя! %s",
                     e.getMessage().substring(e.getMessage().indexOf(": ") + 2)));
         }
