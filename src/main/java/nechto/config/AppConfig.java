@@ -5,7 +5,6 @@ import nechto.service.MenuService;
 import nechto.service.UserService;
 import nechto.service.TelegramBot;
 import nechto.service.TelegramFacade;
-import nechto.cache.UserInfoCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
@@ -16,7 +15,6 @@ public class AppConfig {
     private final TelegramBotConfig botConfig;
     private final UserService userService;
     private final MenuService menuService;
-    private final UserInfoCache userInfoCache;
 
     @Bean
     public SetWebhook setWebhookInstance() {
@@ -25,7 +23,7 @@ public class AppConfig {
 
     @Bean
     public TelegramBot springWebhookBot(SetWebhook setWebhook, TelegramFacade telegramFacade) {
-        TelegramBot bot = new TelegramBot(setWebhook, telegramFacade, userService, menuService, userInfoCache);
+        TelegramBot bot = new TelegramBot(setWebhook, telegramFacade, userService, menuService);
         bot.setBotToken(botConfig.getBotToken());
         bot.setBotUsername(botConfig.getUserName());
         bot.setBotPath(botConfig.getWebHookPath());

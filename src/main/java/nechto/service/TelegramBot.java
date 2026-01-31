@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import nechto.dto.response.ResponseUserDto;
 import nechto.enums.Authority;
-import nechto.cache.UserInfoCache;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -27,18 +26,16 @@ public class TelegramBot extends SpringWebhookBot {
     String botUsername;
     String botToken;
 
-    private TelegramFacade telegramFacade;
-    private final UserService userService;
-    private final MenuService menuService;
-    private final UserInfoCache userInfoCache;
+    final TelegramFacade telegramFacade;
+    final UserService userService;
+    final MenuService menuService;
 
     public TelegramBot(SetWebhook setWebhook, TelegramFacade telegramFacade, UserService userService,
-                       MenuService menuService, UserInfoCache userInfoCache) {
+                       MenuService menuService) {
         super(setWebhook);
         this.telegramFacade = telegramFacade;
         this.userService = userService;
         this.menuService = menuService;
-        this.userInfoCache = userInfoCache;
     }
 
     @Override
@@ -46,14 +43,10 @@ public class TelegramBot extends SpringWebhookBot {
         Long userId = null;
         try {
             userId = extractUserId(update);
-            userInfoCache.put(userId); //для регистрации первого входа пользователя, чтобы устанавливать команды 1 раз
             Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
-            Authority authority = responseUserDto.isEmpty() ?
-                    Authority.ROLE_USER :
-                    responseUserDto.get().getAuthority();
 
-            if (commandsAreNotSetYet(userId)) {
-                menuService.refreshCommands(userId, authority);
+            if (responseUserDto.isEmpty()) {
+                menuService.refreshCommands(userId, Authority.ROLE_USER);
             }
             return telegramFacade.handleUpdate(update);
         } catch (Exception e) {
@@ -61,7 +54,4 @@ public class TelegramBot extends SpringWebhookBot {
         }
     }
 
-    private boolean commandsAreNotSetYet(Long userId) {
-        return userInfoCache.get(userId).get() == 0;
-    }
 }
