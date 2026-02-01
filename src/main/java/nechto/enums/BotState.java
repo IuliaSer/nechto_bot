@@ -14,6 +14,5 @@ public enum BotState {
     CHANGE_GAME,
     MAKE_ADMIN_START,
     MAKE_ADMIN,
-    MAKE_USER_START,
     MAKE_USER
 }

@@ -25,4 +25,6 @@ public interface UserService {
     void makeUser(Long userId);
 
     Optional<ResponseUserDto> findById(Long id);
+
+    List<ResponseUserDto>  findAllAdmins();
 }

@@ -39,7 +39,7 @@ public class CountNextButton implements Button {
         buttonService.deactivateButtons(buttonName, endGameButtonName);
 
         if (users.isEmpty()) {
-            return getSendMessage(userId, "Все пользователи добавленные в игру посчитаны!");
+            return inlineKeyboardService.returnEndGameButton(userId);
         }
         return getEditMessageWithInlineMarkup(userId,
                 callbackQuery.getMessage().getMessageId(),

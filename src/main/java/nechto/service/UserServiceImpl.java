@@ -48,6 +48,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).map(userMapper::convertToResponseUserDto);
     }
 
+    @Override
+    public List<ResponseUserDto> findAllAdmins() {
+        return userRepository.findAll().stream()
+                .filter(u -> ROLE_ADMIN.equals(u.getAuthority()))
+                .map(userMapper::convertToResponseUserDto)
+                .toList();
+    }
+
 //    @Override
 //    public Optional<ResponseUserDto> getByIdOrThrow(Long id) {
 //        User user = userRepository.findById(id)

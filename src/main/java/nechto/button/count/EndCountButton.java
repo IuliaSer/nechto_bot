@@ -19,6 +19,7 @@ import static nechto.enums.Button.AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.DANGEROUS_BUTTON;
 import static nechto.enums.Button.END_COUNT_BUTTON;
 import static nechto.enums.Button.FLAMETHROWER_BUTTON;
+import static nechto.enums.Button.FLAMETHROWER_FOR_HUMAN_BUTTON;
 import static nechto.enums.Button.MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
 import static nechto.enums.Button.MINUS_BUTTON;
 import static nechto.enums.Button.MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
@@ -55,7 +56,6 @@ public class EndCountButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
 
-        
         String minusButtonName = getButtonNameWithMessageId(callbackQuery, MINUS_BUTTON);
         String plusButtonName = getButtonNameWithMessageId(callbackQuery, PLUS_BUTTON);
         String minusAntiHumanButtonName = getButtonNameWithMessageId(callbackQuery, MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON);
@@ -66,6 +66,7 @@ public class EndCountButton implements Button {
         String usefullButtonName = getButtonNameWithMessageId(callbackQuery, USEFULL_BUTTON);
         String victimButtonName = getButtonNameWithMessageId(callbackQuery, VICTIM_BUTTON);
         String flamethrowerButtonName = getButtonNameWithMessageId(callbackQuery, FLAMETHROWER_BUTTON);
+        String flamethrowerForHumanButtonName = getButtonNameWithMessageId(callbackQuery, FLAMETHROWER_FOR_HUMAN_BUTTON);
         String againstHumanFlamethrowerButtonName = getButtonNameWithMessageId(callbackQuery, AGAINST_HUMAN_FLAMETHROWER_BUTTON );
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
@@ -96,7 +97,7 @@ public class EndCountButton implements Button {
         buttonService.deactivateButtons(buttonName, minusButtonName, plusButtonName, minusAntiHumanButtonName,
                 plusAntiHumanButtonName, dangerousButtonName, usefullButtonName, victimButtonName,
                 flamethrowerButtonName, againstHumanFlamethrowerButtonName, minusWithAgainstHumanFlamethrowerButtonName,
-                plusWithAgainstHumanFlamethrowerButtonName);
+                plusWithAgainstHumanFlamethrowerButtonName, flamethrowerForHumanButtonName);
         if (cachedScoresDto.isGameIsFinished()) {
             return inlineKeyboardService.returnButtonsForChangingGame(userId);
         }

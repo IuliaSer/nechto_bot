@@ -36,7 +36,6 @@ public class MenuServiceImpl implements MenuService {
   );
 
   private static final List<BotCommand> OWNER_EXTRA = List.of(
-          cmd("/change_game", "изменить последнюю игру"),
           cmd("/make_admin", "сделать пользователя админом"),
           cmd("/make_user", "забрать права админа")
   );
@@ -44,13 +43,7 @@ public class MenuServiceImpl implements MenuService {
   private static final Map<Authority, List<BotCommand>> MENU = Map.of(
           Authority.ROLE_USER,  concat(USER_ONLY, COMMON_RESULTS),
           Authority.ROLE_ADMIN, concat(ADMIN_CORE, COMMON_RESULTS),
-          Authority.ROLE_OWNER, concat(
-                  // OWNER = ADMIN + свои доп. команды (и при желании переопределяем /change_game описанием)
-                  ADMIN_CORE.stream()
-                          .filter(c -> !c.getCommand().equals("/change_game"))
-                          .toList(),
-                  COMMON_RESULTS,
-                  OWNER_EXTRA
+          Authority.ROLE_OWNER, concat(ADMIN_CORE, COMMON_RESULTS, OWNER_EXTRA
           )
   );
 

@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
-import static nechto.enums.Button.PICKED_BUTTON;
+import static nechto.enums.Button.PICKED_USER_BUTTON;
 
 @RequiredArgsConstructor
 @Component
@@ -28,7 +28,7 @@ public class PickedUserButton implements Button {
 
     @Override
     public nechto.enums.Button getButton() {
-        return PICKED_BUTTON;
+        return PICKED_USER_BUTTON;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PickedUserButton implements Button {
         String buttonName = callbackQuery.getData();
 
         CachedScoresDto cachedScoresDto = scoresStateCache.get(userId);
-        long userIdToCount = Long.parseLong(buttonName.substring(PICKED_BUTTON.name().length() + 1));
+        long userIdToCount = Long.parseLong(buttonName.substring(PICKED_USER_BUTTON.name().length() + 1));
 
         clearStatusesIfGameIsChanging(cachedScoresDto, userIdToCount);
 

@@ -40,7 +40,11 @@ public interface InlineKeyboardService {
 
     SendMessage returnButtonsForChangingGame(Long chatId);
 
+    SendMessage returnEndGameButton(Long chatId);
+
     InlineKeyboardMarkup returnButtonsWithUsers(List<ResponseUserDto> users);
+
+    InlineKeyboardMarkup returnButtonsWithAdmins(List<ResponseUserDto> users);
 
     InlineKeyboardMarkup returnButtonsWithEndChangingAndChangeNext(List<ResponseUserDto> users);
 
@@ -60,4 +64,5 @@ public interface InlineKeyboardService {
     InlineKeyboardMarkup getInlineKeybordWithPlusMinusAntiHuman(int flamethrowerAmount);
 
     InlineKeyboardMarkup buildMonthCalendar(long userId, YearMonth now, Locale ru);
+
 }

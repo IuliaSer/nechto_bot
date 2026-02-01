@@ -2,7 +2,6 @@ package nechto.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nechto.service.TelegramWebhookRegistrator;
 import nechto.service.TelegramBot;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,16 +14,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @AllArgsConstructor
 public class WebhookController {
     private final TelegramBot telegramBot;
-    private final TelegramWebhookRegistrator telegramWebhookRegistrator;
 
     @PostMapping("/")
     public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
-        if (Integer.parseInt(telegramWebhookRegistrator.getUpdatesAmount()) > 1) {
-            telegramWebhookRegistrator.clearUpdates();
-            telegramWebhookRegistrator.registerWebhook();
-            log.debug("Updates cleared. Webhook registered again.");
-            return null;
-        }
         return telegramBot.onWebhookUpdateReceived(update);
     }
 }

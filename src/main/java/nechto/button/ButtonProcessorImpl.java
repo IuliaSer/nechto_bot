@@ -29,7 +29,7 @@ public class ButtonProcessorImpl implements ButtonProcessor {
         }
     }
 //CALNAV_BUTTON:2025-03_8717321
-//PICKED_BUTTON:132434_77674
+//PICKED_USER_BUTTON:132434_77674
     @Override
     public BotApiMethod<?> processButton(CallbackQuery callbackQuery, Long userId) {
         String buttonName = callbackQuery.getData();

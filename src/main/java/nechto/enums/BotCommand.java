@@ -18,7 +18,7 @@ public enum BotCommand {
     SHOW_RESULTS_FOR_A_QUARTER("^/results_for_a_quarter$", EnumSet.allOf(Authority.class), BotState.SHOW_RESULTS_FOR_A_QUARTER),
     CHANGE_GAME("^/change_game$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.CHANGE_GAME),
     MAKE_ADMIN("^/make_admin$", EnumSet.of(ROLE_OWNER), BotState.MAKE_ADMIN_START),
-    MAKE_USER("^/make_user$", EnumSet.of(ROLE_OWNER), BotState.MAKE_USER_START);
+    MAKE_USER("^/make_user$", EnumSet.of(ROLE_OWNER), BotState.MAKE_USER);
 
     private final Pattern pattern;
     private final EnumSet<Authority> allowed;
