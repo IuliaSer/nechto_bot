@@ -9,8 +9,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
     volumes:
-      - data:/var/lib/postgresql/data
-      - ./db/init:/docker-entrypoint-initdb.d  # <-- добавили
+      - pgdata:/var/lib/postgresql/data
   app:
     container_name: nechto_bot
     build:
@@ -22,6 +21,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres?currentSchema=nechto
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
+      - NGROK_API_BASE=http://ngrok:4040
     depends_on:
       - postgres
   ngrok:
@@ -31,4 +31,4 @@ services:
       - app
     command: ["http", "--authtoken", "32pWMcUO49b8MZZFKhbrVvWZdWQ_5oioQzuRFvCoUHfLxGz32", "app:8080"]
 volumes:
-  data: {}
+  pgdata:

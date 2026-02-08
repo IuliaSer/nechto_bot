@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nechto.config.TelegramBotConfig;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -23,18 +26,18 @@ public class TelegramWebhookRegistrator {
 
   private final RestTemplate restTemplate;
   private final ObjectMapper mapper;
+  private final TelegramBotConfig telegramBotConfig;
 
   @Value("${telegram.bot.token}")
   private String botToken;
 
-  @Value("${ngrok.apiBase:http://localhost:4040}") //nastroit v dokere tozhe
+  @Value("${ngrok.api-base}")
   private String ngrokApiBase;
 
   private String baseUrl() {
 	return "https://api.telegram.org/bot" + botToken;
   }
 
-  @EventListener(ApplicationReadyEvent.class)
   public void registerWebhook() {
 	try {
 	  String targetUrl = waitForNgrokHttps();
@@ -46,6 +49,7 @@ public class TelegramWebhookRegistrator {
 	  } else {
 		log.debug("[webhook] already set: " + current);
 	  }
+		telegramBotConfig.setWebHookPath(targetUrl);
 	} catch (Exception e) {
 	  log.error("[webhook] failed to register: " + e.getMessage());
 	}
