@@ -109,7 +109,7 @@ public class ShowResultsServiceImpl implements ShowResultsService {
                 .addColumn("Роль", 5)
                 .addColumn("\uD83D\uDD25", 5)
                 .addColumn("о/п/ж", 7)
-                .addColumn(" Очки", 5);
+                .addColumn("Очки", 5);
 
         for (var s : rows) {
             t.addRow(s.getUsername(),
