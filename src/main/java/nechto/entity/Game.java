@@ -33,4 +33,8 @@ public class Game {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scores> scores;
 
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Table table;
+
 }
