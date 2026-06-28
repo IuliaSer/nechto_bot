@@ -1,16 +1,18 @@
 package nechto.botstate;
 
 import lombok.RequiredArgsConstructor;
-import nechto.dto.request.RequestGameDto;
-import nechto.service.GameService;
 import nechto.cache.ScoresStateCache;
-import nechto.service.qrcode.QrCodeGenerator;
+import nechto.cache.TableAdminCache;
+import nechto.dto.request.RequestGameDto;
+import nechto.entity.User;
+import nechto.service.GameService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.String.format;
 import static nechto.enums.BotState.CREATE_GAME;
@@ -21,7 +23,7 @@ import static nechto.utils.BotUtils.getSendMessage;
 public class CreateGame implements BotState {
     private final GameService gameService;
     private final ScoresStateCache scoresStateCache;
-    private final QrCodeGenerator qrCodeGenerator;
+    private final TableAdminCache tableAdminCache;
 
     @Override
     public nechto.enums.BotState getBotState() {
@@ -30,15 +32,18 @@ public class CreateGame implements BotState {
 
     @Override
     public BotApiMethod<?> process(Message message) {
-        long userId = message.getFrom().getId();
+        long adminId = message.getFrom().getId();
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>());
         long gameId = gameService.save(requestGameDto).getId();
 
-        qrCodeGenerator.generateQrCode(String.valueOf(gameId), String.valueOf(userId));
+        scoresStateCache.put(adminId);
+        scoresStateCache.get(adminId).setGameId(gameId);
+        scoresStateCache.get(adminId).setGameIsFinished(false);
 
-        scoresStateCache.put(userId);
-        scoresStateCache.get(userId).setGameId(gameId);
-        scoresStateCache.get(userId).setGameIsFinished(false);
-        return getSendMessage(userId, format("Перейдите по ссылке, добавьтесь в игру %s", gameId));
+        //в игру добавили игроков
+        List<User> users = tableAdminCache.get(adminId).getCurrentUsers();
+        gameService.addUsers(gameId, users);
+
+        return getSendMessage(adminId, format("Успешно создана игра"));
     }
 }
