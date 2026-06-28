@@ -2,7 +2,10 @@ package nechto.botstate;
 
 import lombok.RequiredArgsConstructor;
 import nechto.cache.ScoresStateCache;
+import nechto.entity.Table;
 import nechto.service.GameService;
+import nechto.service.TableService;
+import nechto.service.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -16,7 +19,9 @@ import static nechto.utils.BotUtils.getSendMessage;
 @RequiredArgsConstructor
 public class AddUser implements BotState {
     private final ScoresStateCache scoresStateCache;
+    private final TableService tableService;
     private final GameService gameService;
+    private final UserService userService;
 
     @Override
     public nechto.enums.BotState getBotState() {
@@ -28,16 +33,21 @@ public class AddUser implements BotState {
         long userId = message.getFrom().getId();
         Pattern pattern = Pattern.compile("(?<=id=)\\d+");
         Matcher matcher = pattern.matcher(message.getText());
-        long gameId = 0;
+        long tableId = 0;
         long adminId = 0;
         if (matcher.find()) {
-            gameId = Long.parseLong(matcher.group());
+            tableId = Long.parseLong(matcher.group());
         }
         if (matcher.find()) {
             adminId = Long.parseLong(matcher.group());
         }
+        long gameId = tableService.findLastGameByTableId(tableId).getId();
         scoresStateCache.get(adminId).setGameId(gameId);
+
+        Table table = tableService.findById(tableId);
+        table.getCurrentUsers().add(userService.findById(userId));
         gameService.addUser(gameId, userId);
+        tableService.save(table);
         return getSendMessage(userId, "Вы успешно присоединились к игре!");
     }
 }
