@@ -1,14 +1,14 @@
-package nechto.service;
+package nechto.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import nechto.dto.response.ResponseScoresDto;
+import nechto.dto.ScoresDto;
 import nechto.entity.Scores;
 import nechto.enums.Status;
 import nechto.exception.EntityNotFoundException;
-import nechto.exception.FlamethrowerDisbalanceException;
 import nechto.mappers.ScoresMapper;
 import nechto.repository.ScoresRepository;
+import nechto.service.ScoresService;
 import nechto.status.StatusProcessor;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +58,7 @@ public class ScoresServiceImpl implements ScoresService {
     }
 
     @Override
-    public List<ResponseScoresDto> countAndSaveAll(Long gameId) { //убрать return value
+    public List<ScoresDto> countAndSaveAll(Long gameId) { //убрать return value
         List<Scores> scoresList = scoresRepository.findAllByGameId(gameId);
         int amountOfFlamethrowersByGame = 0;
         int amountOfBurnedByGame = 0;

@@ -1,4 +1,4 @@
-package nechto.dto.response;
+package nechto.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import nechto.enums.Authority;
 
 @Data
 @AllArgsConstructor
-public class ResponseUserDto {
+public class UserDto {
     private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

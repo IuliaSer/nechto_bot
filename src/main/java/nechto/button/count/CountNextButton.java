@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.button.Button;
 import nechto.button.ButtonService;
 import nechto.cache.ScoresStateCache;
-import nechto.dto.response.ResponseUserDto;
+import nechto.dto.UserDto;
 import nechto.service.InlineKeyboardService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -35,7 +35,7 @@ public class CountNextButton implements Button {
         String buttonName = getButtonNameWithMessageId(callbackQuery, getButton());
         String endGameButtonName = getButtonNameWithMessageId(callbackQuery, END_GAME_BUTTON);
 
-        List<ResponseUserDto> users = scoresStateCache.get(userId).getUsers();
+        List<UserDto> users = scoresStateCache.get(userId).getUsers();
         buttonService.deactivateButtons(buttonName, endGameButtonName);
 
         if (users.isEmpty()) {

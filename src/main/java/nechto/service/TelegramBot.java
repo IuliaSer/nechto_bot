@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import nechto.dto.response.ResponseUserDto;
+import nechto.dto.UserDto;
 import nechto.enums.Authority;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
@@ -43,7 +43,7 @@ public class TelegramBot extends SpringWebhookBot {
         Long userId = null;
         try {
             userId = extractUserId(update);
-            Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
+            Optional<UserDto> responseUserDto = userService.findByIdUserDto(userId);
 
             if (responseUserDto.isEmpty()) {
                 menuService.refreshCommands(userId, Authority.ROLE_USER);

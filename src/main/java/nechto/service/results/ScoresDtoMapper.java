@@ -1,6 +1,6 @@
 package nechto.service.results;
 
-import nechto.dto.ScoresDto;
+import nechto.dto.ScoresInfoDto;
 import nechto.entity.Scores;
 import nechto.enums.Status;
 import org.springframework.stereotype.Component;
@@ -20,8 +20,8 @@ import static nechto.enums.Status.VICTIM;
 @Component
 public class ScoresDtoMapper {
 
-    public List<ScoresDto> mapGameScores(List<Scores> scores) {
-        List<ScoresDto> out = new ArrayList<>(scores.size());
+    public List<ScoresInfoDto> mapGameScores(List<Scores> scores) {
+        List<ScoresInfoDto> out = new ArrayList<>(scores.size());
         for (Scores s : scores) {
             double flamethrower = 0d;
             List<String> opj = new ArrayList<>(3);
@@ -37,7 +37,7 @@ public class ScoresDtoMapper {
                 }
             }
 
-            out.add(ScoresDto.builder()
+            out.add(ScoresInfoDto.builder()
                     .username(s.getUser().getUsername())
                     .status(statusMain)
                     .flamethrowerScores((float) flamethrower)

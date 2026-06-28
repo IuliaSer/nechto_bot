@@ -3,7 +3,6 @@ package nechto.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nechto.dto.response.ResponseUserDto;
 import nechto.enums.CommandStatus;
 import nechto.enums.Status;
 
@@ -30,5 +29,5 @@ public class CachedScoresDto {
 
     private Status status;
 
-    private List<ResponseUserDto> users;
+    private List<UserDto> users;
 }

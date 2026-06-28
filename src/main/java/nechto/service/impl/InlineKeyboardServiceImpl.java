@@ -1,10 +1,11 @@
-package nechto.service;
+package nechto.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import nechto.button.ButtonService;
 import nechto.cache.ScoresStateCache;
-import nechto.dto.response.ResponseUserDto;
+import nechto.dto.UserDto;
 import nechto.enums.Button;
+import nechto.service.InlineKeyboardService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -339,21 +340,21 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
-    public InlineKeyboardMarkup returnButtonsWithUsers(List<ResponseUserDto> users) {
+    public InlineKeyboardMarkup returnButtonsWithUsers(List<UserDto> users) {
         List<List<InlineKeyboardButton>> rowsInLine = addUsersButtonsToInlineKeyboard(users, PICKED_USER_BUTTON);
 
         return createInlineKeyboard(rowsInLine);
     }
 
     @Override
-    public InlineKeyboardMarkup returnButtonsWithAdmins(List<ResponseUserDto> users) {
+    public InlineKeyboardMarkup returnButtonsWithAdmins(List<UserDto> users) {
         List<List<InlineKeyboardButton>> rowsInLine = addUsersButtonsToInlineKeyboard(users, PICKED_ADMIN_BUTTON);
 
         return createInlineKeyboard(rowsInLine);
     }
 
     @Override
-    public InlineKeyboardMarkup returnButtonsWithEndChangingAndChangeNext(List<ResponseUserDto> users) {
+    public InlineKeyboardMarkup returnButtonsWithEndChangingAndChangeNext(List<UserDto> users) {
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         var buttonEndCount = createButton("Завершить изменения", END_GAME_BUTTON.name());
@@ -364,7 +365,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         return createInlineKeyboard(row1, row2);
     }
 
-    private List<List<InlineKeyboardButton>> addUsersButtonsToInlineKeyboard(List<ResponseUserDto> users, Button userButton) {
+    private List<List<InlineKeyboardButton>> addUsersButtonsToInlineKeyboard(List<UserDto> users, Button userButton) {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         int buttonsInRow = 0;
         int lastRow = users.size() / 3;
@@ -372,7 +373,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         int amountOfRowsInLastRow = users.size() % 3;
 
         List<InlineKeyboardButton> rowInLine = new ArrayList<>();
-        for (ResponseUserDto user : users) {
+        for (UserDto user : users) {
             String callbackDataName = userButton.toString() + ":" + user.getId();
             var buttonUserName = createButton(user.getUsername(), callbackDataName);
 

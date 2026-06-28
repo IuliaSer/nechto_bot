@@ -1,4 +1,4 @@
-package nechto.dto.response;
+package nechto.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,10 +8,10 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ResponseGameDto {
+public class GameDto {
     private Long id;
 
     private Date date;
 
-    private List<ResponseUserDto> users;
+    private List<UserDto> users;
 }

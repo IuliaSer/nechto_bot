@@ -1,6 +1,6 @@
 package nechto.service;
 
-import nechto.dto.response.ResponseScoresDto;
+import nechto.dto.ScoresDto;
 import nechto.entity.Scores;
 import nechto.enums.Status;
 
@@ -15,7 +15,7 @@ public interface ScoresService {
 
     void deleteStatus(Status status, Long userId, Long gameId);
 
-    List<ResponseScoresDto> countAndSaveAll(Long gameId);
+    List<ScoresDto> countAndSaveAll(Long gameId);
 
     void deleteAllStatuses(Scores scores);
 

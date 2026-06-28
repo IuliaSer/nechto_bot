@@ -1,9 +1,9 @@
-package nechto.service;
+package nechto.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestGameDto;
-import nechto.dto.response.ResponseGameDto;
+import nechto.dto.GameDto;
 import nechto.entity.Game;
 import nechto.entity.Scores;
 import nechto.entity.User;
@@ -12,6 +12,7 @@ import nechto.exception.EntityNotFoundException;
 import nechto.mappers.GameMapper;
 import nechto.repository.GameRepository;
 import nechto.repository.UserRepository;
+import nechto.service.GameService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class GameServiceImpl implements GameService {
     private final GameMapper gameMapper;
 
     @Override
-    public ResponseGameDto save(RequestGameDto gameDto) {
+    public GameDto save(RequestGameDto gameDto) {
         Game game = Game.builder()
                 .date(gameDto.getDate())
                 .build();
@@ -51,7 +52,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public ResponseGameDto addUser(Long gameId, Long userId) {
+    public GameDto addUser(Long gameId, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(format("User with id %s not found", userId)));
         Game game = gameRepository.findById(gameId)
@@ -60,6 +61,25 @@ public class GameServiceImpl implements GameService {
         game.getScores().add(new Scores()
                 .setGame(game)
                 .setUser(user));
+        Game gameSaved;
+        try {
+            gameSaved = gameRepository.save(game);
+        } catch (Exception e) {
+            throw new EntityAlreadyExistsException("Пользователь уже добавлен в игру. Введите другого пользователя");
+        }
+        return gameMapper.convertToResponseGameDto(gameSaved);
+    }
+
+    @Override
+    public GameDto addUsers(Long gameId, List<User> users) {
+        Game game = gameRepository.findById(gameId)
+                .orElseThrow(() -> new EntityNotFoundException(format("Game with id %s not found", gameId)));
+
+        for(User user: users) {
+            game.getScores().add(new Scores()
+                    .setGame(game)
+                    .setUser(user));
+        }
         Game gameSaved;
         try {
             gameSaved = gameRepository.save(game);
@@ -81,14 +101,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<ResponseGameDto> findAll() {
+    public List<GameDto> findAll() {
         return gameMapper.convertToListResponseGameDto(gameRepository.findAll());
     }
 
     @Override
-    public ResponseGameDto findById(Long id) {
-        return gameMapper.convertToResponseGameDto(gameRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(format("Game with id %s not found", id))));
+    public Game findById(Long id) {
+        return gameRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(format("Game with id %s not found", id)));
     }
 
     @Override

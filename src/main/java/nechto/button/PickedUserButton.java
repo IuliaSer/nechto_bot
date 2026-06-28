@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.cache.ButtonsCache;
 import nechto.cache.ScoresStateCache;
 import nechto.dto.CachedScoresDto;
-import nechto.dto.response.ResponseUserDto;
+import nechto.dto.UserDto;
 import nechto.entity.Scores;
 import nechto.enums.CommandStatus;
 import nechto.service.InlineKeyboardService;
@@ -41,7 +41,7 @@ public class PickedUserButton implements Button {
         clearStatusesIfGameIsChanging(cachedScoresDto, userIdToCount);
 
         cachedScoresDto.setUserId(userIdToCount);
-        List<ResponseUserDto> users = cachedScoresDto.getUsers();
+        List<UserDto> users = cachedScoresDto.getUsers();
         users.removeIf(user -> user.getId().equals(userIdToCount));
 
         buttonService.deactivateAllPickedUserButtons(callbackQuery);

@@ -3,17 +3,12 @@ package nechto.service.results;
 import lombok.RequiredArgsConstructor;
 import nechto.cache.ScoresStateCache;
 import nechto.dto.AggregateScoresDto;
-import nechto.dto.ScoresDto;
+import nechto.dto.ScoresInfoDto;
 import nechto.exception.EntityNotFoundException;
 import nechto.repository.ScoresRepository;
 import nechto.service.GameService;
 import nechto.service.ScoresService;
 import nechto.service.UserService;
-import nechto.service.results.DateParsers;
-import nechto.service.results.ScoresDtoMapper;
-import nechto.service.results.ShowResultsService;
-import nechto.service.results.TableRenderer;
-import nechto.service.results.TimeRange;
 import nechto.utils.NumFmt;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -102,7 +97,7 @@ public class ShowResultsServiceImpl implements ShowResultsService {
         return t.renderAsInlineCodeLines();
     }
 
-    private String renderGame(List<ScoresDto> rows) {
+    private String renderGame(List<ScoresInfoDto> rows) {
         int maxNick = rows.stream().mapToInt(s -> s.getUsername().length()).max().orElse(4);
         var t = new TableRenderer()
                 .addColumn("Ник", Math.max(4, maxNick))
@@ -128,7 +123,7 @@ public class ShowResultsServiceImpl implements ShowResultsService {
     }
 
     private long resolveGameId(long userId) {
-        var user = userService.findById(userId)
+        var user = userService.findByIdUserDto(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Вы не зарегестрированы"));
         var cached = scoresStateCache.get(userId);
         if (cached != null && !Objects.equals(user.getAuthority(), ROLE_USER)) {

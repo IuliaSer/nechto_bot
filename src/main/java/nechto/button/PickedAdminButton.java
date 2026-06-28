@@ -28,7 +28,7 @@ public class PickedAdminButton implements Button {
     public BotApiMethod<?> onButtonPressed(CallbackQuery callbackQuery, Long userId) {
         String buttonName = callbackQuery.getData();
         long userIdToMakeUser = Long.parseLong(buttonName.substring(PICKED_ADMIN_BUTTON.name().length() + 1));
-        String userName = userService.findById(userIdToMakeUser).get().getUsername();
+        String userName = userService.findByIdUserDto(userIdToMakeUser).get().getUsername();
         userService.makeUser(userIdToMakeUser);
         menuService.refreshCommands(userIdToMakeUser, Authority.ROLE_USER);
         buttonService.deactivateAllPickedUserButtons(callbackQuery);

@@ -1,7 +1,9 @@
-package nechto.service;
+package nechto.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import nechto.enums.Authority;
+import nechto.service.MenuService;
+import nechto.service.TelegramFeignClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;

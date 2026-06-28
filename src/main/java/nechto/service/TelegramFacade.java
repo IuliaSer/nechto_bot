@@ -2,12 +2,12 @@ package nechto.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nechto.dto.response.ResponseUserDto;
+import nechto.cache.BotStateCache;
+import nechto.dto.UserDto;
 import nechto.enums.Authority;
 import nechto.enums.BotCommand;
 import nechto.enums.BotState;
 import nechto.exception.RoleException;
-import nechto.cache.BotStateCache;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -43,7 +43,7 @@ public class TelegramFacade {
 
     public BotApiMethod<?> handleInputMessage(Message message) { //вынести в messageHandler
         long userId = message.getFrom().getId();
-        Optional<ResponseUserDto> responseUserDto = userService.findById(userId);
+        Optional<UserDto> responseUserDto = userService.findByIdUserDto(userId);
         Authority authority = responseUserDto.isPresent()  ? responseUserDto.get().getAuthority() : ROLE_USER; //вынести метод в utils
         BotState botState = BotCommand.match(message.getText())
                     .map(cmd -> {

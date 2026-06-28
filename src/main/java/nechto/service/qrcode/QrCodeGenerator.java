@@ -17,26 +17,22 @@ public class QrCodeGenerator {
     private final BufferedImageGenerator bufferedImageGenerator;
     private final TelegramQrCodeSender telegramQrCodeSender;
 
-    public void generateQrCode(String gameId, String chatId) {
+    public void generateQrCode(String tableId, String userId) {
         BufferedImage qrImage;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             qrImage = bufferedImageGenerator.generateBufferedImage(
-                    format("https://t.me/nechto21_bot?start=add_user_to_game_id=%s_and_admin_id=%s", gameId, chatId),
+                    format("https://t.me/nechto21_bot?start=add_user_to_table_id=%s_and_admin_id=%s", tableId, userId),
                     250, 250);
-        } catch (WriterException e) {
+            ImageIO.write(qrImage, "png", baos);
+        } catch (WriterException | IOException e) {
             throw new RuntimeException(e);
         }
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(qrImage, "png", baos);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         byte[] data = baos.toByteArray();
 
         telegramQrCodeSender.sendPhoto(
-                Long.parseLong(chatId),
+                Long.parseLong(userId),
                 data,
                 "Сканируйте QR и начинайте",
                 "qr.png");

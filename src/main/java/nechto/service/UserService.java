@@ -2,7 +2,8 @@ package nechto.service;
 
 import jakarta.validation.Valid;
 import nechto.dto.request.RequestUserDto;
-import nechto.dto.response.ResponseUserDto;
+import nechto.dto.UserDto;
+import nechto.entity.User;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -10,13 +11,13 @@ import java.util.Optional;
 
 @Validated
 public interface UserService {
-    ResponseUserDto save(@Valid RequestUserDto userDto);
+    UserDto save(@Valid RequestUserDto userDto);
 
-    ResponseUserDto findByUsernameOrThrow(String login);
+    UserDto findByUsernameOrThrow(String login);
 
-    List<ResponseUserDto> findAll();
+    List<UserDto> findAll();
 
-    List<ResponseUserDto> findAllByGameId(Long gameId);
+    List<UserDto> findAllByGameId(Long gameId);
 
     void deleteUser(Long userId);
 
@@ -24,7 +25,10 @@ public interface UserService {
 
     void makeUser(Long userId);
 
-    Optional<ResponseUserDto> findById(Long id);
+    Optional<UserDto> findByIdUserDto(Long id);
 
-    List<ResponseUserDto>  findAllAdmins();
+
+    User findById(Long id);
+
+    List<UserDto>  findAllAdmins();
 }

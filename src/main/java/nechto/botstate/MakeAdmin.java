@@ -1,7 +1,7 @@
 package nechto.botstate;
 
 import lombok.RequiredArgsConstructor;
-import nechto.dto.response.ResponseUserDto;
+import nechto.dto.UserDto;
 import nechto.enums.Authority;
 import nechto.service.MenuService;
 import nechto.service.UserService;
@@ -28,8 +28,8 @@ public class MakeAdmin implements BotState {
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
         String messageText = message.getText();
-        ResponseUserDto responseUserDto = userService.findByUsernameOrThrow(messageText);
-        long userIdToMakeAdmin = responseUserDto.getId();
+        UserDto userDto = userService.findByUsernameOrThrow(messageText);
+        long userIdToMakeAdmin = userDto.getId();
         userService.makeAdmin(userIdToMakeAdmin);
         menuService.refreshCommands(userIdToMakeAdmin, Authority.ROLE_ADMIN);
         return getSendMessage(userId, format("Пользователь %s теперь является админом", messageText));
