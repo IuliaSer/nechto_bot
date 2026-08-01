@@ -2,11 +2,14 @@ package nechto.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,22 +28,28 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@jakarta.persistence.Table(name = "TABLE")
+@jakarta.persistence.Table(name = "TABLES")
 public class Table {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nameOrNumber;
+    private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
     private User admin;
 
     private LocalDateTime date;
 
-    @Fetch(FetchMode.JOIN)
-    @ManyToMany(mappedBy = "table", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "table_users",
+            schema = "nechto",
+            joinColumns = @JoinColumn(name = "table_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private List<User> currentUsers;
 
     @Fetch(FetchMode.JOIN)

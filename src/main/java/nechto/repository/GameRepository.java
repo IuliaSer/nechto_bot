@@ -24,4 +24,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<Game> findAllByDateBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     List<Game> findAllByDate(LocalDateTime day);
+
+    Optional<Game> findTopByTable_IdOrderByIdDesc(Long tableId);
 }

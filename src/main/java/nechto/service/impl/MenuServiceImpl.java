@@ -20,7 +20,7 @@ public class MenuServiceImpl implements MenuService {
   @Value("${telegram.bot.token}")
   private String token;
 
-  private static final List<BotCommand> COMMON_RESULTS = List.of(
+  private static final List<BotCommand> COMMON = List.of(
           cmd("/results_for_a_game", "показать результаты за последнюю игру"),
           cmd("/results_for_a_day", "показать результаты за день"),
           cmd("/results_for_a_month", "показать результаты за месяц"),
@@ -32,20 +32,24 @@ public class MenuServiceImpl implements MenuService {
   );
 
   private static final List<BotCommand> ADMIN_CORE = List.of(
+          cmd("/get qr-code", "получить qr стола"),
           cmd("/create_game", "создать игру"),
+          cmd("/create_table", "создать стол"),
           cmd("/count", "посчитать очки"),
-          cmd("/change_game", "изменить последнюю игру")
+          cmd("/change_game", "изменить последнюю игру"),
+          cmd("/became table's admin", "стать админом этого стола"),
+          cmd("/delete player", "убрать игрока из стола")
   );
 
-  private static final List<BotCommand> OWNER_EXTRA = List.of(
+  private static final List<BotCommand> OWNER_ONLY = List.of(
           cmd("/make_admin", "сделать пользователя админом"),
           cmd("/make_user", "забрать права админа")
   );
 
   private static final Map<Authority, List<BotCommand>> MENU = Map.of(
-          Authority.ROLE_USER,  concat(USER_ONLY, COMMON_RESULTS),
-          Authority.ROLE_ADMIN, concat(ADMIN_CORE, COMMON_RESULTS),
-          Authority.ROLE_OWNER, concat(ADMIN_CORE, COMMON_RESULTS, OWNER_EXTRA
+          Authority.ROLE_USER,  concat(USER_ONLY, COMMON),
+          Authority.ROLE_ADMIN, concat(ADMIN_CORE, COMMON),
+          Authority.ROLE_OWNER, concat(ADMIN_CORE, COMMON, OWNER_ONLY
           )
   );
 

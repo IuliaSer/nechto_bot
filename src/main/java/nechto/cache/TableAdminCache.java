@@ -1,6 +1,7 @@
 package nechto.cache;
 
 import nechto.entity.Table;
+import nechto.exception.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -15,6 +16,10 @@ public class TableAdminCache {
     }
 
     public Table get(long adminId) {
-        return map.get(adminId);
+        Table table = map.get(adminId);
+        if (table == null) {
+            throw new EntityNotFoundException("Table не найден. Пожалуйста сначала создайте стол командой create_table");
+        }
+        return table;
     }
 }

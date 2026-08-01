@@ -9,6 +9,7 @@ import static nechto.enums.Authority.ROLE_OWNER;
 
 public enum BotCommand {
     CREATE_GAME("^/create_game$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.CREATE_GAME),
+    CREATE_TABLE("^/create_table$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.CREATE_TABLE),
     REGISTER("^/register$", EnumSet.allOf(Authority.class), BotState.START_REGISTRATION),
     START_ADD("^/start\\s+add.*$", EnumSet.allOf(Authority.class), BotState.ADD_USER),
     START_COUNT("^/count$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.COUNT),

@@ -11,6 +11,7 @@ import nechto.exception.EntityAlreadyExistsException;
 import nechto.exception.EntityNotFoundException;
 import nechto.mappers.GameMapper;
 import nechto.repository.GameRepository;
+import nechto.repository.TableRepository;
 import nechto.repository.UserRepository;
 import nechto.service.GameService;
 import org.springframework.stereotype.Service;
@@ -30,12 +31,16 @@ public class GameServiceImpl implements GameService {
 
     private final UserRepository userRepository;
 
+    private final TableRepository tableRepository;
+
     private final GameMapper gameMapper;
 
     @Override
-    public GameDto save(RequestGameDto gameDto) {
+    public Game save(RequestGameDto gameDto) {
         Game game = Game.builder()
                 .date(gameDto.getDate())
+                .table(gameDto.getTable())
+//                        .orElseThrow(() -> new EntityNotFoundException("Table не найден. Пожалуйста сначала создайте стол командой create_table")))
                 .build();
         List<Scores> scores = new ArrayList<>();
         for (Long userId: gameDto.getUserIds()) {
@@ -48,7 +53,8 @@ public class GameServiceImpl implements GameService {
         game.setScores(scores);
         Game gameSaved = gameRepository.save(game);
 
-        return gameMapper.convertToResponseGameDto(gameSaved);
+//        return gameMapper.convertToResponseGameDto(gameSaved);
+        return gameSaved;
     }
 
     @Override
@@ -127,5 +133,11 @@ public class GameServiceImpl implements GameService {
                 .stream()
                 .map(Game::getId)
                 .toList();
+    }
+
+    @Override
+    public Game findLastGameByTableId(long tableId) {
+        return gameRepository.findTopByTable_IdOrderByIdDesc(tableId)
+                .orElseThrow(() -> new EntityNotFoundException("No game in table found"));
     }
 }

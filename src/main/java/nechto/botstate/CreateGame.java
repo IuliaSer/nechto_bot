@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.cache.ScoresStateCache;
 import nechto.cache.TableAdminCache;
 import nechto.dto.request.RequestGameDto;
+import nechto.entity.Table;
 import nechto.entity.User;
 import nechto.service.GameService;
 import org.springframework.stereotype.Component;
@@ -33,15 +34,17 @@ public class CreateGame implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long adminId = message.getFrom().getId();
-        RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>());
+        Table table = tableAdminCache.get(adminId);
+        RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>(), table);
+
         long gameId = gameService.save(requestGameDto).getId();
 
         scoresStateCache.put(adminId);
         scoresStateCache.get(adminId).setGameId(gameId);
         scoresStateCache.get(adminId).setGameIsFinished(false);
 
-        //в игру добавили игроков
-        List<User> users = tableAdminCache.get(adminId).getCurrentUsers();
+        //в игру и за стол добавили игроков
+        List<User> users = table.getCurrentUsers();
         gameService.addUsers(gameId, users);
 
         return getSendMessage(adminId, format("Успешно создана игра"));

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GameService {
-    GameDto save(RequestGameDto game);
+    Game save(RequestGameDto game);
 
     GameDto addUser(Long gameId, Long userId);
 
@@ -28,4 +28,5 @@ public interface GameService {
 
     List<Long> findAllByDate(LocalDateTime startPeriod, LocalDateTime endPeriod);
 
+    Game findLastGameByTableId(long tableId);
 }
