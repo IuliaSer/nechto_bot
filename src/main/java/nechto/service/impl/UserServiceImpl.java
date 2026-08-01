@@ -1,14 +1,15 @@
-package nechto.service;
+package nechto.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nechto.dto.request.RequestUserDto;
-import nechto.dto.response.ResponseUserDto;
+import nechto.dto.UserDto;
 import nechto.entity.User;
 import nechto.exception.EntityNotFoundException;
 import nechto.exception.EntityAlreadyExistsException;
 import nechto.mappers.UserMapper;
 import nechto.repository.UserRepository;
+import nechto.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public ResponseUserDto save(RequestUserDto userDto) {
+    public UserDto save(RequestUserDto userDto) {
         if (userRepository.findByUsername(userDto.getUsername()) != null) {
             throw new EntityAlreadyExistsException(format("Пользователь с таким ником %s уже существует", userDto.getUsername()));
         }
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseUserDto findByUsernameOrThrow(String username) {
+    public UserDto findByUsernameOrThrow(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new EntityNotFoundException(format("Пользователь с ником %s не существует", username));
@@ -43,13 +44,18 @@ public class UserServiceImpl implements UserService {
         return userMapper.convertToResponseUserDto(user);
     }
 
-    @Override
-    public Optional<ResponseUserDto> findById(Long id) {
+    @Override //mb ubrat
+    public Optional<UserDto> findByIdUserDto(Long id) {
         return userRepository.findById(id).map(userMapper::convertToResponseUserDto);
     }
 
     @Override
-    public List<ResponseUserDto> findAllAdmins() {
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Пользователь не существует"));
+    }
+
+    @Override
+    public List<UserDto> findAllAdmins() {
         return userRepository.findAll().stream()
                 .filter(u -> ROLE_ADMIN.equals(u.getAuthority()))
                 .map(userMapper::convertToResponseUserDto)
@@ -64,12 +70,12 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public List<ResponseUserDto> findAll() {
+    public List<UserDto> findAll() {
         return userMapper.convertToListOfResponseUserDto(userRepository.findAll());
     }
 
     @Override
-    public List<ResponseUserDto> findAllByGameId(Long gameId) {
+    public List<UserDto> findAllByGameId(Long gameId) {
         return userMapper.convertToListOfResponseUserDto(userRepository.findAllByGameId(gameId));
     }
 

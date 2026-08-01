@@ -2,6 +2,7 @@ package nechto.botstate;
 
 import lombok.RequiredArgsConstructor;
 import nechto.cache.ScoresStateCache;
+import nechto.cache.TableAdminCache;
 import nechto.entity.Table;
 import nechto.service.GameService;
 import nechto.service.TableService;
@@ -22,6 +23,7 @@ public class AddUser implements BotState {
     private final TableService tableService;
     private final GameService gameService;
     private final UserService userService;
+    private final TableAdminCache tableAdminCache;
 
     @Override
     public nechto.enums.BotState getBotState() {
@@ -41,13 +43,16 @@ public class AddUser implements BotState {
         if (matcher.find()) {
             adminId = Long.parseLong(matcher.group());
         }
-        long gameId = tableService.findLastGameByTableId(tableId).getId();
+        long gameId = gameService.findLastGameByTableId(tableId).getId();
         scoresStateCache.get(adminId).setGameId(gameId);
 
         Table table = tableService.findById(tableId);
         table.getCurrentUsers().add(userService.findById(userId));
         gameService.addUser(gameId, userId);
         tableService.save(table);
+
+        tableAdminCache.saveAdminTable(adminId, table);
+
         return getSendMessage(userId, "Вы успешно присоединились к игре!");
     }
 }
