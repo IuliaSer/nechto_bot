@@ -1,6 +1,7 @@
 package nechto.service;
 
 import nechto.dto.UserDto;
+import nechto.entity.Table;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -45,6 +46,10 @@ public interface InlineKeyboardService {
     InlineKeyboardMarkup returnButtonsWithUsers(List<UserDto> users);
 
     InlineKeyboardMarkup returnButtonsWithAdmins(List<UserDto> users);
+
+    InlineKeyboardMarkup returnButtonsWithUsersToDeleteFromTable(List<UserDto> users);
+
+    InlineKeyboardMarkup returnButtonsWithTables(List<Table> tables);
 
     InlineKeyboardMarkup returnButtonsWithEndChangingAndChangeNext(List<UserDto> users);
 

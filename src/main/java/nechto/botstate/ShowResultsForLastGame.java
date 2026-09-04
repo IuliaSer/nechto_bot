@@ -10,7 +10,7 @@ import static nechto.enums.BotState.SHOW_RESULTS;
 
 @RequiredArgsConstructor
 @Component
-public class ShowResults implements BotState {
+public class ShowResultsForLastGame implements BotState {
     private final ShowResultsService showResultsService;
 
     @Override

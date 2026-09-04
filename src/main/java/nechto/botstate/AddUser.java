@@ -51,7 +51,7 @@ public class AddUser implements BotState {
         gameService.addUser(gameId, userId);
         tableService.save(table);
 
-        tableAdminCache.saveAdminTable(adminId, table);
+        tableAdminCache.saveAdminTable(adminId, tableId);
 
         return getSendMessage(userId, "Вы успешно присоединились к игре!");
     }

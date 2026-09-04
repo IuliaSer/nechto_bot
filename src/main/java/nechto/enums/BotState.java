@@ -3,6 +3,7 @@ package nechto.enums;
 public enum BotState {
     CREATE_GAME,
     CREATE_TABLE,
+    GIVE_NAME_TO_TABLE,
     COUNT,
     ADD_USER,
     START_REGISTRATION,
@@ -15,5 +16,8 @@ public enum BotState {
     CHANGE_GAME,
     MAKE_ADMIN_START,
     MAKE_ADMIN,
-    MAKE_USER
+    MAKE_USER,
+    DELETE_PLAYER,
+    BECOME_TABLES_ADMIN,
+    GET_QRCODE
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import nechto.button.ButtonService;
 import nechto.cache.ScoresStateCache;
 import nechto.dto.UserDto;
+import nechto.entity.Table;
 import nechto.enums.Button;
 import nechto.service.InlineKeyboardService;
 import org.springframework.stereotype.Component;
@@ -22,39 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static nechto.enums.Button.AGAINST_HUMAN_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.CALNAV_BUTTON;
-import static nechto.enums.Button.CALNOOP_BUTTON;
-import static nechto.enums.Button.CAL_BUTTON;
-import static nechto.enums.Button.CONFIRM_MONTH_BUTTON;
-import static nechto.enums.Button.CONTAMINATED_BUTTON;
-import static nechto.enums.Button.COUNT_NEXT_BUTTON;
-import static nechto.enums.Button.DANGEROUS_BUTTON;
-import static nechto.enums.Button.END_COUNT_BUTTON;
-import static nechto.enums.Button.END_GAME_BUTTON;
-import static nechto.enums.Button.FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.FLAMETHROWER_FOR_HUMAN_BUTTON;
-import static nechto.enums.Button.HUMAN_BUTTON;
-import static nechto.enums.Button.LAST_CONTAMINATED_BUTTON;
-import static nechto.enums.Button.MINUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.MINUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.MINUS_BUTTON;
-import static nechto.enums.Button.CALNAV_BUTTON_MONTH;
-import static nechto.enums.Button.NECHTO_BUTTON;
-import static nechto.enums.Button.NO_BURNED_BUTTON;
-import static nechto.enums.Button.NO_LAST_CONTAMINATED_BUTTON;
-import static nechto.enums.Button.PICKED_ADMIN_BUTTON;
-import static nechto.enums.Button.PICKED_USER_BUTTON;
-import static nechto.enums.Button.PLUS_WITH_AGAINST_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.PLUS_FOR_AGAINST_HUMAN_FLAMETHROWER_BUTTON;
-import static nechto.enums.Button.PLUS_BUTTON;
-import static nechto.enums.Button.USEFULL_BUTTON;
-import static nechto.enums.Button.VALUE_BUTTON;
-import static nechto.enums.Button.VICTIM_BUTTON;
-import static nechto.enums.Button.WIN_NECHTO_BUTTON;
-import static nechto.enums.Button.WIN_PEOPLE_BUTTON;
-import static nechto.enums.Button.YES_BURNED_BUTTON;
-import static nechto.enums.Button.YES_LAST_CONTAMINATED_BUTTON;
+import static nechto.enums.Button.*;
 import static nechto.utils.BotUtils.getEditMessageWithInlineMarkup;
 import static nechto.utils.BotUtils.getSendMessage;
 
@@ -354,6 +323,20 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     }
 
     @Override
+    public InlineKeyboardMarkup returnButtonsWithUsersToDeleteFromTable(List<UserDto> users) {
+        List<List<InlineKeyboardButton>> rowsInLine = addUsersButtonsToInlineKeyboard(users, PICKED_USER_BUTTON_TO_DELETE);
+
+        return createInlineKeyboard(rowsInLine);
+    }
+
+    @Override
+    public InlineKeyboardMarkup returnButtonsWithTables(List<Table> tables) {
+        List<List<InlineKeyboardButton>> rowsInLine = addTablesButtonsToInlineKeyboard(tables, PICKED_TABLE_BUTTON);
+
+        return createInlineKeyboard(rowsInLine);
+    }
+
+    @Override
     public InlineKeyboardMarkup returnButtonsWithEndChangingAndChangeNext(List<UserDto> users) {
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
@@ -390,6 +373,30 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         return rowsInLine;
     }
 
+    private List<List<InlineKeyboardButton>> addTablesButtonsToInlineKeyboard(List<Table> tables, Button tableButton) {
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        int buttonsInRow = 0;
+        int lastRow = tables.size() / 3;
+        int amountOfRows = 0;
+        int amountOfRowsInLastRow = tables.size() % 3;
+
+        List<InlineKeyboardButton> rowInLine = new ArrayList<>();
+        for (Table table : tables) {
+            String callbackDataName = tableButton.toString() + ":" + table.getId();
+            var buttonTableName = createButton(table.getName(), callbackDataName);
+
+            rowInLine.add(buttonTableName);
+            buttonsInRow++;
+            if (buttonsInRow == 3 || (amountOfRows == lastRow && buttonsInRow == amountOfRowsInLastRow)) {
+                rowsInLine.add(rowInLine);
+                rowInLine = new ArrayList<>();
+                buttonsInRow = 0;
+                amountOfRows++;
+            }
+            buttonService.putButtonsToButtonCache(callbackDataName);
+        }
+        return rowsInLine;
+    }
     @Override
     public InlineKeyboardMarkup buildCalendar(long userId, YearMonth ym, Locale locale) {
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();

@@ -1,25 +1,26 @@
 package nechto.cache;
 
-import nechto.entity.Table;
+import lombok.Getter;
 import nechto.exception.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Getter
 @Component
 public class TableAdminCache {
-    private final Map<Long, Table> map = new ConcurrentHashMap<>();
+    private final Map<Long, Long> map = new ConcurrentHashMap<>();
 
-    public void saveAdminTable(long adminId, Table table) {
-        map.put(adminId, table);
+    public void saveAdminTable(long adminId, long tableId) {
+        map.put(adminId, tableId);
     }
 
-    public Table get(long adminId) {
-        Table table = map.get(adminId);
-        if (table == null) {
+    public long get(long adminId) {
+        Long tableId = map.get(adminId);
+        if (tableId == null) {
             throw new EntityNotFoundException("Table не найден. Пожалуйста сначала создайте стол командой create_table");
         }
-        return table;
+        return tableId;
     }
 }

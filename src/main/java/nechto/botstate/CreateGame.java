@@ -7,6 +7,7 @@ import nechto.dto.request.RequestGameDto;
 import nechto.entity.Table;
 import nechto.entity.User;
 import nechto.service.GameService;
+import nechto.service.TableService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -25,6 +26,7 @@ public class CreateGame implements BotState {
     private final GameService gameService;
     private final ScoresStateCache scoresStateCache;
     private final TableAdminCache tableAdminCache;
+    private final TableService tableService;
 
     @Override
     public nechto.enums.BotState getBotState() {
@@ -34,7 +36,8 @@ public class CreateGame implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long adminId = message.getFrom().getId();
-        Table table = tableAdminCache.get(adminId);
+        long tableId = tableAdminCache.get(adminId);
+        Table table = tableService.findById(tableId);
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>(), table);
 
         long gameId = gameService.save(requestGameDto).getId();

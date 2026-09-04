@@ -32,13 +32,13 @@ public class MenuServiceImpl implements MenuService {
   );
 
   private static final List<BotCommand> ADMIN_CORE = List.of(
-          cmd("/get qr-code", "получить qr стола"),
-          cmd("/create_game", "создать игру"),
           cmd("/create_table", "создать стол"),
+          cmd("/create_game", "создать игру"),
+          cmd("/get_qrcode", "получить qr стола"),
           cmd("/count", "посчитать очки"),
           cmd("/change_game", "изменить последнюю игру"),
-          cmd("/became table's admin", "стать админом этого стола"),
-          cmd("/delete player", "убрать игрока из стола")
+          cmd("/become_tables_admin", "стать админом этого стола"),
+          cmd("/delete_player", "убрать игрока из стола")
   );
 
   private static final List<BotCommand> OWNER_ONLY = List.of(
@@ -49,8 +49,7 @@ public class MenuServiceImpl implements MenuService {
   private static final Map<Authority, List<BotCommand>> MENU = Map.of(
           Authority.ROLE_USER,  concat(USER_ONLY, COMMON),
           Authority.ROLE_ADMIN, concat(ADMIN_CORE, COMMON),
-          Authority.ROLE_OWNER, concat(ADMIN_CORE, COMMON, OWNER_ONLY
-          )
+          Authority.ROLE_OWNER, concat(ADMIN_CORE, COMMON, OWNER_ONLY)
   );
 
   private static BotCommand cmd(String c, String d) {

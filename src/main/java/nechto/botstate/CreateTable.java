@@ -6,7 +6,7 @@ import nechto.cache.TableAdminCache;
 import nechto.dto.request.RequestGameDto;
 import nechto.entity.Game;
 import nechto.entity.Table;
-import nechto.mappers.GameMapper;
+import nechto.entity.User;
 import nechto.service.GameService;
 import nechto.service.TableService;
 import nechto.service.UserService;
@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.String.format;
 import static nechto.enums.BotState.CREATE_TABLE;
@@ -31,7 +32,6 @@ public class CreateTable implements BotState {
     private final TableService tableService;
     private final UserService userService;
     private final TableAdminCache tableAdminCache;
-    private final GameMapper gameMapper;
 
     @Override
     public nechto.enums.BotState getBotState() {
@@ -41,10 +41,16 @@ public class CreateTable implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long adminId = message.getFrom().getId();
+
+        int amountOfTables = tableService.findByToday().size();
+        User admin = userService.findById(adminId);
+        List<User> users = new ArrayList<>();
+        users.add(admin);
         Table table = Table.builder()
-                .admin(userService.findById(adminId))
+                .admin(admin)
+                .name(String.valueOf(++amountOfTables))
                 .date(LocalDateTime.now())
-                .currentUsers(new ArrayList<>())
+                .currentUsers(users)
                 .games(new ArrayList<>())
                 .build();
         Table tableSaved = tableService.save(table);
@@ -53,10 +59,11 @@ public class CreateTable implements BotState {
         RequestGameDto requestGameDto = new RequestGameDto(LocalDateTime.now(), new ArrayList<>(), tableSaved);
         Game gameSaved = gameService.save(requestGameDto);
         long gameId = gameSaved.getId();
+        gameService.addUser(gameId, adminId);
 
         tableSaved.getGames().add(gameSaved);
         tableService.save(tableSaved);
-        tableAdminCache.saveAdminTable(adminId, tableSaved);
+        tableAdminCache.saveAdminTable(adminId, tableId);
 
         qrCodeGenerator.generateQrCode(String.valueOf(tableId), String.valueOf(adminId));
 

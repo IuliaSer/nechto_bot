@@ -2,6 +2,7 @@ package nechto.service.qrcode;
 
 import com.google.zxing.WriterException;
 import lombok.RequiredArgsConstructor;
+import nechto.cache.TableQrCodeCache;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -16,6 +17,7 @@ import static java.lang.String.format;
 public class QrCodeGenerator {
     private final BufferedImageGenerator bufferedImageGenerator;
     private final TelegramQrCodeSender telegramQrCodeSender;
+    private final TableQrCodeCache tableQrCodeCache;
 
     public void generateQrCode(String tableId, String userId) {
         BufferedImage qrImage;
@@ -30,6 +32,8 @@ public class QrCodeGenerator {
         }
 
         byte[] data = baos.toByteArray();
+
+        tableQrCodeCache.saveTableQrCode(Long.parseLong(userId), data);
 
         telegramQrCodeSender.sendPhoto(
                 Long.parseLong(userId),

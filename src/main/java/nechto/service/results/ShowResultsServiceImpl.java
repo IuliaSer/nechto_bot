@@ -123,12 +123,8 @@ public class ShowResultsServiceImpl implements ShowResultsService {
     }
 
     private long resolveGameId(long userId) {
-        var user = userService.findByIdUserDto(userId)
+        userService.findByIdUserDto(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Вы не зарегестрированы"));
-        var cached = scoresStateCache.get(userId);
-        if (cached != null && !Objects.equals(user.getAuthority(), ROLE_USER)) {
-            return cached.getGameId();
-        }
         return gameService.findLastGameByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Вы не зарегестрированы ни в одной игре"))
                 .getId();
