@@ -43,7 +43,7 @@ public class CountNextButton implements Button {
         }
         return getEditMessageWithInlineMarkup(userId,
                 callbackQuery.getMessage().getMessageId(),
-                "Выберите ник игрока, которого надо посчитать:",
+                "Выбери ник игрока, которого надо посчитать:",
                 inlineKeyboardService.returnButtonsWithUsers(users));
     }
 }

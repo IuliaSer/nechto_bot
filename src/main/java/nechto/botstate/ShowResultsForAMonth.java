@@ -25,7 +25,7 @@ public class ShowResultsForAMonth implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        return getSendMessage(userId, "Выберите месяц:",
+        return getSendMessage(userId, "Выбери месяц:",
                 inlineKeyboardService.buildMonthCalendar(userId, YearMonth.now(), Locale.forLanguageTag("ru")));
     }
 }

@@ -24,7 +24,7 @@ public class MakeUser implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        return getSendMessage(userId, "Выберите ник игрока, у которого надо забрать права админа:",
+        return getSendMessage(userId, "Выбери ник игрока, у которого надо забрать права админа:",
             inlineKeyboardService.returnButtonsWithAdmins(userService.findAllAdmins()));
 
     }

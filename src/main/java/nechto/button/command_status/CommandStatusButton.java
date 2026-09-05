@@ -36,7 +36,7 @@ abstract public class CommandStatusButton implements Button {
         }
         buttonService.deactivateButtons(buttonName);
         return getEditMessageWithInlineMarkup(userId, messageId,
-                "Выберите ник игрока, которого надо посчитать:",
+                "Выбери ник игрока, которого надо посчитать:",
                 inlineKeyboardService.returnButtonsWithUsers(userService.findAllByGameId(gameId)));
     }
 }

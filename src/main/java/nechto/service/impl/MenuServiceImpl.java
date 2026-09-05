@@ -38,7 +38,8 @@ public class MenuServiceImpl implements MenuService {
           cmd("/count", "посчитать очки"),
           cmd("/change_game", "изменить последнюю игру"),
           cmd("/become_tables_admin", "стать админом этого стола"),
-          cmd("/delete_player", "убрать игрока из стола")
+          cmd("/delete_player", "убрать игрока из стола"),
+          cmd("/give_name_to_table", "изменить название стола")
   );
 
   private static final List<BotCommand> OWNER_ONLY = List.of(

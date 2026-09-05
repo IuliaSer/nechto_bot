@@ -31,6 +31,6 @@ public class MinusButtonForAgainstHumanFlamethrower implements Button {
         cachedScoresDto.setAntiHumanFlamethrowerAmount(--antiHumanFlamethrowerAmount);
 
         return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinusForAntiHuman(userId, messageId,
-                format("Выберите количество:\n"), Math.max(antiHumanFlamethrowerAmount, 0));
+                format("Выбери количество:\n"), Math.max(antiHumanFlamethrowerAmount, 0));
     }
 }

@@ -22,7 +22,8 @@ public enum BotCommand {
     MAKE_USER("^/make_user$", EnumSet.of(ROLE_OWNER), BotState.MAKE_USER),
     DELETE_PLAYER("^/delete_player$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.DELETE_PLAYER),
     BECOME_TABLES_ADMIN("^/become_tables_admin$", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.BECOME_TABLES_ADMIN),
-    GET_QRCODE("^/get_qrcode", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.GET_QRCODE);
+    GET_QRCODE("^/get_qrcode", EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.GET_QRCODE),
+    GIVE_NAME_TO_TABLE("^/give_name_to_table",  EnumSet.of(ROLE_ADMIN, ROLE_OWNER), BotState.GIVE_NAME_TO_TABLE_START);
 
     private final Pattern pattern;
     private final EnumSet<Authority> allowed;

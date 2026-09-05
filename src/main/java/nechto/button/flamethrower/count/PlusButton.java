@@ -31,6 +31,6 @@ public class PlusButton implements Button {
         requestScoresDto.setFlamethrowerAmount(++flamethrowerAmount);
 
         return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinus(userId, messageId,
-                format("Выберите количество:\n"), flamethrowerAmount);
+                format("Выбери количество:\n"), flamethrowerAmount);
     }
 }

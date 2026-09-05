@@ -31,6 +31,6 @@ public class PlusButtonForAgainstHumanFlamethrower implements Button {
         cachedScoresDto.setAntiHumanFlamethrowerAmount(++antiHumanFlamethrowerAmount);
 
         return inlineKeyboardService.editeMessageForInlineKeyboardPlusMinusForAntiHuman(userId, messageId,
-                format("Выберите количество:\n"), antiHumanFlamethrowerAmount);
+                format("Выбери количество:\n"), antiHumanFlamethrowerAmount);
     }
 }

@@ -3,6 +3,7 @@ package nechto.enums;
 public enum BotState {
     CREATE_GAME,
     CREATE_TABLE,
+    GIVE_NAME_TO_TABLE_START,
     GIVE_NAME_TO_TABLE,
     COUNT,
     ADD_USER,

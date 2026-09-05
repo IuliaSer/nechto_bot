@@ -25,7 +25,7 @@ public class ShowResultsForADay implements BotState {
     @Override
     public BotApiMethod<?> process(Message message) {
         long userId = message.getFrom().getId();
-        return getSendMessage(userId, "Выберите дату:",
+        return getSendMessage(userId, "Выбери дату:",
                 inlineKeyboardService.buildCalendar(userId, YearMonth.now(), Locale.forLanguageTag("ru")));
     }
 }

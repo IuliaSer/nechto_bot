@@ -30,7 +30,7 @@ public class BecomeTablesAdmin implements BotState {
         List<Table> tables = tableService.findByToday();
 
         return getSendMessage(adminId,
-                "Выберите стол за которым вы хотите стать админом:",
+                "Выбери стол за которым вы хотите стать админом:",
                 inlineKeyboardService.returnButtonsWithTables(tables));
     }
 }

@@ -41,7 +41,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine = List.of(nechtoWin, nechtoLoose);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
 
-        return getSendMessage(chatId, "Выберите статус:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери статус:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
         List<InlineKeyboardButton> rowInLine2 = List.of(buttonLastContaminated);
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
-        return getSendMessage(chatId, "Выберите роль:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери роль:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
             inlineKeyboardMarkup = createInlineKeyboard(rowInLine);
         }
 
-        return getSendMessage(chatId, "Выберите роль:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери роль:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2, rowInLine3);
 
-        return getSendMessage(chatId, "Выберите все аттрибуты по очереди:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери все аттрибуты по очереди:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
-        return getSendMessage(chatId, "Выберите все аттрибуты по очереди:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери все аттрибуты по очереди:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
-        return getSendMessage(chatId, "Выберите все аттрибуты по очереди:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери все аттрибуты по очереди:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -163,7 +163,7 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = createInlineKeyboard(rowInLine, rowInLine2);
 
-        return getSendMessage(chatId, "Выберите все аттрибуты по очереди:", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери все аттрибуты по очереди:", inlineKeyboardMarkup);
     }
 
     @Override
@@ -183,21 +183,21 @@ public class InlineKeyboardServiceImpl implements InlineKeyboardService {
     public SendMessage getMessageWithInlineMurkupPlusMinus(Long chatId, int flamethrowerAmount) {
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinus(flamethrowerAmount);
 
-        return getSendMessage(chatId, "Выберите количество:\n", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери количество:\n", inlineKeyboardMarkup);
     }
 
     @Override
     public SendMessage getMessageWithInlineMurkupPlusMinusAntiHuman(Long chatId, int flamethrowerAmount) {
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinusAntiHuman(flamethrowerAmount);
 
-        return getSendMessage(chatId, "Выберите количество:\n", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери количество:\n", inlineKeyboardMarkup);
     }
 
     @Override
     public SendMessage getMessageWithInlineMurkupPlusMinusWithAgainstHumanFlamethrower(Long chatId, int flamethrowerAmount) {
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeybordWithPlusMinusWithAgainstHumanFlamethrower(flamethrowerAmount);
 
-        return getSendMessage(chatId, "Выберите количество:\n", inlineKeyboardMarkup);
+        return getSendMessage(chatId, "Выбери количество:\n", inlineKeyboardMarkup);
     }
 
     @Override

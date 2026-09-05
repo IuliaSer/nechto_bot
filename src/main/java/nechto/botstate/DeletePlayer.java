@@ -36,7 +36,7 @@ public class DeletePlayer implements BotState {
         List<User> users = tableService.findById(tableId).getCurrentUsers();
 
         return getSendMessage(adminId,
-                "Выберите ник игрока, которого надо удалить из последующих игр за этим столом:",
+                "Выбери ник игрока, которого надо удалить из последующих игр за этим столом:",
                 inlineKeyboardService
                         .returnButtonsWithUsersToDeleteFromTable(userMapper.convertToListOfResponseUserDto(users)));
     }

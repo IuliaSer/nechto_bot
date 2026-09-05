@@ -46,9 +46,11 @@ public class CreateTable implements BotState {
         User admin = userService.findById(adminId);
         List<User> users = new ArrayList<>();
         users.add(admin);
+        String tableName = String.valueOf(++amountOfTables);
+
         Table table = Table.builder()
                 .admin(admin)
-                .name(String.valueOf(++amountOfTables))
+                .name(tableName)
                 .date(LocalDateTime.now())
                 .currentUsers(users)
                 .games(new ArrayList<>())
@@ -70,6 +72,6 @@ public class CreateTable implements BotState {
         scoresStateCache.put(adminId);
         scoresStateCache.get(adminId).setGameId(gameId);
         scoresStateCache.get(adminId).setGameIsFinished(false);
-        return getSendMessage(adminId, format("Отсканируйте qr code, добавьтесь в игру %s", gameId));
+        return getSendMessage(adminId, format("Отсканируй qr code, подтверди что играешь за столом %s", tableName));
     }
 }
